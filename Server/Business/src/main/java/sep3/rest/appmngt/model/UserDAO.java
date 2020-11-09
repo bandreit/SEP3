@@ -1,4 +1,4 @@
-package main.java.sep3.rest.appmngt.model;
+package sep3.rest.appmngt.model;
 
 import org.springframework.http.ResponseEntity;
 

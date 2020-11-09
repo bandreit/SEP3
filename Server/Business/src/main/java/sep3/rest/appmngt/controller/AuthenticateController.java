@@ -1,7 +1,7 @@
-package main.java.sep3.rest.appmngt.controller;
+package sep3.rest.appmngt.controller;
 
-import main.java.sep3.rest.appmngt.model.User;
-import main.java.sep3.rest.appmngt.service.UserService;
+import sep3.rest.appmngt.model.User;
+import sep3.rest.appmngt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

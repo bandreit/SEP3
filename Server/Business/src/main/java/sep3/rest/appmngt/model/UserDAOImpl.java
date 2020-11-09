@@ -1,6 +1,6 @@
-package main.java.sep3.rest.appmngt.model;
+package sep3.rest.appmngt.model;
 
-import main.java.sep3.rest.appmngt.service.UserService;
+import sep3.rest.appmngt.service.UserService;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
