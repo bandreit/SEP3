@@ -1,0 +1,79 @@
+﻿@page "/Login"
+@using Client.Authentication
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using InputType = Syncfusion.Blazor.Inputs.InputType
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>    
+    <NotAuthorized>
+        <div class="container-fluid d-flex justify-content-center">
+            <div class="row d-flex justify-content-center align-items-center flex-column card col-lg-5 mx-4 py-5">  
+                <div class="col-md-12 align-items-start">
+                    <h2>Log in.</h2>
+                    <p class="mb-2">
+                        Log in with your data
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <SfTextBox @bind-Value="username" Placeholder="Username" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <SfTextBox @bind-Value="password" Placeholder="Password" Type="InputType.Password" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                </div>
+                <div class="col-md-12 my-4">
+                    <SfButton IsPrimary="true" CssClass="e-info" type="button" @onclick="PerformLogin">Log In</SfButton>
+                </div>
+                <div style="color:red">@errorMessage</div>
+            </div>
+        </div>
+    </NotAuthorized>
+    <Authorized>
+        <a href="" @onclick="PerformLogout"> Log out </a>
+    </Authorized>
+</AuthorizeView>
+
+<style>
+    .e-info {
+       width: 100%;
+    }
+</style>
+
+@code {
+    private string username;
+    private string password;
+    private string errorMessage;
+
+    public async Task PerformLogin()
+    {
+        errorMessage = "";
+        try
+        {
+            await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(username, password);
+            username = "";
+            password = "";
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+
+    public async Task PerformLogout()
+    {
+        errorMessage = "";
+        username = "";
+        password = "";
+        try
+        {
+            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+        }
+    }
+
+}

@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using Client.Authentication
+@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 
 <div class="sidebar">
     <NavMenu/>
@@ -6,6 +9,15 @@
 
 <div class="main">
     <div class="top-row px-4">
+        <AuthorizeView>
+            <Authorized>
+                <p style="margin-bottom: 0">Hi, @context.User.Identity.Name</p>
+                <a href="" @onclick="PerformLogout"> Log out </a>
+            </Authorized>
+            <NotAuthorized>
+                <NavLink href="Login">Login</NavLink>
+            </NotAuthorized>
+        </AuthorizeView>
         <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
     </div>
 
@@ -13,3 +25,32 @@
         @Body
     </div>
 </div>
+
+@code{
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthStat { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        var user = (await AuthStat).User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo($"/Login");
+        }
+    }
+
+    public async Task PerformLogout()
+    {
+        try
+        {
+            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+        }
+    }
+
+}
