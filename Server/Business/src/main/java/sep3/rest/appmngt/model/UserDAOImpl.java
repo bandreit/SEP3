@@ -22,8 +22,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User ValidateUser(String userName, String password) throws IOException {
         {
-            ConnectionManager connectionManager = new ConnectionManager();
-            connectionManager.connect();
+            ConnectionManager connectionManager = ConnectionManager.getInstance();
+
             UserPackage userPackage = new UserPackage(NetworkType.USER, new User(userName, password));
             String data = gson.toJson(userPackage);
             connectionManager.sendToServer(data);

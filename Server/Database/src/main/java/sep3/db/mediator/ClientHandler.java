@@ -26,6 +26,11 @@ public class ClientHandler implements Runnable {
         this.gson = new Gson();
     }
 
+    private void sendData(String response) throws IOException {
+        byte[] responseAsBytes = response.getBytes();
+        outputStream.write(responseAsBytes, 0, responseAsBytes.length);
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -34,7 +39,6 @@ public class ClientHandler implements Runnable {
                 byte[] lenbytes = new byte[1024];
                 int read = inputStream.read(lenbytes,0,lenbytes.length);
                 String message = new String(lenbytes,0,read);
-                //output bytes
 
 
                 //incoming data
@@ -45,20 +49,22 @@ public class ClientHandler implements Runnable {
                     case USER:
                         UserPackage incomingUserPackageNumber = gson.fromJson(message, UserPackage.class);
                         User user = incomingUserPackageNumber.getUser();
+
                         User returnedUser = modelManager.ValidateUser(user.getUserName(), user.getPassword());
                         UserPackage outgoingUserPackage = new UserPackage(NetworkType.USER, returnedUser);
+
                         String response = gson.toJson(outgoingUserPackage);
-                        byte[] responseAsBytes = response.getBytes();
-                        outputStream.write(responseAsBytes, 0, responseAsBytes.length);
+                        sendData(response);
+
                         break;
                     case ERROR:
-                        response = "Error stuff";
-                        responseAsBytes = response.getBytes();
+                        sendData("ERROR");
                         break;
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Client disconnected");
+                break;
             }
         }
     }

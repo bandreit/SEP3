@@ -9,19 +9,36 @@ import java.net.Socket;
 
 public class ConnectionManager implements ConnectionHandler {
 
+
     public static final String HOST = "localhost";
     public static final int PORT = 9876;
     private Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
-//    private Gson gson;
+    private static ConnectionManager instance;
+    private static Object lock = new Object();
 
-    public ConnectionManager() {
+    private ConnectionManager() throws IOException {
+        connect();
+    }
+
+    public static ConnectionManager getInstance() throws IOException {
+        if(instance == null)
+        {
+            synchronized (lock)
+            {
+                if (instance == null)
+                {
+                    instance = new ConnectionManager();
+                }
+            }
+        }
+        return instance;
     }
 
     @Override
     public void connect() throws IOException {
-        Socket socket = new Socket(HOST, PORT);
+        this.socket = new Socket(HOST, PORT);
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
     }

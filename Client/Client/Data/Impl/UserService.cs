@@ -15,7 +15,7 @@ namespace Client.Data.Impl
 
             HttpResponseMessage responseMessage =
                 await client.GetAsync(
-                    $"http://localhost:8083/validate?username={userName}&password={password}");
+                    $"http://localhost:8083/SEP3/validate?username={userName}&password={password}");
 
             String reply = await responseMessage.Content.ReadAsStringAsync();
             
