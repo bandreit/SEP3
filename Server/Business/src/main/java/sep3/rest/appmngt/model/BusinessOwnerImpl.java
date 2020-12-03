@@ -22,11 +22,11 @@ public class BusinessOwnerImpl implements BusinessOwnerModel {
     @Override
     public BusinessOwner getBusinessOwner(String id) throws IOException {
         {
-            BusinessOwnerPackage businessOwnerPackage = new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, new BusinessOwner("asdsa","xxx"));
+            BusinessOwnerPackage businessOwnerPackage = new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, new BusinessOwner("Edvinas","123456"));
             String data = gson.toJson(businessOwnerPackage);
-            System.out.println(data + "here");
             connectionManager.sendToServer(data);
             String receivedData = connectionManager.readFromServer();
+
             businessOwnerPackage = gson.fromJson(receivedData, BusinessOwnerPackage.class);
             System.out.println(businessOwnerPackage.getBusinessOwner());
             return businessOwnerPackage.getBusinessOwner();

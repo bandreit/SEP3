@@ -1,5 +1,6 @@
 package sep3.rest.appmngt.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/SEP3")
 public class BusinessOwnerController {
+    @Autowired
     private BusinessOwnerService businessOwnerService;
 
     @GetMapping("/business-owner")
