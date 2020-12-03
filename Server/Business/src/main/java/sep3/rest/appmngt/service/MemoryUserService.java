@@ -9,13 +9,13 @@ import java.io.IOException;
 
 @Service
 public class MemoryUserService implements UserService {
-    private final UserModel userDAO = new UserModelImpl();
+    private final UserModel userModel = new UserModelImpl();
 
     public MemoryUserService() throws IOException {
     }
 
     @Override
     public User ValidateUser(String userName, String password) throws IOException {
-        return userDAO.ValidateUser(userName, password);
+        return userModel.ValidateUser(userName, password);
     }
 }
