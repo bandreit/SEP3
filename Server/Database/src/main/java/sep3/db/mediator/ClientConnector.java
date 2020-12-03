@@ -1,5 +1,6 @@
 package sep3.db.mediator;
 
+import com.mongodb.MongoClientOptions;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -17,7 +18,8 @@ public class ClientConnector implements Runnable {
 
     public ClientConnector() throws IOException {
         this.welcomeSocket = new ServerSocket(PORT);
-        MongoClient mongoClient = MongoClients.create("mongodb+srv://user:0JdyNe9bmUyZzK8S@cluster.efwee.mongodb.net/Cluster?retryWrites=true&w=majority");
+        MongoClient mongoClient = MongoClients.create(
+                "mongodb+srv://user:7olkRK2xZV6pPp1a@cluster.efwee.mongodb.net/Cluster?retryWrites=true&w=majority");
         MongoDatabase database = mongoClient.getDatabase("sep3");
         this.modelManager = new ModelManager(database);
     }
@@ -28,6 +30,7 @@ public class ClientConnector implements Runnable {
         while (true) {
             try {
                 Socket socket = welcomeSocket.accept();
+                System.out.println("Tier 2 connected");
                 ClientHandler clientHandler = new ClientHandler(socket, modelManager);
                 Thread t = new Thread(clientHandler);
                 t.setDaemon(true);

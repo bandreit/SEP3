@@ -1,18 +1,15 @@
 package sep3.rest.appmngt.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import sep3.rest.appmngt.mediator.ConnectionHandler;
-import sep3.rest.appmngt.mediator.ConnectionManager;
 import sep3.rest.appmngt.model.User;
-import sep3.rest.appmngt.model.UserDAO;
-import sep3.rest.appmngt.model.UserDAOImpl;
+import sep3.rest.appmngt.model.UserModel;
+import sep3.rest.appmngt.model.UserModelImpl;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 @Service
 public class MemoryUserService implements UserService {
-    private final UserDAO userDAO = new UserDAOImpl();
+    private final UserModel userDAO = new UserModelImpl();
 
     public MemoryUserService() throws IOException {
     }

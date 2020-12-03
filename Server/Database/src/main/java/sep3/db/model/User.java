@@ -1,8 +1,12 @@
 package sep3.db.model;
 
+import org.bson.types.ObjectId;
+
 import java.util.Objects;
 
 public class User {
+    private ObjectId _id;
+    private String id;
     private String userName;
     private String password;
     private String domain;
@@ -13,6 +17,22 @@ public class User {
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public ObjectId get_id() {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id) {
+        this._id = _id;
     }
 
     public String getUserName() {
@@ -66,4 +86,5 @@ public class User {
     public int hashCode() {
         return Objects.hash(userName, password);
     }
+
 }

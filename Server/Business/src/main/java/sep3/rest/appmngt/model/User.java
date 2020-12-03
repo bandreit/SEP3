@@ -3,6 +3,7 @@ package sep3.rest.appmngt.model;
 import java.util.Objects;
 
 public class User {
+    private String id;
     private String userName;
     private String password;
     private String domain;
@@ -10,7 +11,8 @@ public class User {
     private String role;
     private int securityLevel;
 
-    public User(String userName, String password, String domain, String city, String role, int securityLevel) {
+    public User(String id, String userName, String password, String domain, String city, String role, int securityLevel) {
+        this.id = id;
         this.userName = userName;
         this.password = password;
         this.domain = domain;
@@ -18,7 +20,9 @@ public class User {
         this.role = role;
         this.securityLevel = securityLevel;
     }
+
     public User(String userName, String password) {
+        this.id = null;
         this.userName = userName;
         this.password = password;
         this.domain = null;
@@ -27,6 +31,13 @@ public class User {
         this.securityLevel = 0;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;

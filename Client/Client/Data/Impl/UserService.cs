@@ -18,7 +18,7 @@ namespace Client.Data.Impl
                     $"http://localhost:8083/SEP3/validate?username={userName}&password={password}");
 
             String reply = await responseMessage.Content.ReadAsStringAsync();
-            
+
             if (responseMessage.StatusCode == HttpStatusCode.NotFound)
             {
                 throw new Exception("User not found");
@@ -27,6 +27,11 @@ namespace Client.Data.Impl
             if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
             {
                 throw new Exception("Incorrect password");
+            }
+
+            if (responseMessage.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new Exception("We're having some problems with our server, please come back later");
             }
 
             User first = JsonSerializer.Deserialize<User>(reply);

@@ -5,32 +5,27 @@ import sep3.rest.appmngt.mediator.ConnectionHandler;
 import sep3.rest.appmngt.mediator.ConnectionManager;
 import sep3.rest.appmngt.network.NetworkType;
 import sep3.rest.appmngt.network.UserPackage;
-import sep3.rest.appmngt.service.UserService;
-import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class UserDAOImpl implements UserDAO {
+public class UserModelImpl implements UserModel {
     private ConnectionHandler connectionManager;
-    private Gson gson;
+    private final Gson gson;
 
-    public UserDAOImpl() throws IOException {
+    public UserModelImpl() throws IOException {
         this.gson = new Gson();
+        this.connectionManager = ConnectionManager.getInstance();
     }
 
     @Override
     public User ValidateUser(String userName, String password) throws IOException {
         {
-            ConnectionManager connectionManager = ConnectionManager.getInstance();
-
             UserPackage userPackage = new UserPackage(NetworkType.USER, new User(userName, password));
             String data = gson.toJson(userPackage);
             connectionManager.sendToServer(data);
-
             String receivedData = connectionManager.readFromServer();
             userPackage = gson.fromJson(receivedData, UserPackage.class);
-
+            System.out.println(userPackage.getUser().getId());
             return userPackage.getUser();
         }
     }

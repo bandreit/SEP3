@@ -75,6 +75,7 @@ namespace Client.Authentication
         private ClaimsIdentity SetupClaimsForUser(User user)
         {
             List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim("Id", user.Id));
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             claims.Add(new Claim("Role", user.Role));
             claims.Add(new Claim("City", user.City));

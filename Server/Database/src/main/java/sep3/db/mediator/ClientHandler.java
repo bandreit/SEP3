@@ -26,6 +26,7 @@ public class ClientHandler implements Runnable {
         this.gson = new Gson();
     }
 
+
     private void sendData(String response) throws IOException {
         byte[] responseAsBytes = response.getBytes();
         outputStream.write(responseAsBytes, 0, responseAsBytes.length);
@@ -42,7 +43,7 @@ public class ClientHandler implements Runnable {
 
 
                 //incoming data
-                System.out.println("Client>" + message);
+                System.out.println("Tier2>" + message);
                 NetworkPackage incoming = gson.fromJson(message, NetworkPackage.class);
 
                 switch (incoming.getType()) {
@@ -64,6 +65,7 @@ public class ClientHandler implements Runnable {
 
             } catch (Exception e) {
                 System.out.println("Client disconnected");
+                e.printStackTrace();
                 break;
             }
         }
