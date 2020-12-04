@@ -4,19 +4,16 @@ import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class ModelManager implements Model {
+public class UserModelManager implements UserModel {
 
     private final MongoCollection<Document> usersCollection;
-    private final MongoCollection<Document> businessOwnerCollection;
     private final Gson gson;
 
-    public ModelManager(MongoDatabase database) {
+    public UserModelManager(MongoDatabase database) {
         usersCollection = database.getCollection("users");
-        businessOwnerCollection = database.getCollection("businessowner");
         gson = new Gson();
     }
 
@@ -35,15 +32,4 @@ public class ModelManager implements Model {
         }
     }
 
-    @Override
-    public BusinessOwner getBusinessOwner(String id) {
-        if (businessOwnerCollection.find(eq("_id", new ObjectId(id))).first() != null) {
-            Document businessOwner = businessOwnerCollection.find(eq("_id", new ObjectId(id))).first();
-            BusinessOwner businessOwnerWithId = gson.fromJson(businessOwner.toJson(), BusinessOwner.class);
-            String objectId = businessOwner.get("_id").toString();
-            businessOwnerWithId.setId(objectId);
-            return businessOwnerWithId;
-        }
-        return null;
-    }
 }

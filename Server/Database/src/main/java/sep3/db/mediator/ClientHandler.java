@@ -1,9 +1,7 @@
 package sep3.db.mediator;
 
 import com.google.gson.Gson;
-import sep3.db.model.BusinessOwner;
-import sep3.db.model.Model;
-import sep3.db.model.User;
+import sep3.db.model.*;
 import sep3.db.network.*;
 
 import java.io.*;
@@ -13,16 +11,20 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
-    private Model modelManager;
+    private UserModel modelManager;
     private Gson gson;
+    private BusinessOwnerModel businessOwnerModel;
+    private BusinessModel businessModel;
 
 
-    public ClientHandler(Socket socket, Model modelManager) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager,BusinessOwnerModel businessOwnerModel,BusinessModel businessModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
         this.modelManager = modelManager;
         this.gson = new Gson();
+        this.businessOwnerModel = businessOwnerModel;
+        this.businessModel = businessModel;
     }
 
 
@@ -59,9 +61,19 @@ public class ClientHandler implements Runnable {
                         String response = gson.toJson(outgoingUserPackage);
                         sendData(response);
                         break;
-                    case BUSINESSOWNER:
-                        //TODO
-                        break;
+//                    case BUSINESSOWNER:
+//                        //TODO
+//                        break; DELETE THIS?
+                    case BUSINESS:
+                        BusinessPackage incomingBusinessPackageNumber = gson.fromJson(message, BusinessPackage.class);
+                        Business business = incomingBusinessPackageNumber.getBusiness();
+
+                        businessModel.addBusiness(business);
+                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, business);
+
+                        String businessResponse = gson.toJson(outgoingBusinessPackage);
+                        sendData(businessResponse);
+
                     case ERROR:
                     default:
                         sendData("ERROR");
@@ -83,8 +95,9 @@ public class ClientHandler implements Runnable {
         switch (query) {
             case "get_business_owner_by_id":
                 String idToGetBusinessOwnerBy = carryObject.toString();
-                BusinessOwner returnedBusinessOwner = modelManager.getBusinessOwner(idToGetBusinessOwnerBy);
+                BusinessOwner returnedBusinessOwner = businessOwnerModel.getBusinessOwner(idToGetBusinessOwnerBy);
                 BusinessOwnerPackage outgoingBusinessOwnerPackage = new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, returnedBusinessOwner);
+
                 String businessResponse = gson.toJson(outgoingBusinessOwnerPackage);
                 sendData(businessResponse);
                 break;

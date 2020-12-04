@@ -1,6 +1,6 @@
 package sep3.db.model;
 
-public interface Model {
+public interface UserModel {
     User ValidateUser(String userName, String password);
-    BusinessOwner getBusinessOwner(String id);
+
 }
