@@ -37,12 +37,9 @@ public class ModelManager implements Model {
 
     @Override
     public BusinessOwner getBusinessOwner(String id) {
-        if (businessOwnerCollection.find(eq("userName", "Edvinas")).first() != null) {
-            Document businessOwner = businessOwnerCollection.find(eq("userName", "Edvinas")).first();
-
+        if (businessOwnerCollection.find(eq("_id", new ObjectId(id))).first() != null) {
+            Document businessOwner = businessOwnerCollection.find(eq("_id", new ObjectId(id))).first();
             BusinessOwner businessOwnerWithId = gson.fromJson(businessOwner.toJson(), BusinessOwner.class);
-
-
             String objectId = businessOwner.get("_id").toString();
             businessOwnerWithId.setId(objectId);
             return businessOwnerWithId;

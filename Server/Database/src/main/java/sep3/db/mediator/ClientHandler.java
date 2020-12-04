@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import sep3.db.model.BusinessOwner;
 import sep3.db.model.Model;
 import sep3.db.model.User;
-import sep3.db.network.BusinessOwnerPackage;
-import sep3.db.network.NetworkPackage;
-import sep3.db.network.NetworkType;
-import sep3.db.network.UserPackage;
+import sep3.db.network.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -49,6 +46,9 @@ public class ClientHandler implements Runnable {
                 NetworkPackage incoming = gson.fromJson(message, NetworkPackage.class);
 
                 switch (incoming.getType()) {
+                    case QUERY:
+                        handleQueryMethods(message);
+                        break;
                     case USER:
                         UserPackage incomingUserPackageNumber = gson.fromJson(message, UserPackage.class);
                         User user = incomingUserPackageNumber.getUser();
@@ -58,18 +58,12 @@ public class ClientHandler implements Runnable {
 
                         String response = gson.toJson(outgoingUserPackage);
                         sendData(response);
-
                         break;
                     case BUSINESSOWNER:
-                        BusinessOwnerPackage incomingBusinessOwnerPackageNumber = gson.fromJson(message, BusinessOwnerPackage.class);
-                        BusinessOwner businessOwner = incomingBusinessOwnerPackageNumber.getBusinessOwner();
-
-                        BusinessOwner returnedBusinessOwner = modelManager.getBusinessOwner(businessOwner.getId());
-                        BusinessOwnerPackage outgoingBusinessOwnerPackage = new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, returnedBusinessOwner);
-
-                        String businessResponse = gson.toJson(outgoingBusinessOwnerPackage);
-                        sendData(businessResponse);
+                        //TODO
+                        break;
                     case ERROR:
+                    default:
                         sendData("ERROR");
                         break;
                 }
@@ -79,6 +73,23 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
                 break;
             }
+        }
+    }
+
+    private void handleQueryMethods(String message) throws IOException {
+        QueryPackage incomingQueryPackage = gson.fromJson(message, QueryPackage.class);
+        String query = incomingQueryPackage.getQuery();
+        Object carryObject = incomingQueryPackage.getCarryObject();
+        switch (query) {
+            case "get_business_owner_by_id":
+                String idToGetBusinessOwnerBy = carryObject.toString();
+                BusinessOwner returnedBusinessOwner = modelManager.getBusinessOwner(idToGetBusinessOwnerBy);
+                BusinessOwnerPackage outgoingBusinessOwnerPackage = new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, returnedBusinessOwner);
+                String businessResponse = gson.toJson(outgoingBusinessOwnerPackage);
+                sendData(businessResponse);
+                break;
+            default:
+                sendData("ERROR");
         }
     }
 }

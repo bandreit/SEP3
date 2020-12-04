@@ -25,7 +25,6 @@ public class UserModelImpl implements UserModel {
             connectionManager.sendToServer(data);
             String receivedData = connectionManager.readFromServer();
             userPackage = gson.fromJson(receivedData, UserPackage.class);
-            System.out.println(userPackage.getUser().getId());
             return userPackage.getUser();
         }
     }
