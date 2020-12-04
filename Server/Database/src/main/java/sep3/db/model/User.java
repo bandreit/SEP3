@@ -12,7 +12,6 @@ public class User {
     private String domain;
     private String city;
     private String role;
-    private int securityLevel;
 
     public User(String userName, String password) {
         this.userName = userName;
@@ -75,13 +74,6 @@ public class User {
         this.role = role;
     }
 
-    public int getSecurityLevel() {
-        return securityLevel;
-    }
-
-    public void setSecurityLevel(int securityLevel) {
-        this.securityLevel = securityLevel;
-    }
 
     public int hashCode() {
         return Objects.hash(userName, password);
