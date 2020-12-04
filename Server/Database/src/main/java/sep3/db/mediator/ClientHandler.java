@@ -1,8 +1,10 @@
 package sep3.db.mediator;
 
 import com.google.gson.Gson;
+import sep3.db.model.BusinessOwner;
 import sep3.db.model.Model;
 import sep3.db.model.User;
+import sep3.db.network.BusinessOwnerPackage;
 import sep3.db.network.NetworkPackage;
 import sep3.db.network.NetworkType;
 import sep3.db.network.UserPackage;
@@ -38,8 +40,8 @@ public class ClientHandler implements Runnable {
             try {
                 //input bytes
                 byte[] lenbytes = new byte[1024];
-                int read = inputStream.read(lenbytes,0,lenbytes.length);
-                String message = new String(lenbytes,0,read);
+                int read = inputStream.read(lenbytes, 0, lenbytes.length);
+                String message = new String(lenbytes, 0, read);
 
 
                 //incoming data
@@ -58,6 +60,15 @@ public class ClientHandler implements Runnable {
                         sendData(response);
 
                         break;
+                    case BUSINESSOWNER:
+                        BusinessOwnerPackage incomingBusinessOwnerPackageNumber = gson.fromJson(message, BusinessOwnerPackage.class);
+                        BusinessOwner businessOwner = incomingBusinessOwnerPackageNumber.getBusinessOwner();
+
+                        BusinessOwner returnedBusinessOwner = modelManager.getBusinessOwner(businessOwner.getId());
+                        BusinessOwnerPackage outgoingBusinessOwnerPackage = new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, returnedBusinessOwner);
+
+                        String businessResponse = gson.toJson(outgoingBusinessOwnerPackage);
+                        sendData(businessResponse);
                     case ERROR:
                         sendData("ERROR");
                         break;
