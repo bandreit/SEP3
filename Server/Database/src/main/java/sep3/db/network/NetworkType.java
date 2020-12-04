@@ -1,5 +1,5 @@
 package sep3.db.network;
 
 public enum NetworkType {
-    USER, ERROR;
+    QUERY, USER, ERROR, BUSINESSOWNER;
 }
