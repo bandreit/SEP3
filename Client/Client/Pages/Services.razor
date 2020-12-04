@@ -1,0 +1,30 @@
+﻿@page "/Services"
+@using Client.Shared.Components
+@inject NavigationManager NavigationManager
+
+<style>
+    .services-layout {
+        display:  grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 1rem;
+        row-gap: 1rem;
+    }
+</style>
+
+<div class="services-layout">
+    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
+    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
+    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
+    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
+    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
+    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
+    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
+</div>
+
+@code {
+    public void OnClick(String ServiceId)
+    {
+        NavigationManager.NavigateTo($"/services/{ServiceId}");
+    }
+
+}
