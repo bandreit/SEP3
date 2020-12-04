@@ -21,7 +21,7 @@ public class BusinessModelManager implements BusinessModel {
     }
 
     @Override
-    public void addBusiness(Business business) {
+    public Business addBusiness(Business business) {
         Document newBusiness = new Document();
         newBusiness.append("name", business.getName());
         newBusiness.append("location", business.getLocation());
@@ -31,8 +31,9 @@ public class BusinessModelManager implements BusinessModel {
 
         businessCollection.insertOne(newBusiness);
 
-        Business businessWithId = gson.fromJson(newBusiness.toJson(), Business.class);
+        Business businessWithId = business;
         String objectId = newBusiness.get("_id").toString();
         businessWithId.setId(objectId);
+        return businessWithId;
     }
 }
