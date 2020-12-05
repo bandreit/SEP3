@@ -1,5 +1,5 @@
 package sep3.rest.appmngt.network;
 
 public enum NetworkType {
-    USER, ERROR;
+    QUERY, USER, ERROR, BUSINESSOWNER,BUSINESS;
 }

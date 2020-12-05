@@ -1,11 +1,9 @@
 package sep3.db.mediator;
 
-import com.mongodb.MongoClientOptions;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import sep3.db.model.Model;
-import sep3.db.model.ModelManager;
+import sep3.db.model.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,14 +12,18 @@ import java.net.Socket;
 public class ClientConnector implements Runnable {
     final int PORT = 9876;
     private ServerSocket welcomeSocket;
-    private Model modelManager;
+    private UserModel modelManager;
+    private BusinessModel businessModel;
+    private BusinessOwnerModel businessOwnerModel;
 
     public ClientConnector() throws IOException {
         this.welcomeSocket = new ServerSocket(PORT);
         MongoClient mongoClient = MongoClients.create(
                 "mongodb+srv://user:7olkRK2xZV6pPp1a@cluster.efwee.mongodb.net/Cluster?retryWrites=true&w=majority");
         MongoDatabase database = mongoClient.getDatabase("sep3");
-        this.modelManager = new ModelManager(database);
+        this.modelManager = new UserModelManager(database);
+        this.businessModel = new BusinessModelManager(database);
+        this.businessOwnerModel = new BusinessOwnerModelManager(database);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class ClientConnector implements Runnable {
             try {
                 Socket socket = welcomeSocket.accept();
                 System.out.println("Tier 2 connected");
-                ClientHandler clientHandler = new ClientHandler(socket, modelManager);
+                ClientHandler clientHandler = new ClientHandler(socket, modelManager,businessOwnerModel,businessModel);
                 Thread t = new Thread(clientHandler);
                 t.setDaemon(true);
                 t.start();

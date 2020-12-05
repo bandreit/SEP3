@@ -4,16 +4,15 @@ import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class ModelManager implements Model {
+public class UserModelManager implements UserModel {
 
     private final MongoCollection<Document> usersCollection;
     private final Gson gson;
 
-    public ModelManager(MongoDatabase database) {
+    public UserModelManager(MongoDatabase database) {
         usersCollection = database.getCollection("users");
         gson = new Gson();
     }
@@ -29,8 +28,8 @@ public class ModelManager implements Model {
                 userWithId.setId(objectId);
                 return userWithId;
             }
-
             return null;
         }
     }
+
 }
