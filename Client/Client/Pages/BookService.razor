@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.WebUtilities
 @inject NavigationManager NavigationManager;
 @using Client.Shared.Components
+@using Client.Shared.Containers
 @using Syncfusion.Blazor.Buttons
 
 <style>
@@ -9,6 +10,17 @@
         display:  grid;
         grid-template-columns: 1fr 3fr;
         column-gap: 2rem;
+    }
+    
+    .bs-container .action-btns {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1rem;
+        margin-left: auto;
+    }
+    
+    .bs-container .action-btns > button:first-child {
+        margin-right: 0.5rem;
     }
 </style>
 
@@ -19,30 +31,32 @@
         @switch (BookingStep)
         {
             case 0:
-                <h1>Choose location</h1>
+                <ReserveLocation OnReserve="@HandleReserveLocation"/>
                 break;
             case 1:
-                <h1>Choose category</h1>
+                <ReserveCategory/>
                 break;
             case 2:
-                <h1>Choose service</h1>
+                <ReserveService/>
                 break;
             case 3:
-                <h1>Choose Provider</h1>
+                <ReserveProvider/>
                 break;
             case 4:
-                <h1>Choose Time</h1>
+                <ReserveTime/>
                 break;
             case 5:
-                <h1>Choose client</h1>
+                <ReserveClient/>
                 break;
             default:
                 <div></div>
                 break;
         }
 
-        <SfButton @onclick="HandleBack">Back</SfButton>
-        <SfButton @onclick="HandleNext" IsPrimary="true">Next</SfButton>
+        <div class="action-btns">
+            <SfButton @onclick="HandleBack">Back</SfButton>
+            <SfButton @onclick="HandleNext" IsPrimary="true">Next</SfButton>
+        </div>
     </div>
 </div>
 
@@ -63,15 +77,28 @@
             NavigationManager.NavigateTo("/Services");
         }
     }
+    
 
     public void HandleNext()
     {
-        BookingStep += 1;
+        if (BookingStep < 5)
+        {
+            BookingStep += 1;
+            StateHasChanged();
+        }
     }
 
     public void HandleBack()
     {
-        BookingStep -= 1;
+        if (BookingStep > 0)
+        {
+            BookingStep -= 1;
+            StateHasChanged();
+        }
     }
-
+    
+    public void HandleReserveLocation(string LocationId)
+    {
+        HandleNext();
+    }
 }

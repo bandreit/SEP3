@@ -2,6 +2,7 @@
     .steps-container {
         background-color: #FFF;
         padding:  1rem;
+        border-radius: 0.5rem;
     }
     
     .steps-container ul {
@@ -10,12 +11,12 @@
     }
     
     .steps-container li {
-        padding: 0.5rem;
-        border-left: 0.2rem solid transparent;
+        padding: 0.5rem 0rem 0.5rem 1rem;
+        border-left: 0.2rem solid rgba(3,102,214, 0.1);
     }
     
     .steps-container li.active {
-        border-color: #0366d6;
+        border-color: rgba(3,102,214, 1);
     }
 </style>
 
@@ -31,9 +32,9 @@
 </div>
 
 @code {
-
+    string[] Steps = {"Location", "Category", "Service", "Provider", "Time", "Client"};
+    
     [Parameter]
     public int CurrentStep { get; set; }
-
-    string[] Steps = {"Location", "Category", "Service", "Provider", "Time", "Client"};
+    
 }
