@@ -1,0 +1,77 @@
+﻿@page "/BookService"
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavigationManager;
+@using Client.Shared.Components
+@using Syncfusion.Blazor.Buttons
+
+<style>
+    .bs-container {
+        display:  grid;
+        grid-template-columns: 1fr 3fr;
+        column-gap: 2rem;
+    }
+</style>
+
+<div class="bs-container">
+    <BookServiceSidebar CurrentStep=@BookingStep/>
+
+    <div>
+        @switch (BookingStep)
+        {
+            case 0:
+                <h1>Choose location</h1>
+                break;
+            case 1:
+                <h1>Choose category</h1>
+                break;
+            case 2:
+                <h1>Choose service</h1>
+                break;
+            case 3:
+                <h1>Choose Provider</h1>
+                break;
+            case 4:
+                <h1>Choose Time</h1>
+                break;
+            case 5:
+                <h1>Choose client</h1>
+                break;
+            default:
+                <div></div>
+                break;
+        }
+
+        <SfButton @onclick="HandleBack">Back</SfButton>
+        <SfButton @onclick="HandleNext" IsPrimary="true">Next</SfButton>
+    </div>
+</div>
+
+@code {
+    string ServiceId = null;
+    int BookingStep = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var Query = new Uri(NavigationManager.Uri).Query;
+
+        if (QueryHelpers.ParseQuery(Query).TryGetValue("ServiceId", out var value))
+        {
+            ServiceId = value;
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/Services");
+        }
+    }
+
+    public void HandleNext()
+    {
+        BookingStep += 1;
+    }
+
+    public void HandleBack()
+    {
+        BookingStep -= 1;
+    }
+
+}

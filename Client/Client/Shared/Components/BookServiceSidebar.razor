@@ -1,0 +1,39 @@
+﻿<style>
+    .steps-container {
+        background-color: #FFF;
+        padding:  1rem;
+    }
+    
+    .steps-container ul {
+        list-style-type: none;
+        padding: 0rem;
+    }
+    
+    .steps-container li {
+        padding: 0.5rem;
+        border-left: 0.2rem solid transparent;
+    }
+    
+    .steps-container li.active {
+        border-color: #0366d6;
+    }
+</style>
+
+<div class="steps-container">
+    <ul>
+        @foreach (var Step in Steps.Select((value, i) => new {i, value}))
+        {
+            <li class="@(Step.i <= CurrentStep ? "active" : "")">
+                @Step.value
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+
+    [Parameter]
+    public int CurrentStep { get; set; }
+
+    string[] Steps = {"Location", "Category", "Service", "Provider", "Time", "Client"};
+}
