@@ -1,0 +1,123 @@
+﻿@page "/BookService"
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavigationManager;
+@using Client.Shared.Components
+@using Client.Shared.Containers
+
+<style>
+    .bs-container {
+        display:  grid;
+        grid-template-columns: 1fr 3fr;
+        column-gap: 2rem;
+    }
+    
+    .bs-container .action-btns {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1rem;
+        margin-left: auto;
+    }
+    
+    .bs-container .action-btns > button:first-child {
+        margin-right: 0.5rem;
+    }
+</style>
+
+<div class="bs-container">
+    <BookServiceSidebar CurrentStep=@BookingStep/>
+
+    <div>
+        @switch (BookingStep)
+        {
+            case 0:
+                <ReserveLocation OnReserve="@HandleReserveLocation"/>
+                break;
+            case 1:
+                <ReserveCategory OnReserve="@HandleReserveCategory"/>
+                break;
+            case 2:
+                <ReserveService OnReserve="@HandleReserveService"/>
+                break;
+            case 3:
+                <ReserveProvider OnReserve="@HandleReserveProvider"/>
+                break;
+            case 4:
+                <ReserveTime OnReserve="@HandleReserveTime"/>
+                break;
+            case 5:
+                <ReserveClient OnSubmit="@HandleSubmit"/>
+                break;
+            default:
+                <div></div>
+                break;
+        }
+    </div>
+</div>
+
+@code {
+    string ServiceId = null;
+    int BookingStep = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var Query = new Uri(NavigationManager.Uri).Query;
+
+        if (QueryHelpers.ParseQuery(Query).TryGetValue("ServiceId", out var value))
+        {
+            ServiceId = value;
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/Services");
+        }
+    }
+    
+
+    public void HandleNext()
+    {
+        if (BookingStep < 5)
+        {
+            BookingStep += 1;
+            StateHasChanged();
+        }
+    }
+
+    public void HandleBack()
+    {
+        if (BookingStep > 0)
+        {
+            BookingStep -= 1;
+            StateHasChanged();
+        }
+    }
+    
+    public void HandleReserveLocation(string LocationId)
+    {
+        HandleNext();
+    }
+    
+    public void HandleReserveCategory(string CategoryId)
+    {
+        HandleNext();
+    }
+    
+    public void HandleReserveService(string ServiceId)
+    {
+        HandleNext();
+    }
+    
+    public void HandleReserveProvider(string ProviderId)
+    {
+        HandleNext();
+    }
+    
+    public void HandleReserveTime(DateTime? date, DateTime? hour)
+    {
+        HandleNext();
+    }
+
+    public void HandleSubmit()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}
