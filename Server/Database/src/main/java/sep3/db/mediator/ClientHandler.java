@@ -1,11 +1,8 @@
 package sep3.db.mediator;
 
 import com.google.gson.Gson;
-import sep3.db.model.Model;
-import sep3.db.model.User;
-import sep3.db.network.NetworkPackage;
-import sep3.db.network.NetworkType;
-import sep3.db.network.UserPackage;
+import sep3.db.model.*;
+import sep3.db.network.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,16 +11,20 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
-    private Model modelManager;
+    private UserModel modelManager;
     private Gson gson;
+    private BusinessOwnerModel businessOwnerModel;
+    private BusinessModel businessModel;
 
 
-    public ClientHandler(Socket socket, Model modelManager) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager,BusinessOwnerModel businessOwnerModel,BusinessModel businessModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
         this.modelManager = modelManager;
         this.gson = new Gson();
+        this.businessOwnerModel = businessOwnerModel;
+        this.businessModel = businessModel;
     }
 
 
@@ -38,8 +39,8 @@ public class ClientHandler implements Runnable {
             try {
                 //input bytes
                 byte[] lenbytes = new byte[1024];
-                int read = inputStream.read(lenbytes,0,lenbytes.length);
-                String message = new String(lenbytes,0,read);
+                int read = inputStream.read(lenbytes, 0, lenbytes.length);
+                String message = new String(lenbytes, 0, read);
 
 
                 //incoming data
@@ -47,6 +48,9 @@ public class ClientHandler implements Runnable {
                 NetworkPackage incoming = gson.fromJson(message, NetworkPackage.class);
 
                 switch (incoming.getType()) {
+                    case QUERY:
+                        handleQueryMethods(message);
+                        break;
                     case USER:
                         UserPackage incomingUserPackageNumber = gson.fromJson(message, UserPackage.class);
                         User user = incomingUserPackageNumber.getUser();
@@ -56,9 +60,22 @@ public class ClientHandler implements Runnable {
 
                         String response = gson.toJson(outgoingUserPackage);
                         sendData(response);
-
                         break;
+//                    case BUSINESSOWNER:
+//                        //TODO
+//                        break; DELETE THIS?
+                    case BUSINESS:
+                        BusinessPackage incomingBusinessPackageNumber = gson.fromJson(message, BusinessPackage.class);
+                        Business business = incomingBusinessPackageNumber.getBusiness();
+
+                        businessModel.addBusiness(business);
+                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, business);
+
+                        String businessResponse = gson.toJson(outgoingBusinessPackage);
+                        sendData(businessResponse);
+
                     case ERROR:
+                    default:
                         sendData("ERROR");
                         break;
                 }
@@ -68,6 +85,24 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
                 break;
             }
+        }
+    }
+
+    private void handleQueryMethods(String message) throws IOException {
+        QueryPackage incomingQueryPackage = gson.fromJson(message, QueryPackage.class);
+        String query = incomingQueryPackage.getQuery();
+        Object carryObject = incomingQueryPackage.getCarryObject();
+        switch (query) {
+            case "get_business_owner_by_id":
+                String idToGetBusinessOwnerBy = carryObject.toString();
+                BusinessOwner returnedBusinessOwner = businessOwnerModel.getBusinessOwner(idToGetBusinessOwnerBy);
+                BusinessOwnerPackage outgoingBusinessOwnerPackage = new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, returnedBusinessOwner);
+
+                String businessOwnerResponse = gson.toJson(outgoingBusinessOwnerPackage);
+                sendData(businessOwnerResponse);
+                break;
+            default:
+                sendData("ERROR");
         }
     }
 }
