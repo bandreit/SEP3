@@ -42,10 +42,10 @@
                 <ReserveProvider OnReserve="@HandleReserveProvider"/>
                 break;
             case 4:
-                <ReserveTime/>
+                <ReserveTime OnReserve="@HandleReserveTime"/>
                 break;
             case 5:
-                <ReserveClient/>
+                <ReserveClient OnSubmit="@HandleSubmit"/>
                 break;
             default:
                 <div></div>
@@ -109,5 +109,15 @@
     public void HandleReserveProvider(string ProviderId)
     {
         HandleNext();
+    }
+    
+    public void HandleReserveTime(DateTime? date, DateTime? hour)
+    {
+        HandleNext();
+    }
+
+    public void HandleSubmit()
+    {
+        NavigationManager.NavigateTo("/");
     }
 }

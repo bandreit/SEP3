@@ -1,5 +1,61 @@
-﻿<h3>ReserveCategory</h3>
+﻿@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using InputType = Syncfusion.Blazor.Inputs.InputType
+
+<style>
+    .content-wrapper {
+        width: 100%;
+        padding: 1rem;
+        background-color: #FFF;
+        border-radius: 0.5rem;
+    }
+    
+    .content-wrapper .btn-container {
+        margin-top: 1rem;
+    }
+</style>
+
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <h3>Let us know about you</h3>
+
+        <div class="row material2">
+            <div class="col-xs-12 col-sm-6">
+
+                <div class="row material2">
+                    <div class="col-xs-12 col-sm-6">
+                        <SfTextBox CssClass="e-outline" Placeholder="First Name" @bind-Value="FirstName" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <SfTextBox CssClass="e-filled" Placeholder="Last Name" @bind-Value="LastName" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                    </div>
+                </div>
+
+                <SfTextBox Type="InputType.Email" CssClass="e-filled" Placeholder="Email" @bind-Value="Email" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <SfTextBox CssClass="e-filled" Placeholder="Phone number" @bind-Value="PhoneNumber" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <SfButton IsPrimary="true" @onclick="@HandleSubmit">Submit</SfButton>
+        </div>
+    </div>
+</div>
+
 
 @code {
+    private string FirstName;
+    private string LastName;
+    private string Email;
+    private string PhoneNumber;
     
+    [Parameter]
+    public Action OnSubmit { get; set; }
+
+    public void HandleSubmit()
+    {
+        OnSubmit();
+    }
 }
