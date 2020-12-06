@@ -3,7 +3,6 @@
 @inject NavigationManager NavigationManager;
 @using Client.Shared.Components
 @using Client.Shared.Containers
-@using Syncfusion.Blazor.Buttons
 
 <style>
     .bs-container {
@@ -34,13 +33,13 @@
                 <ReserveLocation OnReserve="@HandleReserveLocation"/>
                 break;
             case 1:
-                <ReserveCategory/>
+                <ReserveCategory OnReserve="@HandleReserveCategory"/>
                 break;
             case 2:
-                <ReserveService/>
+                <ReserveService OnReserve="@HandleReserveService"/>
                 break;
             case 3:
-                <ReserveProvider/>
+                <ReserveProvider OnReserve="@HandleReserveProvider"/>
                 break;
             case 4:
                 <ReserveTime/>
@@ -52,11 +51,6 @@
                 <div></div>
                 break;
         }
-
-        <div class="action-btns">
-            <SfButton @onclick="HandleBack">Back</SfButton>
-            <SfButton @onclick="HandleNext" IsPrimary="true">Next</SfButton>
-        </div>
     </div>
 </div>
 
@@ -98,6 +92,21 @@
     }
     
     public void HandleReserveLocation(string LocationId)
+    {
+        HandleNext();
+    }
+    
+    public void HandleReserveCategory(string CategoryId)
+    {
+        HandleNext();
+    }
+    
+    public void HandleReserveService(string ServiceId)
+    {
+        HandleNext();
+    }
+    
+    public void HandleReserveProvider(string ProviderId)
     {
         HandleNext();
     }
