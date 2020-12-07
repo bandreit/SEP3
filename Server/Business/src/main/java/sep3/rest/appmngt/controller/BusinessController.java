@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sep3.rest.appmngt.model.Business;
 import sep3.rest.appmngt.model.BusinessOwner;
+import sep3.rest.appmngt.network.BusinessWithBusinessOwnerIdPackage;
 import sep3.rest.appmngt.service.BusinessOwnerService;
 import sep3.rest.appmngt.service.BusinessService;
 
@@ -17,9 +18,9 @@ public class BusinessController {
     private BusinessService businessService;
 
     @PostMapping("/business")
-    public ResponseEntity<Business> addBusiness(@RequestBody Business business) {
+    public ResponseEntity<Business> addBusiness(@RequestParam String id,@RequestBody Business business) {
         try {
-            businessService.addBusiness(business);
+            businessService.addBusiness(business,id);
             return ResponseEntity.ok(business);
         } catch (IOException e) {
             e.printStackTrace();

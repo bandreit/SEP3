@@ -19,8 +19,8 @@ public class BusinessImpl implements BusinessModel {
     }
 
     @Override
-    public Business addBusiness(Business business) throws IOException {
-        BusinessPackage businessPackage = new BusinessPackage(NetworkType.BUSINESS, business);
+    public Business addBusiness(Business business,String id) throws IOException {
+        BusinessPackage businessPackage = new BusinessPackage(NetworkType.BUSINESS, business,id);
         String data = gson.toJson(businessPackage);
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();

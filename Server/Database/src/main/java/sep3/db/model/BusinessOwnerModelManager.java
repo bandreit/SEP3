@@ -20,7 +20,7 @@ public class BusinessOwnerModelManager implements BusinessOwnerModel {
     @Override
     public BusinessOwner getBusinessOwner(String id) {
         if (businessOwnerCollection.find(eq("_id", new ObjectId(id))).first() != null) {
-            Document businessOwner = businessOwnerCollection.find(eq("_id", new ObjectId(id ))).first();
+            Document businessOwner = businessOwnerCollection.find(eq("_id", new ObjectId(id))).first();
             BusinessOwner businessOwnerWithId = gson.fromJson(businessOwner.toJson(), BusinessOwner.class);
             String objectId = businessOwner.get("_id").toString();
             businessOwnerWithId.setId(objectId);

@@ -61,15 +61,14 @@ public class ClientHandler implements Runnable {
                         String response = gson.toJson(outgoingUserPackage);
                         sendData(response);
                         break;
-//                    case BUSINESSOWNER:
-//                        //TODO
-//                        break; DELETE THIS?
+
                     case BUSINESS:
                         BusinessPackage incomingBusinessPackageNumber = gson.fromJson(message, BusinessPackage.class);
                         Business business = incomingBusinessPackageNumber.getBusiness();
+                        String businessOwnerId = incomingBusinessPackageNumber.getBusinessOwnerId();
 
-                        businessModel.addBusiness(business);
-                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, business);
+                        businessModel.addBusiness(business,businessOwnerId);
+                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, business,businessOwnerId);
 
                         String businessResponse = gson.toJson(outgoingBusinessPackage);
                         sendData(businessResponse);

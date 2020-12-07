@@ -13,7 +13,7 @@ public class MemoryBusinessService implements BusinessService {
     }
 
     @Override
-    public void addBusiness(Business business) throws IOException {
-        businessModel.addBusiness(business);
+    public void addBusiness(Business business,String id) throws IOException {
+        businessModel.addBusiness(business,id);
     }
 }
