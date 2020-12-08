@@ -17,7 +17,7 @@ public class ClientHandler implements Runnable {
     private BusinessModel businessModel;
 
 
-    public ClientHandler(Socket socket, UserModel modelManager,BusinessOwnerModel businessOwnerModel,BusinessModel businessModel) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager, BusinessOwnerModel businessOwnerModel, BusinessModel businessModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
@@ -67,8 +67,8 @@ public class ClientHandler implements Runnable {
                         Business business = incomingBusinessPackageNumber.getBusiness();
                         String businessOwnerId = incomingBusinessPackageNumber.getBusinessOwnerId();
 
-                        businessModel.addBusiness(business,businessOwnerId);
-                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, business,businessOwnerId);
+                        Business addedBusiness = businessModel.addBusiness(business, businessOwnerId);
+                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, addedBusiness, businessOwnerId);
 
                         String businessResponse = gson.toJson(outgoingBusinessPackage);
                         sendData(businessResponse);
