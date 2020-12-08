@@ -72,6 +72,10 @@ public class ClientHandler implements Runnable {
 
                         String businessResponse = gson.toJson(outgoingBusinessPackage);
                         sendData(businessResponse);
+                    case SERVICE:
+
+
+                    case EMPLOYEE:
 
                     case ERROR:
                     default:

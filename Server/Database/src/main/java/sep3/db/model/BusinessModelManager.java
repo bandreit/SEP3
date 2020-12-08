@@ -14,11 +14,15 @@ public class BusinessModelManager implements BusinessModel {
 
     private final MongoCollection<Document> businessCollection;
     private final MongoCollection<Document> businessOwnerCollection;
+    private final MongoCollection<Document> serviceCollection;
+    private final MongoCollection<Document> employeeCollection;
     private final Gson gson;
 
     public BusinessModelManager(MongoDatabase database) {
         businessCollection = database.getCollection("business");
         businessOwnerCollection = database.getCollection("businessowner");
+        serviceCollection = database.getCollection("service");
+        employeeCollection = database.getCollection("employee");
         gson = new Gson();
     }
 
@@ -28,9 +32,6 @@ public class BusinessModelManager implements BusinessModel {
         newBusiness.append("name", business.getName());
         newBusiness.append("location", business.getLocation());
         newBusiness.append("mail", business.getMail());
-//        newBusiness.append("services", business.getServices());
-//        newBusiness.append("employees", business.getEmployees());
-
         for (Service service:business.getServices())
              {
                  Document newService = new Document();
@@ -48,14 +49,31 @@ public class BusinessModelManager implements BusinessModel {
             newEmployee.append("role", employee.getRole());
             newBusiness.append("employees", newEmployee);
         }
-
-        
-        
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
         business.setId(objectId);
         businessOwnerCollection.updateOne(eq("_id", new ObjectId(id)), Updates.addToSet("business", newBusiness.get("_id")));
 
+
         return business;
+    }
+
+    @Override
+    public Service addService(Service service, String id) {
+        Document newService = new Document();
+        newService.append("name", service.getName());
+        newService.append("duration", service.getDuration());
+        businessCollection.updateOne(eq("_id", new ObjectId(id)), Updates.addToSet("service", service));
+        return null;
+    }
+
+    @Override
+    public Employee addEmployee(Employee employee, String businessId, String serviceId) {
+        return null;
+    }
+
+    @Override
+    public void removeEmployee(String id) {
+
     }
 }
