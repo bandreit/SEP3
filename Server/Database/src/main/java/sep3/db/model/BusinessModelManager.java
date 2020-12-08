@@ -5,6 +5,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -34,24 +35,11 @@ public class BusinessModelManager implements BusinessModel {
         newBusiness.append("mail", business.getMail());
         newBusiness.append("service", business.getService());
 
-
         businessCollection.insertOne(newBusiness);
 
-        Business businessWithId = business;
         String objectId = newBusiness.get("_id").toString();
-        businessWithId.setId(objectId);
-        List<Document> businessList = new ArrayList<>();
-//        businessList.add(newBusiness);
-        businessList.add(new Document("business", businessWithId).append("name", businessWithId.getName()).append("location", businessWithId.getLocation()).append("mail", businessWithId.getMail()).append("service", businessWithId.getMail()));
-
-        Document businessOwnerDatabase = businessOwnerCollection.find(eq("_id", new ObjectId(id))).first();
-
-//        businessOwnerDatabase.append("business", businessList);
-//        //works but not works
-//        System.out.println(businessOwnerDatabase.append("userName","edva"));
-//        System.out.println(businessOwnerDatabase.append("business",businessList) + "listarauzas");
-
-        businessOwnerDatabase.append("business",businessList);
-        return businessWithId;
+        business.setId(objectId);
+        businessOwnerCollection.updateOne(eq("_id", new ObjectId(id)), Updates.addToSet("business", newBusiness.get("_id")));
+        return business;
     }
 }

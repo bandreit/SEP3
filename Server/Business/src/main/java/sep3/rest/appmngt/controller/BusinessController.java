@@ -20,8 +20,8 @@ public class BusinessController {
     @PostMapping("/business")
     public ResponseEntity<Business> addBusiness(@RequestParam String id,@RequestBody Business business) {
         try {
-            businessService.addBusiness(business,id);
-            return ResponseEntity.ok(business);
+            Business retunedBusiness = businessService.addBusiness(business,id);
+            return ResponseEntity.ok(retunedBusiness);
         } catch (IOException e) {
             e.printStackTrace();
         }
