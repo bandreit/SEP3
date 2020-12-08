@@ -5,5 +5,5 @@ import sep3.rest.appmngt.model.Business;
 import java.io.IOException;
 
 public interface BusinessService {
-    void addBusiness(Business business) throws IOException;
+    Business addBusiness(Business business,String id) throws IOException;
 }
