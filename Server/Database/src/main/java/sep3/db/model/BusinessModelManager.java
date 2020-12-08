@@ -1,16 +1,11 @@
 package sep3.db.model;
 
 import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -36,10 +31,10 @@ public class BusinessModelManager implements BusinessModel {
         newBusiness.append("service", business.getService());
 
         businessCollection.insertOne(newBusiness);
-
         String objectId = newBusiness.get("_id").toString();
         business.setId(objectId);
         businessOwnerCollection.updateOne(eq("_id", new ObjectId(id)), Updates.addToSet("business", newBusiness.get("_id")));
+
         return business;
     }
 }

@@ -12,6 +12,7 @@ public class BusinessOwnerModelManager implements BusinessOwnerModel {
     private final MongoCollection<Document> businessOwnerCollection;
     private final Gson gson;
 
+
     public BusinessOwnerModelManager(MongoDatabase database) {
         businessOwnerCollection = database.getCollection("businessowner");
         gson = new Gson();
