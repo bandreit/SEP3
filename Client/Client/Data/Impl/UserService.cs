@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Client.Models;
@@ -36,6 +37,19 @@ namespace Client.Data.Impl
 
             User first = JsonSerializer.Deserialize<User>(reply);
             return first;
+        }
+
+        public async Task RegisterUser(User user)
+        {
+            HttpClient client = new HttpClient();
+            string userSerialized = JsonSerializer.Serialize(user);
+            StringContent content=new StringContent(
+                userSerialized,
+                Encoding.UTF8,
+                "application/json"
+            );
+            var response = await client.PostAsync("http://localhost:8083/SEP3/newUser", content);
+            Console.WriteLine(response.StatusCode);
         }
     }
 }
