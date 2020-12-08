@@ -26,7 +26,7 @@ public class BusinessModelManager implements BusinessModel {
         newBusiness.append("name", business.getName());
         newBusiness.append("location", business.getLocation());
         newBusiness.append("mail", business.getMail());
-        newBusiness.append("service", business.getService());
+        newBusiness.append("services", business.getServices());
 
 
         businessCollection.insertOne(newBusiness);
