@@ -28,8 +28,29 @@ public class BusinessModelManager implements BusinessModel {
         newBusiness.append("name", business.getName());
         newBusiness.append("location", business.getLocation());
         newBusiness.append("mail", business.getMail());
-        newBusiness.append("services", business.getServices());
+//        newBusiness.append("services", business.getServices());
+//        newBusiness.append("employees", business.getEmployees());
 
+        for (Service service:business.getServices())
+             {
+                 Document newService = new Document();
+                 newService.append("name", service.getName());
+                 newService.append("duration", service.getDuration());
+                 newBusiness.append("services", newService);
+        }
+        for (Employee employee:business.getEmployees())
+        {
+            Document newEmployee = new Document();
+            newEmployee.append("userName", employee.getUserName());
+            newEmployee.append("password", employee.getPassword());
+            newEmployee.append("domain", employee.getDomain());
+            newEmployee.append("city", employee.getCity());
+            newEmployee.append("role", employee.getRole());
+            newBusiness.append("employees", newEmployee);
+        }
+
+        
+        
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
         business.setId(objectId);
