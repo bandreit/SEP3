@@ -41,17 +41,17 @@ public class BusinessModelManager implements BusinessModel {
         String objectId = newBusiness.get("_id").toString();
         businessWithId.setId(objectId);
         List<Document> businessList = new ArrayList<>();
-        businessList.add(newBusiness);
-//        businessList.add(new Document("business", businessWithId).append("name", businessWithId.getName()).append("location", businessWithId.getLocation()).append("mail", businessWithId.getMail()).append("service", businessWithId.getMail()));
+//        businessList.add(newBusiness);
+        businessList.add(new Document("business", businessWithId).append("name", businessWithId.getName()).append("location", businessWithId.getLocation()).append("mail", businessWithId.getMail()).append("service", businessWithId.getMail()));
 
         Document businessOwnerDatabase = businessOwnerCollection.find(eq("_id", new ObjectId(id))).first();
 
-        businessOwnerDatabase.append("business", businessList);
-        //works but not works
-        System.out.println(businessOwnerDatabase.append("userName","edva"));
-        System.out.println(businessOwnerDatabase.append("business",businessList) + "listarauzas");
+//        businessOwnerDatabase.append("business", businessList);
+//        //works but not works
+//        System.out.println(businessOwnerDatabase.append("userName","edva"));
+//        System.out.println(businessOwnerDatabase.append("business",businessList) + "listarauzas");
 
-//        businessOwnerCollection.insertMany(businessList);
+        businessOwnerDatabase.append("business",businessList);
         return businessWithId;
     }
 }
