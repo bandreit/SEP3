@@ -1,0 +1,20 @@
+﻿@using Client.Shared.Components
+
+<style>
+    .rcategory-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+    }
+</style>
+
+<div class="rcategory-container">
+    <ReserveCard PictureUrl="https://daintydemo.simplybook.it/uploads/daintydemo/image_files/preview/daeb16509f61d78cbe6c988b4f21b468.jpg" Title="3" Description="Description" OnClick="@(() => OnReserve("3"))"/>
+    <ReserveCard PictureUrl="https://daintydemo.simplybook.it/uploads/daintydemo/image_files/preview/daeb16509f61d78cbe6c988b4f21b468.jpg" Title="4" Description="Description" OnClick="@(() => OnReserve("4"))"/>
+</div>
+
+
+@code {
+    [Parameter]
+    public Action<string> OnReserve { get; set; }
+}

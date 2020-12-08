@@ -6,7 +6,6 @@ namespace Client.Models
 {
     public class BusinessOwner : User
     {
-        private IList<Business> listOfbusiness { get; set; }
-        
     }
+    
 }

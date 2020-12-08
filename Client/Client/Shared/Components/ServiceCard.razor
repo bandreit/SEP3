@@ -1,0 +1,44 @@
+﻿@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.Buttons
+
+
+<style>
+    #BasicCard, #NewIconCard {
+        height: 180px;
+        margin: 16px;
+    }
+    #SideCard {
+        height: 376px;
+        margin: 16px;
+    }
+    .e-card > .e-card-image {
+        background-repeat: no-repeat;
+        min-height: 205px;
+    }
+   
+    .e-card .e-card-content {
+        padding-top: 0px;
+    }
+</style>
+
+<SfCard ID="SideCard">
+    <CardImage Image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKu7TkSzIZ6_jyCe_D3e3OmzfWgSFFoBE3CQ&usqp=CAU" />
+    <CardHeader Title="@Title" />
+    <CardContent Content="@Content" />
+    <CardFooter>
+        <CardFooterContent>
+            <SfButton CssClass="e-btn e-outline e-primary" @onclick="@(() => OnClick?.Invoke())">Book an appointment</SfButton>
+        </CardFooterContent>
+    </CardFooter>
+</SfCard>
+
+@code {
+    [Parameter]
+    public String Title { get; set; }
+    
+    [Parameter]
+    public String Content { get; set; }
+    
+    [Parameter]
+    public Action OnClick { get; set; }
+}

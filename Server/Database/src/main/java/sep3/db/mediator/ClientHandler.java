@@ -6,6 +6,7 @@ import sep3.db.network.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -15,9 +16,10 @@ public class ClientHandler implements Runnable {
     private Gson gson;
     private BusinessOwnerModel businessOwnerModel;
     private BusinessModel businessModel;
+    private BusinessListModel businessListModel;
 
 
-    public ClientHandler(Socket socket, UserModel modelManager, BusinessOwnerModel businessOwnerModel, BusinessModel businessModel) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager, BusinessOwnerModel businessOwnerModel, BusinessModel businessModel, BusinessListModel businessListModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
@@ -25,6 +27,7 @@ public class ClientHandler implements Runnable {
         this.gson = new Gson();
         this.businessOwnerModel = businessOwnerModel;
         this.businessModel = businessModel;
+        this.businessListModel = businessListModel;
     }
 
 
@@ -72,6 +75,17 @@ public class ClientHandler implements Runnable {
 
                         String businessResponse = gson.toJson(outgoingBusinessPackage);
                         sendData(businessResponse);
+
+                    case BUSINESSLIST:
+//                        BusinessListPackage incomingAllBusinessPackageNumber = gson.fromJson(message, BusinessListPackage.class);
+//                        List<Business> listOfBusinesses = incomingAllBusinessPackageNumber.getBusinessList();
+
+                        List<Business> returnedAllBusinesses = businessListModel.getAllBusiness();
+                        BusinessListPackage outgoingBusinesses = new BusinessListPackage(NetworkType.BUSINESSLIST, returnedAllBusinesses);
+
+                        String AllBusinessResponse = gson.toJson(outgoingBusinesses);
+                        sendData(AllBusinessResponse);
+
 
                     case ERROR:
                     default:
