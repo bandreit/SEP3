@@ -16,4 +16,14 @@ public class MemoryBusinessService implements BusinessService {
     public Business addBusiness(Business business,String id) throws IOException {
         return businessModel.addBusiness(business,id);
     }
+
+    @Override
+    public sep3.rest.appmngt.model.Service addService(sep3.rest.appmngt.model.Service service, String id) throws IOException {
+        return businessModel.addService(service,id);
+    }
+
+    @Override
+    public Employee addEmployee(Employee employee, String businessId) throws IOException {
+        return businessModel.addEmployee(employee, businessId);
+    }
 }

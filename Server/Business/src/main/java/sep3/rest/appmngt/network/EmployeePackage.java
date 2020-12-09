@@ -1,9 +1,6 @@
-package sep3.db.network;
+package sep3.rest.appmngt.network;
 
-import sep3.db.model.Employee;
-
-import java.util.ArrayList;
-import java.util.List;
+import sep3.rest.appmngt.model.Employee;
 
 public class EmployeePackage extends NetworkPackage {
     private Employee employee;

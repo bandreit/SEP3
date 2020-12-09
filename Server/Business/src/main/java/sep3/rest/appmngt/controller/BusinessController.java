@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sep3.rest.appmngt.model.Business;
 import sep3.rest.appmngt.model.BusinessOwner;
+import sep3.rest.appmngt.model.Employee;
+import sep3.rest.appmngt.model.Service;
 import sep3.rest.appmngt.network.BusinessWithBusinessOwnerIdPackage;
 import sep3.rest.appmngt.service.BusinessOwnerService;
 import sep3.rest.appmngt.service.BusinessService;
@@ -22,6 +24,28 @@ public class BusinessController {
         try {
             Business retunedBusiness = businessService.addBusiness(business,id);
             return ResponseEntity.ok(retunedBusiness);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/service")
+    public ResponseEntity<Service> addService(@RequestParam String id, @RequestBody Service service) {
+        try {
+            Service returnedService = businessService.addService(service,id);
+            return ResponseEntity.ok(returnedService);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/employee")
+    public ResponseEntity<Employee> addEmployee(@RequestParam String businessId, @RequestBody Employee employee) {
+        try {
+            Employee returnedEmployee = businessService.addEmployee(employee, businessId);
+            return ResponseEntity.ok(returnedEmployee);
         } catch (IOException e) {
             e.printStackTrace();
         }

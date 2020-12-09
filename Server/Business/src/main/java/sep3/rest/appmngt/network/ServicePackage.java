@@ -1,6 +1,6 @@
-package sep3.db.network;
+package sep3.rest.appmngt.network;
 
-import sep3.db.model.Service;
+import sep3.rest.appmngt.model.Service;
 
 public class ServicePackage extends NetworkPackage {
     private Service service;
