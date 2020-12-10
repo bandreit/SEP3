@@ -16,6 +16,7 @@ public class ClientConnector implements Runnable {
     private BusinessModel businessModel;
     private BusinessOwnerModel businessOwnerModel;
     private BusinessListModel businessListModel;
+    private BusinessOwnerBusinessListModel businessOwnerBusinessListModel;
 
     public ClientConnector() throws IOException {
         this.welcomeSocket = new ServerSocket(PORT);
@@ -26,6 +27,7 @@ public class ClientConnector implements Runnable {
         this.businessModel = new BusinessModelManager(database);
         this.businessOwnerModel = new BusinessOwnerModelManager(database);
         this.businessListModel = new BusinessListModelManager(database);
+        this.businessOwnerBusinessListModel = new BusinessOwnerBusinessListModelManager(database);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class ClientConnector implements Runnable {
             try {
                 Socket socket = welcomeSocket.accept();
                 System.out.println("Tier 2 connected");
-                ClientHandler clientHandler = new ClientHandler(socket, modelManager,businessOwnerModel,businessModel,businessListModel);
+                ClientHandler clientHandler = new ClientHandler(socket, modelManager,businessOwnerModel,businessModel,businessListModel,businessOwnerBusinessListModel);
                 Thread t = new Thread(clientHandler);
                 t.setDaemon(true);
                 t.start();

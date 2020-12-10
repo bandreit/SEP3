@@ -36,15 +36,13 @@ public class BusinessModelManager implements BusinessModel {
 //        newBusiness.append("services", business.getServices());
 //        newBusiness.append("employees", business.getEmployees());
 
-        for (Service service:business.getServices())
-             {
-                 Document newService = new Document();
-                 newService.append("name", service.getName());
-                 newService.append("duration", service.getDuration());
-                 newBusiness.append("services", newService);
+        for (Service service : business.getServices()) {
+            Document newService = new Document();
+            newService.append("name", service.getName());
+            newService.append("duration", service.getDuration());
+            newBusiness.append("services", newService);
         }
-        for (Employee employee:business.getEmployees())
-        {
+        for (Employee employee : business.getEmployees()) {
             Document newEmployee = new Document();
             newEmployee.append("userName", employee.getUserName());
             newEmployee.append("password", employee.getPassword());
@@ -54,8 +52,6 @@ public class BusinessModelManager implements BusinessModel {
             newBusiness.append("employees", newEmployee);
         }
 
-        
-        
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
         business.setId(objectId);

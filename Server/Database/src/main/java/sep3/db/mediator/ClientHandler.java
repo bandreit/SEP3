@@ -17,9 +17,10 @@ public class ClientHandler implements Runnable {
     private BusinessOwnerModel businessOwnerModel;
     private BusinessModel businessModel;
     private BusinessListModel businessListModel;
+    private BusinessOwnerBusinessListModel businessOwnerBusinessListModel;
 
 
-    public ClientHandler(Socket socket, UserModel modelManager, BusinessOwnerModel businessOwnerModel, BusinessModel businessModel, BusinessListModel businessListModel) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager, BusinessOwnerModel businessOwnerModel, BusinessModel businessModel, BusinessListModel businessListModel,BusinessOwnerBusinessListModel businessOwnerBusinessListModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
@@ -28,6 +29,7 @@ public class ClientHandler implements Runnable {
         this.businessOwnerModel = businessOwnerModel;
         this.businessModel = businessModel;
         this.businessListModel = businessListModel;
+        this.businessOwnerBusinessListModel = businessOwnerBusinessListModel;
     }
 
 
@@ -86,7 +88,6 @@ public class ClientHandler implements Runnable {
                         String AllBusinessResponse = gson.toJson(outgoingBusinesses);
                         sendData(AllBusinessResponse);
 
-
                     case ERROR:
                     default:
                         sendData("ERROR");
@@ -114,6 +115,8 @@ public class ClientHandler implements Runnable {
                 String businessOwnerResponse = gson.toJson(outgoingBusinessOwnerPackage);
                 sendData(businessOwnerResponse);
                 break;
+            case "OwnedBusinessList":
+
             default:
                 sendData("ERROR");
         }
