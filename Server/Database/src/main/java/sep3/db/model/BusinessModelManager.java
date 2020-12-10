@@ -1,11 +1,16 @@
 package sep3.db.model;
 
 import com.google.gson.Gson;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -30,6 +35,9 @@ public class BusinessModelManager implements BusinessModel {
         newBusiness.append("name", business.getName());
         newBusiness.append("location", business.getLocation());
         newBusiness.append("mail", business.getMail());
+//        newBusiness.append("services", business.getServices());
+//        newBusiness.append("employees", business.getEmployees());
+
         for (Service service : business.getServices()) {
             Document newService = new Document();
             newService.append("name", service.getName());
@@ -45,6 +53,7 @@ public class BusinessModelManager implements BusinessModel {
             newEmployee.append("role", employee.getRole());
             newBusiness.append("employees", newEmployee);
         }
+
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
         business.setId(objectId);
@@ -84,4 +93,5 @@ public class BusinessModelManager implements BusinessModel {
     public void removeEmployee(String id) {
 
     }
+
 }

@@ -78,8 +78,8 @@ public class ClientHandler implements Runnable {
                         Business business = incomingBusinessPackageNumber.getBusiness();
                         String businessOwnerId = incomingBusinessPackageNumber.getBusinessOwnerId();
 
-                        Business addedBusiness = businessModel.addBusiness(business, businessOwnerId);
-                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, addedBusiness, businessOwnerId);
+                        businessModel.addBusiness(business, businessOwnerId);
+                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, business, businessOwnerId);
 
                         String businessResponse = gson.toJson(outgoingBusinessPackage);
                         sendData(businessResponse);
