@@ -40,7 +40,7 @@ public class BusinessModelManager implements BusinessModel {
             Document newEmployee = new Document();
             newEmployee.append("userName", employee.getUserName());
             newEmployee.append("password", employee.getPassword());
-            newEmployee.append("domain", employee.getDomain());
+//            newEmployee.append("domain", employee.getDomain());
             newEmployee.append("city", employee.getCity());
             newEmployee.append("role", employee.getRole());
             newBusiness.append("employees", newEmployee);
@@ -71,7 +71,7 @@ public class BusinessModelManager implements BusinessModel {
         newEmployee.append("_id", new ObjectId());
         newEmployee.append("userName", employee.getUserName());
         newEmployee.append("password", employee.getPassword());
-        newEmployee.append("domain", employee.getDomain());
+//        newEmployee.append("domain", employee.getDomain());
         newEmployee.append("city", employee.getCity());
         newEmployee.append("role", employee.getRole());
 //        String objectId = newEmployee.get("_id").toString();

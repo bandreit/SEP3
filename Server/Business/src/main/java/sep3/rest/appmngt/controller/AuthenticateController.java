@@ -1,5 +1,6 @@
 package sep3.rest.appmngt.controller;
 
+import sep3.rest.appmngt.model.Business;
 import sep3.rest.appmngt.model.BusinessOwner;
 import sep3.rest.appmngt.model.User;
 import sep3.rest.appmngt.service.BusinessOwnerService;
@@ -41,5 +42,16 @@ public class AuthenticateController {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
+    }
+    @PostMapping("/newUser")
+    public ResponseEntity<User> postUser(@RequestBody User user){
+
+        try {
+            userService.addUser(user);
+            return ResponseEntity.ok(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
     }
 }
