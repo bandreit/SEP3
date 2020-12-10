@@ -29,4 +29,24 @@ public class BusinessOwnerModelManager implements BusinessOwnerModel {
         }
         return null;
     }
+
+    @Override
+    public BusinessOwner addBusinessOwner(BusinessOwner businessOwner) {
+        Document newBusinessOwner = new Document();
+        newBusinessOwner.append("firstName",businessOwner.getFirstName());
+        newBusinessOwner.append("lastName", businessOwner.getLastName());
+        newBusinessOwner.append("userName", businessOwner.getUserName());
+        newBusinessOwner.append("password", businessOwner.getPassword());
+        newBusinessOwner.append("city", businessOwner.getCity());
+        newBusinessOwner.append("email", businessOwner.getEmail());
+        newBusinessOwner.append("phone", businessOwner.getPhone());
+
+
+        businessOwnerCollection.insertOne(newBusinessOwner);
+
+        BusinessOwner businessWithId = businessOwner;
+        String objectId = newBusinessOwner.get("_id").toString();
+        businessWithId.setId(objectId);
+        return businessWithId;
+    }
 }

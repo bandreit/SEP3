@@ -6,7 +6,6 @@ import sep3.db.network.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -16,11 +15,9 @@ public class ClientHandler implements Runnable {
     private Gson gson;
     private BusinessOwnerModel businessOwnerModel;
     private BusinessModel businessModel;
-    private BusinessListModel businessListModel;
-    private BusinessOwnerBusinessListModel businessOwnerBusinessListModel;
 
 
-    public ClientHandler(Socket socket, UserModel modelManager, BusinessOwnerModel businessOwnerModel, BusinessModel businessModel, BusinessListModel businessListModel,BusinessOwnerBusinessListModel businessOwnerBusinessListModel) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager,BusinessOwnerModel businessOwnerModel,BusinessModel businessModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
@@ -28,8 +25,6 @@ public class ClientHandler implements Runnable {
         this.gson = new Gson();
         this.businessOwnerModel = businessOwnerModel;
         this.businessModel = businessModel;
-        this.businessListModel = businessListModel;
-        this.businessOwnerBusinessListModel = businessOwnerBusinessListModel;
     }
 
 
@@ -66,27 +61,26 @@ public class ClientHandler implements Runnable {
                         String response = gson.toJson(outgoingUserPackage);
                         sendData(response);
                         break;
+                    case BUSINESSOWNER:
+                       BusinessOwnerPackage incomingBusinessOwnerPackageNumber=gson.fromJson(message, BusinessOwnerPackage.class);
+                       BusinessOwner businessOwner=incomingBusinessOwnerPackageNumber.getBusinessOwner();
 
+                       businessOwnerModel.addBusinessOwner(businessOwner);
+                       BusinessOwnerPackage outgoingBusinessOwnerPackage=new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, businessOwner);
+
+                       String businessOwnerResponse=gson.toJson(outgoingBusinessOwnerPackage);
+                       sendData(businessOwnerResponse);
+
+                        break;
                     case BUSINESS:
                         BusinessPackage incomingBusinessPackageNumber = gson.fromJson(message, BusinessPackage.class);
                         Business business = incomingBusinessPackageNumber.getBusiness();
-                        String businessOwnerId = incomingBusinessPackageNumber.getBusinessOwnerId();
 
-                        Business addedBusiness = businessModel.addBusiness(business, businessOwnerId);
-                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, addedBusiness, businessOwnerId);
+                        businessModel.addBusiness(business);
+                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, business);
 
                         String businessResponse = gson.toJson(outgoingBusinessPackage);
                         sendData(businessResponse);
-
-                    case BUSINESSLIST:
-//                        BusinessListPackage incomingAllBusinessPackageNumber = gson.fromJson(message, BusinessListPackage.class);
-//                        List<Business> listOfBusinesses = incomingAllBusinessPackageNumber.getBusinessList();
-
-                        List<Business> returnedAllBusinesses = businessListModel.getAllBusiness();
-                        BusinessListPackage outgoingBusinesses = new BusinessListPackage(NetworkType.BUSINESSLIST, returnedAllBusinesses);
-
-                        String AllBusinessResponse = gson.toJson(outgoingBusinesses);
-                        sendData(AllBusinessResponse);
 
                     case ERROR:
                     default:
@@ -115,8 +109,6 @@ public class ClientHandler implements Runnable {
                 String businessOwnerResponse = gson.toJson(outgoingBusinessOwnerPackage);
                 sendData(businessOwnerResponse);
                 break;
-            case "OwnedBusinessList":
-
             default:
                 sendData("ERROR");
         }
