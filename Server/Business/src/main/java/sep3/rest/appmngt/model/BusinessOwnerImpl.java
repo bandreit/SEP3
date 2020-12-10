@@ -31,4 +31,13 @@ public class BusinessOwnerImpl implements BusinessOwnerModel {
             return businessOwnerPackage.getBusinessOwner();
         }
     }
+    @Override
+    public BusinessOwner addBusinessOwner(BusinessOwner businessOwner) throws IOException {
+        BusinessOwnerPackage businessOwnerPackage = new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, businessOwner);
+        String data = gson.toJson(businessOwnerPackage);
+        connectionManager.sendToServer(data);
+        String receivedData = connectionManager.readFromServer();
+        businessOwnerPackage = gson.fromJson(receivedData, BusinessOwnerPackage.class);
+        return businessOwnerPackage.getBusinessOwner();
+    }
 }

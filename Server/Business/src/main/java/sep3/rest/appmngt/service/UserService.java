@@ -7,4 +7,6 @@ import java.io.IOException;
 
 public interface UserService {
     User ValidateUser(String userName, String password) throws IOException;
+
+    void addUser(User user) throws IOException;
 }

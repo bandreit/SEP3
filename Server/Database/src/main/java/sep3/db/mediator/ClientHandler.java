@@ -17,7 +17,7 @@ public class ClientHandler implements Runnable {
     private BusinessModel businessModel;
 
 
-    public ClientHandler(Socket socket, UserModel modelManager, BusinessOwnerModel businessOwnerModel, BusinessModel businessModel) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager,BusinessOwnerModel businessOwnerModel,BusinessModel businessModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
@@ -61,39 +61,26 @@ public class ClientHandler implements Runnable {
                         String response = gson.toJson(outgoingUserPackage);
                         sendData(response);
                         break;
+                    case BUSINESSOWNER:
+                       BusinessOwnerPackage incomingBusinessOwnerPackageNumber=gson.fromJson(message, BusinessOwnerPackage.class);
+                       BusinessOwner businessOwner=incomingBusinessOwnerPackageNumber.getBusinessOwner();
 
+                       businessOwnerModel.addBusinessOwner(businessOwner);
+                       BusinessOwnerPackage outgoingBusinessOwnerPackage=new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, businessOwner);
+
+                       String businessOwnerResponse=gson.toJson(outgoingBusinessOwnerPackage);
+                       sendData(businessOwnerResponse);
+
+                        break;
                     case BUSINESS:
                         BusinessPackage incomingBusinessPackageNumber = gson.fromJson(message, BusinessPackage.class);
                         Business business = incomingBusinessPackageNumber.getBusiness();
-                        String businessOwnerId = incomingBusinessPackageNumber.getBusinessOwnerId();
 
-                        Business addedBusiness = businessModel.addBusiness(business, businessOwnerId);
-                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, addedBusiness, businessOwnerId);
+                        businessModel.addBusiness(business);
+                        BusinessPackage outgoingBusinessPackage = new BusinessPackage(NetworkType.BUSINESS, business);
 
                         String businessResponse = gson.toJson(outgoingBusinessPackage);
                         sendData(businessResponse);
-
-                    case SERVICE:
-                        ServicePackage incomingServicePackageNumber = gson.fromJson(message, ServicePackage.class);
-                        Service service = incomingServicePackageNumber.getService();
-                        String businessId = incomingServicePackageNumber.getBusinessId();
-
-                        Service addedService = businessModel.addService(service, businessId);
-                        ServicePackage outgoingServicePackage = new ServicePackage(NetworkType.SERVICE, addedService, businessId);
-
-                        String serviceResponse = gson.toJson(outgoingServicePackage);
-                        sendData(serviceResponse);
-
-                    case EMPLOYEE:
-                        EmployeePackage incomingEmployeePackageNumber = gson.fromJson(message, EmployeePackage.class);
-                        Employee employee = incomingEmployeePackageNumber.getEmployee();
-                        String businessIdEmpl = incomingEmployeePackageNumber.getBusinessId();
-
-                        Employee addedEmployee = businessModel.addEmployee(employee, businessIdEmpl);
-                        EmployeePackage outgoingEmployeePackage = new EmployeePackage(NetworkType.EMPLOYEE, addedEmployee, businessIdEmpl);
-
-                        String employeeResponse = gson.toJson(outgoingEmployeePackage);
-                        sendData(employeeResponse);
 
                     case ERROR:
                     default:

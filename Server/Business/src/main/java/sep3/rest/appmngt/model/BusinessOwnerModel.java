@@ -4,4 +4,5 @@ import java.io.IOException;
 
 public interface BusinessOwnerModel {
     BusinessOwner getBusinessOwner(String id) throws IOException;
+    BusinessOwner addBusinessOwner(BusinessOwner businessOwner) throws IOException;
 }
