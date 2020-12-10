@@ -56,10 +56,11 @@ public class BusinessModelManager implements BusinessModel {
     @Override
     public Service addService(Service service, String id) {
         Document newService = new Document();
+        newService.append("_id", new ObjectId());
         newService.append("name", service.getName());
         newService.append("duration", service.getDuration());
-        String objectId = newService.get("_id").toString();
-        service.setId(objectId);
+//        String objectId = newService.get("_id").toString();
+//        service.setId(objectId);
         businessCollection.updateOne(eq("_id", new ObjectId(id)), Updates.addToSet("service", newService));
         return service;
     }
