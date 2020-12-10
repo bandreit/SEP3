@@ -15,9 +15,10 @@ public class ClientHandler implements Runnable {
     private Gson gson;
     private BusinessOwnerModel businessOwnerModel;
     private BusinessModel businessModel;
+    private ServiceModel serviceModel;
 
 
-    public ClientHandler(Socket socket, UserModel modelManager,BusinessOwnerModel businessOwnerModel,BusinessModel businessModel) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager,BusinessOwnerModel businessOwnerModel,BusinessModel businessModel, ServiceModel serviceModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
@@ -25,6 +26,7 @@ public class ClientHandler implements Runnable {
         this.gson = new Gson();
         this.businessOwnerModel = businessOwnerModel;
         this.businessModel = businessModel;
+        this.serviceModel = serviceModel;
     }
 
 
@@ -73,7 +75,17 @@ public class ClientHandler implements Runnable {
 
                         String businessResponse = gson.toJson(outgoingBusinessPackage);
                         sendData(businessResponse);
+                        break;
+                    case SERVICE:
+                        ServicePackage incomingServicePackageNumber = gson.fromJson(message, ServicePackage.class);
+                        Service service = incomingServicePackageNumber.getService();
 
+                        serviceModel.addService(service);
+                        ServicePackage outgoingServicePackage = new ServicePackage(NetworkType.SERVICE, service);
+
+                        String serviceResponse = gson.toJson(outgoingServicePackage);
+                        sendData(serviceResponse);
+                        break;
                     case ERROR:
                     default:
                         sendData("ERROR");
