@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Client.Data;
 using Client.Data.Impl;
+using Client.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Syncfusion.Blazor;
 
@@ -35,6 +36,8 @@ namespace Client
             services.AddServerSideBlazor();
             services.AddSyncfusionBlazor();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBusinessOwnerService, BusinessOwnerService>();
+            services.AddScoped<IBusinessService, BusinessService>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
             services.AddAuthorization(options =>

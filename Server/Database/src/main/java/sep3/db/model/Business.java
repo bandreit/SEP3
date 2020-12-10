@@ -69,4 +69,13 @@ public class Business {
     }
 
     public void setServices(List<Service> services) { this.services = services; }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
 }
+

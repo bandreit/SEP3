@@ -12,6 +12,7 @@ public class BusinessOwnerModelManager implements BusinessOwnerModel {
     private final MongoCollection<Document> businessOwnerCollection;
     private final Gson gson;
 
+
     public BusinessOwnerModelManager(MongoDatabase database) {
         businessOwnerCollection = database.getCollection("businessowner");
         gson = new Gson();
@@ -20,7 +21,7 @@ public class BusinessOwnerModelManager implements BusinessOwnerModel {
     @Override
     public BusinessOwner getBusinessOwner(String id) {
         if (businessOwnerCollection.find(eq("_id", new ObjectId(id))).first() != null) {
-            Document businessOwner = businessOwnerCollection.find(eq("_id", new ObjectId(id ))).first();
+            Document businessOwner = businessOwnerCollection.find(eq("_id", new ObjectId(id))).first();
             BusinessOwner businessOwnerWithId = gson.fromJson(businessOwner.toJson(), BusinessOwner.class);
             String objectId = businessOwner.get("_id").toString();
             businessOwnerWithId.setId(objectId);

@@ -1,6 +1,11 @@
 package sep3.rest.appmngt.model;
 
 import org.bson.types.ObjectId;
+import sep3.rest.appmngt.model.Employee;
+import sep3.rest.appmngt.model.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Business {
     private ObjectId _id;
@@ -8,15 +13,17 @@ public class Business {
     private String name;
     private String location;
     private String mail;
-    private String service;
+    private List<Service> services;
+    private List<Employee> employees;
 
-    public Business(ObjectId _id,String id,String name, String location, String mail, String service) {
+    public Business(ObjectId _id,String id,String name, String location, String mail) {
         this._id = _id;
         this.id=id;
         this.name = name;
         this.location = location;
         this.mail = mail;
-        this.service = service;
+        this.services = new ArrayList<>();
+        this.employees = new ArrayList<>();
     }
 
     public ObjectId get_id() {
@@ -47,8 +54,8 @@ public class Business {
         return mail;
     }
 
-    public String getService() {
-        return service;
+    public List<Service> getServices() {
+        return services;
     }
 
     public void setName(String name) {
@@ -63,7 +70,14 @@ public class Business {
         this.mail = mail;
     }
 
-    public void setService(String service) {
-        this.service = service;
+    public void setServices(List<Service> services) { this.services = services; }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }
+
