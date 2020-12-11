@@ -31,7 +31,7 @@ public class BusinessModelImpl implements BusinessModel {
 
     @Override
     public Service addService(Service service, String id) throws IOException {
-        ServicePackage servicePackage = new ServicePackage(NetworkType.SERVICE, service, id);
+        ServicePackage servicePackage = new ServicePackage(NetworkType.SERVICE, service);
         String data = gson.toJson(servicePackage);
         connectionManager.sendToServer(data);
         String receiveData = connectionManager.readFromServer();

@@ -14,15 +14,17 @@ public class ClientHandler implements Runnable {
     private UserModel modelManager;
     private Gson gson;
     private BusinessModel businessModel;
+    private ServiceModel serviceModel;
 
 
-    public ClientHandler(Socket socket, UserModel modelManager, BusinessModel businessModel) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager, BusinessModel businessModel, ServiceModel serviceModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
         this.modelManager = modelManager;
         this.gson = new Gson();
         this.businessModel = businessModel;
+        this.serviceModel = serviceModel;
     }
 
 
@@ -74,10 +76,9 @@ public class ClientHandler implements Runnable {
                     case SERVICE:
                         ServicePackage incomingServicePackageNumber = gson.fromJson(message, ServicePackage.class);
                         Service service = incomingServicePackageNumber.getService();
-                        String businessId = incomingServicePackageNumber.getBusinessId();
 
-                        Service addedService = businessModel.addService(service, businessId);
-                        ServicePackage outgoingServicePackage = new ServicePackage(NetworkType.SERVICE, addedService, businessId);
+                        Service addedService = serviceModel.addService(service);
+                        ServicePackage outgoingServicePackage = new ServicePackage(NetworkType.SERVICE, addedService);
 
                         String serviceResponse = gson.toJson(outgoingServicePackage);
                         sendData(serviceResponse);
@@ -94,7 +95,6 @@ public class ClientHandler implements Runnable {
                         String employeeResponse = gson.toJson(outgoingEmployeePackage);
                         sendData(employeeResponse);
                         break;
-
                     case ERROR:
                     default:
                         sendData("ERROR");

@@ -33,18 +33,12 @@
                 <ReserveLocation OnReserve="@HandleReserveLocation"/>
                 break;
             case 1:
-                <ReserveCategory OnReserve="@HandleReserveCategory"/>
-                break;
-            case 2:
-                <ReserveService OnReserve="@HandleReserveService"/>
-                break;
-            case 3:
                 <ReserveProvider OnReserve="@HandleReserveProvider"/>
                 break;
-            case 4:
+            case 2:
                 <ReserveTime OnReserve="@HandleReserveTime"/>
                 break;
-            case 5:
+            case 3:
                 <ReserveClient OnSubmit="@HandleSubmit"/>
                 break;
             default:
@@ -75,7 +69,7 @@
 
     public void HandleNext()
     {
-        if (BookingStep < 5)
+        if (BookingStep < 3)
         {
             BookingStep += 1;
             StateHasChanged();
