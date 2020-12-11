@@ -1,19 +1,29 @@
 package sep3.db.model;
 
+import com.google.gson.annotations.Expose;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Business {
+    @Expose(serialize = true, deserialize = true)
     private String id;
+    @Expose(serialize = true, deserialize = true)
     private ObjectId _id;
+    @Expose(serialize = true, deserialize = true)
     private String name;
+    @Expose(serialize = true, deserialize = true)
     private List<String> locations;
+    @Expose(serialize = true, deserialize = true)
     private String mail;
+    @Expose(serialize = true, deserialize = false)
     private List<String> services;
+    @Expose(serialize = true, deserialize = false)
     private List<String> employees;
+    @Expose(serialize = true, deserialize = true)
     private String _businessOwnerID;
+    @Expose(serialize = true, deserialize = true)
     private ObjectId businessOwnerID;
 
     public Business() {

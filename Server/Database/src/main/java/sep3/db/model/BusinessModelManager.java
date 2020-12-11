@@ -1,6 +1,7 @@
 package sep3.db.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBList;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -103,9 +104,15 @@ public class BusinessModelManager implements BusinessModel {
         if (businessCollection.find().first() != null) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
+                Gson gson = new GsonBuilder()
+                        .excludeFieldsWithoutExposeAnnotation()
+                        .create();
                 Business fromDocumentToObject = gson.fromJson(document.toJson(), Business.class);
                 fromDocumentToObject.set_businessOwnerID(fromDocumentToObject.getBusinessOwnerID().toString());
                 fromDocumentToObject.setId(fromDocumentToObject.get_id().toString());
+                System.out.println(document.get("servicesIds"));
+                List<String> serviceIds = (List<String>) document.get("servicesIds");
+                List<String> employeeIds = (List<String>) document.get("servicesIds");
                 listOfBusiness.add(fromDocumentToObject);
             }
             return listOfBusiness;
