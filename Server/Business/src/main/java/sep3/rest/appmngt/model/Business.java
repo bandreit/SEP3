@@ -1,37 +1,17 @@
 package sep3.rest.appmngt.model;
 
-import org.bson.types.ObjectId;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Business {
-    private ObjectId _id;
     private String id;
     private String name;
-    private String location;
+    private List<String> locations;
     private String mail;
-    private List<Service> services;
-    private List<Employee> employees;
+    private List<String> services;
+    private List<String> employees;
     private String businessOwnerID;
 
-    public Business(ObjectId _id, String id, String name, String location, String mail, String businessOwnerID) {
-        this._id = _id;
-        this.id = id;
-        this.name = name;
-        this.location = location;
-        this.mail = mail;
-        this.businessOwnerID = businessOwnerID;
-        this.services = new ArrayList<>();
-        this.employees = new ArrayList<>();
-    }
-
-    public ObjectId get_id() {
-        return _id;
-    }
-
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public Business() {
     }
 
     public String getId() {
@@ -50,12 +30,12 @@ public class Business {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+    public List<String> getLocations() {
+        return locations;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocation(List<String> location) {
+        this.locations = location;
     }
 
     public String getMail() {
@@ -66,19 +46,19 @@ public class Business {
         this.mail = mail;
     }
 
-    public List<Service> getServices() {
+    public List<String> getServices() {
         return services;
     }
 
-    public void setServices(List<Service> services) {
+    public void setServices(List<String> services) {
         this.services = services;
     }
 
-    public List<Employee> getEmployees() {
+    public List<String> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employees) {
+    public void setEmployees(List<String> employees) {
         this.employees = employees;
     }
 
@@ -90,4 +70,3 @@ public class Business {
         this.businessOwnerID = businessOwnerID;
     }
 }
-

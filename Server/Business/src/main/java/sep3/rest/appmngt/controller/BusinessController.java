@@ -20,8 +20,8 @@ public class BusinessController {
     @PostMapping("/business")
     public ResponseEntity<Business> addBusiness(@RequestBody Business business) {
         try {
-            Business retunedBusiness = businessService.addBusiness(business);
-            return ResponseEntity.ok(retunedBusiness);
+            Business returnedBusiness = businessService.addBusiness(business);
+            return ResponseEntity.ok(returnedBusiness);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,17 +33,6 @@ public class BusinessController {
         try {
             List<Business> returnedBusiness = businessService.getAllBusiness();
             return ResponseEntity.ok(returnedBusiness);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.badRequest().build();
-    }
-
-    @PostMapping("/service")
-    public ResponseEntity<Service> addService(@RequestParam String id, @RequestBody Service service) {
-        try {
-            Service returnedService = businessService.addService(service, id);
-            return ResponseEntity.ok(returnedService);
         } catch (IOException e) {
             e.printStackTrace();
         }

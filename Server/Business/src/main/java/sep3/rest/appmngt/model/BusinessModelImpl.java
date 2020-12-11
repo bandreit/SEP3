@@ -7,6 +7,7 @@ import sep3.rest.appmngt.mediator.ConnectionManager;
 import sep3.rest.appmngt.network.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BusinessModelImpl implements BusinessModel {
@@ -26,7 +27,20 @@ public class BusinessModelImpl implements BusinessModel {
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();
         businessPackage = gson.fromJson(receivedData, BusinessPackage.class);
-        return businessPackage.getBusiness();
+
+        Business receivedBusiness = businessPackage.getBusiness();
+        if (receivedBusiness.getLocations() == null) {
+            receivedBusiness.setLocation(new ArrayList<>());
+        }
+
+        if (receivedBusiness.getEmployees() == null) {
+            receivedBusiness.setEmployees(new ArrayList<>());
+        }
+        if (receivedBusiness.getServices() == null) {
+            receivedBusiness.setServices(new ArrayList<>());
+        }
+
+        return receivedBusiness;
     }
 
     @Override
