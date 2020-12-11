@@ -104,7 +104,8 @@ public class BusinessModelManager implements BusinessModel {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
                 Business fromDocumentToObject = gson.fromJson(document.toJson(), Business.class);
-                fromDocumentToObject.setId(fromDocumentToObject.getBusinessOwnerID().toString());
+                fromDocumentToObject.set_businessOwnerID(fromDocumentToObject.getBusinessOwnerID().toString());
+                fromDocumentToObject.setId(fromDocumentToObject.get_id().toString());
                 listOfBusiness.add(fromDocumentToObject);
             }
             return listOfBusiness;
