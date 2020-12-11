@@ -11,4 +11,5 @@ public interface BusinessModel {
     Employee addEmployee(Employee employee, String businessId) throws IOException;
 
     List<Business> getAllBusiness() throws IOException;
+    public List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException;
 }

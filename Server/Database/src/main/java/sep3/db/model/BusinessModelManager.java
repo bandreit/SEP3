@@ -36,7 +36,7 @@ public class BusinessModelManager implements BusinessModel {
         newBusiness.append("businessOwnerID", new ObjectId(business.get_businessOwnerID()));
 
         if (business.getLocations() != null)
-        newBusiness.append("locations", business.getLocations());
+            newBusiness.append("locations", business.getLocations());
 
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
@@ -110,9 +110,7 @@ public class BusinessModelManager implements BusinessModel {
             }
             return listOfBusiness;
         }
-
         return listOfBusiness;
     }
-
 
 }
