@@ -1,0 +1,26 @@
+﻿@using Syncfusion.Blazor.Inputs
+@using Client.Models
+@using Syncfusion.Blazor.Buttons
+
+<EditForm Model="@ServiceModel" OnValidSubmit="@HandleSubmit">
+    <SfTextBox @bind-Value="ServiceModel.title" Placeholder="Title" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+    <SfTextBox @bind-Value="ServiceModel.description" Placeholder="Description" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+    <SfTextBox @bind-Value="ServiceModel.pictureUrl" Placeholder="Picture Url" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+    <SfNumericTextBox @bind-Value="ServiceModel.duration" Placeholder="Duration" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfNumericTextBox>
+
+    <SfButton IsPrimary="true" @onclick="HandleSubmit">Reserve</SfButton>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public Action<Service> OnSubmit { get; set; }
+
+    private Service ServiceModel = new Service();
+
+    public void HandleSubmit()
+    {
+        OnSubmit(ServiceModel);
+    }
+
+}
