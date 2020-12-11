@@ -8,5 +8,7 @@ public interface BusinessModel {
 
     void addEmployee(String employeeId, String businessId) throws IOException;
 
+    void removeEmployee(String employeeId, String businessId) throws IOException;
+
     List<Business> getAllBusiness() throws IOException;
 }

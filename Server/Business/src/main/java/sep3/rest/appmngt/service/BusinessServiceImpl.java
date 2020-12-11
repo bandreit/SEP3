@@ -24,6 +24,11 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
+    public void removeEmployee(String employeeId, String businessId) throws IOException {
+        businessModel.removeEmployee(employeeId, businessId);
+    }
+
+    @Override
     public List<Business> getAllBusiness() throws IOException {
         return businessModel.getAllBusiness();
     }

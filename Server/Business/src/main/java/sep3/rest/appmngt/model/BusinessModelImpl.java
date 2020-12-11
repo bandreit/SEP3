@@ -51,6 +51,13 @@ public class BusinessModelImpl implements BusinessModel {
     }
 
     @Override
+    public void removeEmployee(String employeeId, String businessId) throws IOException {
+        EmployeePackage employeePackage = new EmployeePackage(NetworkType.REMOVEEMPLOYEE, employeeId, businessId);
+        String data = gson.toJson(employeePackage);
+        connectionManager.sendToServer(data);
+    }
+
+    @Override
     public List<Business> getAllBusiness() throws IOException {
         //wtf is in here?
 //        BusinessListPackage businessListPackage = new BusinessListPackage(NetworkType.BUSINESSLIST,new ArrayList<>());

@@ -40,13 +40,26 @@ public class BusinessController {
     }
 
     @PostMapping("/employee")
-    public ResponseEntity<Employee> addEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
+    public ResponseEntity addEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
         try {
             businessService.addEmployee(employeeId, businessId);
-            return ResponseEntity.ok(null);
+            return ResponseEntity.ok().build();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @DeleteMapping("/removeEmployee")
+    public ResponseEntity removeEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
+        try {
+            businessService.removeEmployee(employeeId, businessId);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+
 }
