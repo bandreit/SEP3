@@ -6,9 +6,7 @@ import java.util.List;
 public interface BusinessModel {
     Business addBusiness(Business business) throws IOException;
 
-    Service addService(Service service, String id) throws IOException;
-
-    Employee addEmployee(Employee employee, String businessId) throws IOException;
+    void addEmployee(String employeeId, String businessId) throws IOException;
 
     List<Business> getAllBusiness() throws IOException;
     public List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException;

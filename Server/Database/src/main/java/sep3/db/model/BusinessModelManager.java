@@ -47,30 +47,8 @@ public class BusinessModelManager implements BusinessModel {
     }
 
     @Override
-    public Service addService(Service service, String id) {
-        Document newService = new Document();
-        newService.append("_id", new ObjectId());
-//        newService.append("name", service.getName());
-        newService.append("duration", service.getDuration());
-//        String objectId = newService.get("_id").toString();
-//        service.setId(objectId);
-        businessCollection.updateOne(eq("_id", new ObjectId(id)), Updates.addToSet("service", newService));
-        return service;
-    }
-
-    @Override
-    public Employee addEmployee(Employee employee, String businessId) {
-        Document newEmployee = new Document();
-        newEmployee.append("_id", new ObjectId());
-        newEmployee.append("userName", employee.getUserName());
-        newEmployee.append("password", employee.getPassword());
-//        newEmployee.append("domain", employee.getDomain());
-        newEmployee.append("city", employee.getCity());
-        newEmployee.append("role", employee.getRole());
-//        String objectId = newEmployee.get("_id").toString();
-//        employee.setId(objectId);
-        businessCollection.updateOne(eq("_id", new ObjectId(businessId)), Updates.addToSet("employees", newEmployee));
-        return employee;
+    public void addEmployee(String employeeId, String businessId) {
+        businessCollection.updateOne(eq("_id", new ObjectId(businessId)), Updates.addToSet("employees", new ObjectId(employeeId)));
     }
 
     @Override

@@ -87,14 +87,10 @@ public class ClientHandler implements Runnable {
 
                     case EMPLOYEE:
                         EmployeePackage incomingEmployeePackageNumber = gson.fromJson(message, EmployeePackage.class);
-                        Employee employee = incomingEmployeePackageNumber.getEmployee();
+                        String employeeId = incomingEmployeePackageNumber.getEmployeeId();
                         String businessIdEmpl = incomingEmployeePackageNumber.getBusinessId();
 
-                        Employee addedEmployee = businessModel.addEmployee(employee, businessIdEmpl);
-                        EmployeePackage outgoingEmployeePackage = new EmployeePackage(NetworkType.EMPLOYEE, addedEmployee, businessIdEmpl);
-
-                        String employeeResponse = gson.toJson(outgoingEmployeePackage);
-                        sendData(employeeResponse);
+                        businessModel.addEmployee(employeeId, businessIdEmpl);
                         break;
                     case BUSINESSLIST :
                         List<Business> businessList = businessModel.getAllBusiness();

@@ -3,17 +3,17 @@ package sep3.rest.appmngt.network;
 import sep3.rest.appmngt.model.Employee;
 
 public class EmployeePackage extends NetworkPackage {
-    private Employee employee;
+    private String employeeId;
     private String businessId;
 
-    public EmployeePackage(NetworkType type, Employee employee, String businessId) {
+    public EmployeePackage(NetworkType type, String employee, String businessId) {
         super(type);
-        this.employee = employee;
+        this.employeeId = employee;
         this.businessId = businessId;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public String getEmployeeId() {
+        return employeeId;
     }
 
     public String getBusinessId() {
