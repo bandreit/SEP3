@@ -9,6 +9,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.xml.sax.Locator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,26 +32,15 @@ public class BusinessModelManager implements BusinessModel {
     public Business addBusiness(Business business) {
         Document newBusiness = new Document();
         newBusiness.append("name", business.getName());
-        newBusiness.append("location", business.getLocation());
         newBusiness.append("mail", business.getMail());
         newBusiness.append("businessOwnerID", new ObjectId(business.getBusinessOwnerID()));
 
-        for (Employee employee : business.getEmployees()) {
-            Document newEmployee = new Document();
-            newEmployee.append("userName", employee.getUserName());
-            newEmployee.append("password", employee.getPassword());
-//            newEmployee.append("domain", employee.getDomain());
-            newEmployee.append("city", employee.getCity());
-            newEmployee.append("role", employee.getRole());
-            newBusiness.append("employees", newEmployee);
-        }
+        if (business.getLocations() != null)
+        newBusiness.append("locations", business.getLocations());
 
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
         business.setId(objectId);
-
-//        TODO ADD BUSINESS
-//        businessOwnerCollection.updateOne(eq("_id", new ObjectId(id)), Updates.addToSet("business", newBusiness.get("_id")));
 
         return business;
     }
