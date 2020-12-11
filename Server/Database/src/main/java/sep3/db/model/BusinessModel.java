@@ -8,7 +8,7 @@ import java.util.List;
 public interface BusinessModel {
     Business addBusiness(Business business);
     void addEmployee(String employeeId, String businessId);
-    void removeEmployee(String id);
+    void removeEmployee(String employeeId, String businessId);
     public List<Business> getOwnedBusinesses(String businessOwnerId)throws IOException;
     public List<Business> getAllBusiness() throws IOException;
 }

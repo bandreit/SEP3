@@ -101,6 +101,13 @@ public class ClientHandler implements Runnable {
                         sendData(businessListResponse);
 
                         break;
+                    case REMOVEEMPLOYEE:
+                        EmployeePackage incomingRemoveEmployeePackageNumber = gson.fromJson(message, EmployeePackage.class);
+                        String removedEmployeeId = incomingRemoveEmployeePackageNumber.getEmployeeId();
+                        String businessId = incomingRemoveEmployeePackageNumber.getBusinessId();
+
+                        businessModel.removeEmployee(removedEmployeeId, businessId);
+                        break;
                     case ERROR:
                     default:
                         sendData("ERROR");
@@ -128,6 +135,7 @@ public class ClientHandler implements Runnable {
 //                String businessOwnerResponse = gson.toJson(outgoingBusinessOwnerPackage);
 //                sendData(businessOwnerResponse);
                 break;
+
             default:
                 sendData("ERROR");
         }

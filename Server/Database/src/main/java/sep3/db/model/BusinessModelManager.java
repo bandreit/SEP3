@@ -3,12 +3,15 @@ package sep3.db.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.xml.sax.Locator;
 
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.in;
 
 public class BusinessModelManager implements BusinessModel {
 
@@ -52,8 +56,8 @@ public class BusinessModelManager implements BusinessModel {
     }
 
     @Override
-    public void removeEmployee(String id) {
-
+    public void removeEmployee(String employeeId, String businessId) {
+        businessCollection.updateOne(eq("_id", new ObjectId(businessId)), Updates.pull("employees", new ObjectId(employeeId)));
     }
 
     @Override
