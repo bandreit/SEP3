@@ -34,7 +34,7 @@ public class ServiceModelManager implements ServiceModel {
         ObjectId generatedServiceObjectID = (ObjectId) newService.get("_id");
         service.setId(generatedServiceObjectID.toString());
 
-        businessCollection.updateOne(eq("_id", new ObjectId(service.getBusinessId())), Updates.addToSet("servicesIds", generatedServiceObjectID));
+        businessCollection.updateOne(eq("_id", new ObjectId(service.getBusinessId())), Updates.addToSet("services", generatedServiceObjectID));
 
         return service;
 

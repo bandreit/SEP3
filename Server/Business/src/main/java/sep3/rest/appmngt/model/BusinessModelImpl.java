@@ -72,7 +72,7 @@ public class BusinessModelImpl implements BusinessModel {
     @Override
     public List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException {
      List<Business> listOfbusiness = getAllBusiness();
-     listOfbusiness.removeIf(business -> !business.get_businessOwnerID().equals(businessOwnerId));
+     listOfbusiness.removeIf(business -> !(business.get_businessOwnerID().equals(businessOwnerId)));
      return listOfbusiness;
     }
 

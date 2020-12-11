@@ -86,11 +86,21 @@ public class BusinessModelManager implements BusinessModel {
                         .excludeFieldsWithoutExposeAnnotation()
                         .create();
                 Business fromDocumentToObject = gson.fromJson(document.toJson(), Business.class);
-                fromDocumentToObject.set_businessOwnerID(fromDocumentToObject.getBusinessOwnerID().toString());
-                fromDocumentToObject.setId(fromDocumentToObject.get_id().toString());
-                System.out.println(document.get("servicesIds"));
-                List<String> serviceIds = (List<String>) document.get("servicesIds");
-                List<String> employeeIds = (List<String>) document.get("servicesIds");
+                fromDocumentToObject.set_businessOwnerID(document.get("businessOwnerID").toString());
+                fromDocumentToObject.setId(document.get("_id").toString());
+                List<String> serviceIds = new ArrayList<>();
+                List<String> employeeIds = new ArrayList<>();
+
+                for (ObjectId serviceId: (List<ObjectId>) document.get("services")) {
+                    serviceIds.add(serviceId.toString());
+                }
+
+                for (ObjectId employeeId: (List<ObjectId>) document.get("employees")) {
+                    employeeIds.add(employeeId.toString());
+                }
+
+                fromDocumentToObject.setServices(serviceIds);
+                fromDocumentToObject.setEmployees(employeeIds);
                 listOfBusiness.add(fromDocumentToObject);
             }
             return listOfBusiness;
