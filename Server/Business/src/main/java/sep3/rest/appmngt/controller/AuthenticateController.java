@@ -1,9 +1,7 @@
 package sep3.rest.appmngt.controller;
 
 import sep3.rest.appmngt.model.Business;
-import sep3.rest.appmngt.model.BusinessOwner;
 import sep3.rest.appmngt.model.User;
-import sep3.rest.appmngt.service.BusinessOwnerService;
 import sep3.rest.appmngt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

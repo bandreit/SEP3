@@ -7,20 +7,21 @@ import sep3.rest.appmngt.mediator.ConnectionManager;
 import sep3.rest.appmngt.network.*;
 
 import java.io.IOException;
+import java.util.List;
 
-public class BusinessImpl implements BusinessModel {
+public class BusinessModelImpl implements BusinessModel {
 
-    private ConnectionHandler connectionManager;
+    private final ConnectionHandler connectionManager;
     private final Gson gson;
 
-    public BusinessImpl() throws IOException {
+    public BusinessModelImpl() throws IOException {
         this.gson = new Gson();
         this.connectionManager = ConnectionManager.getInstance();
     }
 
     @Override
-    public Business addBusiness(Business business, String id) throws IOException {
-        BusinessPackage businessPackage = new BusinessPackage(NetworkType.BUSINESS, business, id);
+    public Business addBusiness(Business business) throws IOException {
+        BusinessPackage businessPackage = new BusinessPackage(NetworkType.BUSINESS, business);
         String data = gson.toJson(businessPackage);
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();
@@ -46,5 +47,17 @@ public class BusinessImpl implements BusinessModel {
         String recieveData = connectionManager.readFromServer();
         employeePackage = gson.fromJson(recieveData, EmployeePackage.class);
         return employeePackage.getEmployee();
+    }
+
+    @Override
+    public List<Business> getAllBusiness() throws IOException {
+        //wtf is in here?
+//        BusinessListPackage businessListPackage = new BusinessListPackage(NetworkType.BUSINESSLIST,new ArrayList<>());
+//        String data = gson.toJson(businessListPackage);
+//        connectionManager.sendToServer(data);
+//        String receivedData = connectionManager.readFromServer();
+//        businessListPackage = gson.fromJson(receivedData, BusinessListPackage.class);
+//        return businessListPackage.getBusinessList();
+        return null;
     }
 }
