@@ -36,6 +36,7 @@ namespace Client
             services.AddServerSideBlazor();
             services.AddSyncfusionBlazor();
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IServiceService, ServiceService>();
             services.AddScoped<IBusinessOwnerService, BusinessOwnerService>();
             services.AddScoped<IBusinessService, BusinessService>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();

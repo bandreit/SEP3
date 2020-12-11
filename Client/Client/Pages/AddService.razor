@@ -1,0 +1,37 @@
+﻿@page "/AddService"
+@using Client.Shared.Components
+@inject IServiceService ServiceService;
+@using Client.Models
+@using Client.Data
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavigationManager;
+
+<AddServiceForm OnSubmit="@HandleSubmit"/>
+
+@code {
+    private String businessId;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var query = new Uri(NavigationManager.Uri).Query;
+        
+        if (QueryHelpers.ParseQuery(query).TryGetValue("businessId",out var value ))
+        {
+            businessId = Convert.ToString(value);
+        }
+    }
+
+    public async void HandleSubmit(Service service)
+    {
+        try
+        {
+            service.businessId = businessId;
+            await ServiceService.addService(service);
+            NavigationManager.NavigateTo("/services");
+        }
+        catch
+        {
+        }
+    }
+
+}

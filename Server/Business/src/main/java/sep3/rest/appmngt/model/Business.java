@@ -1,17 +1,49 @@
 package sep3.rest.appmngt.model;
 
+import org.bson.types.ObjectId;
+
 import java.util.List;
 
 public class Business {
     private String id;
+    private ObjectId _id;
     private String name;
     private List<String> locations;
     private String mail;
     private List<String> services;
     private List<String> employees;
-    private String businessOwnerID;
+    private String _businessOwnerID;
+    private ObjectId businessOwnerID;
 
     public Business() {
+    }
+
+    public ObjectId get_id() {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id) {
+        this._id = _id;
+    }
+
+    public void setLocations(List<String> locations) {
+        this.locations = locations;
+    }
+
+    public String get_businessOwnerID() {
+        return _businessOwnerID;
+    }
+
+    public void set_businessOwnerID(String _businessOwnerID) {
+        this._businessOwnerID = _businessOwnerID;
+    }
+
+    public ObjectId getBusinessOwnerID() {
+        return businessOwnerID;
+    }
+
+    public void setBusinessOwnerID(ObjectId businessOwnerID) {
+        this.businessOwnerID = businessOwnerID;
     }
 
     public String getId() {
@@ -62,11 +94,4 @@ public class Business {
         this.employees = employees;
     }
 
-    public String getBusinessOwnerID() {
-        return businessOwnerID;
-    }
-
-    public void setBusinessOwnerID(String businessOwnerID) {
-        this.businessOwnerID = businessOwnerID;
-    }
 }

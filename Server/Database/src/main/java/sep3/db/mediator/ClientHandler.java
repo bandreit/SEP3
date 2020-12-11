@@ -6,6 +6,7 @@ import sep3.db.network.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -90,6 +91,15 @@ public class ClientHandler implements Runnable {
                         String businessIdEmpl = incomingEmployeePackageNumber.getBusinessId();
 
                         businessModel.addEmployee(employeeId, businessIdEmpl);
+                        break;
+                    case BUSINESSLIST :
+                        List<Business> businessList = businessModel.getAllBusiness();
+
+                        BusinessListPackage outgoingBusinessListPackage = new BusinessListPackage(NetworkType.BUSINESS, businessList);
+
+                        String businessListResponse = gson.toJson(outgoingBusinessListPackage);
+                        sendData(businessListResponse);
+
                         break;
                     case REMOVEEMPLOYEE:
                         EmployeePackage incomingRemoveEmployeePackageNumber = gson.fromJson(message, EmployeePackage.class);

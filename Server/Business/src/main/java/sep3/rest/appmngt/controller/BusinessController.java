@@ -39,6 +39,17 @@ public class BusinessController {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping("/owned-business")
+    public ResponseEntity<List<Business>> getOwnedBusinesses(@RequestParam String businessOwnerID) {
+        try {
+            List<Business> returnedBusiness = businessService.getOwnedBusinesses(businessOwnerID);
+            return ResponseEntity.ok(returnedBusiness);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @PostMapping("/employee")
     public ResponseEntity addEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
         try {

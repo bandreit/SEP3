@@ -28,19 +28,23 @@ public class BusinessModelImpl implements BusinessModel {
         String receivedData = connectionManager.readFromServer();
         businessPackage = gson.fromJson(receivedData, BusinessPackage.class);
 
-        Business receivedBusiness = businessPackage.getBusiness();
-        if (receivedBusiness.getLocations() == null) {
-            receivedBusiness.setLocation(new ArrayList<>());
-        }
-
-        if (receivedBusiness.getEmployees() == null) {
-            receivedBusiness.setEmployees(new ArrayList<>());
-        }
-        if (receivedBusiness.getServices() == null) {
-            receivedBusiness.setServices(new ArrayList<>());
-        }
+        Business receivedBusiness = SetNullToEmptyArrays(businessPackage.getBusiness());
 
         return receivedBusiness;
+    }
+
+    private Business SetNullToEmptyArrays(Business business) {
+        if (business.getLocations() == null) {
+            business.setLocation(new ArrayList<>());
+        }
+
+        if (business.getEmployees() == null) {
+            business.setEmployees(new ArrayList<>());
+        }
+        if (business.getServices() == null) {
+            business.setServices(new ArrayList<>());
+        }
+        return business;
     }
 
     @Override
@@ -59,13 +63,24 @@ public class BusinessModelImpl implements BusinessModel {
 
     @Override
     public List<Business> getAllBusiness() throws IOException {
-        //wtf is in here?
-//        BusinessListPackage businessListPackage = new BusinessListPackage(NetworkType.BUSINESSLIST,new ArrayList<>());
-//        String data = gson.toJson(businessListPackage);
-//        connectionManager.sendToServer(data);
-//        String receivedData = connectionManager.readFromServer();
-//        businessListPackage = gson.fromJson(receivedData, BusinessListPackage.class);
-//        return businessListPackage.getBusinessList();
-        return null;
+        List<Business> listOfBuinesses = new ArrayList<>();
+        BusinessListPackage businessListPackage = new BusinessListPackage(NetworkType.BUSINESSLIST, listOfBuinesses);
+        String data = gson.toJson(businessListPackage);
+        connectionManager.sendToServer(data);
+        String receivedData = connectionManager.readFromServer();
+        businessListPackage = gson.fromJson(receivedData, BusinessListPackage.class);
+        listOfBuinesses = businessListPackage.getBusinessList();
+        for (Business business : listOfBuinesses) {
+            business = SetNullToEmptyArrays(business);
+        }
+        return businessListPackage.getBusinessList();
     }
+
+    @Override
+    public List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException {
+     List<Business> listOfbusiness = getAllBusiness();
+     listOfbusiness.removeIf(business -> !(business.get_businessOwnerID().equals(businessOwnerId)));
+     return listOfbusiness;
+    }
+
 }
