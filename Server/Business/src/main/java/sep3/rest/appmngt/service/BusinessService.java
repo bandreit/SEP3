@@ -10,9 +10,7 @@ import java.util.List;
 public interface BusinessService {
     Business addBusiness(Business business) throws IOException;
 
-    Service addService(Service service, String id) throws IOException;
-
-    Employee addEmployee(Employee employee, String businessId) throws IOException;
+    void addEmployee(String employeeId, String businessId) throws IOException;
 
     List<Business> getAllBusiness() throws IOException;
 }

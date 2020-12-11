@@ -40,10 +40,10 @@ public class BusinessController {
     }
 
     @PostMapping("/employee")
-    public ResponseEntity<Employee> addEmployee(@RequestParam String businessId, @RequestBody Employee employee) {
+    public ResponseEntity<Employee> addEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
         try {
-            Employee returnedEmployee = businessService.addEmployee(employee, businessId);
-            return ResponseEntity.ok(returnedEmployee);
+            businessService.addEmployee(employeeId, businessId);
+            return ResponseEntity.ok(null);
         } catch (IOException e) {
             e.printStackTrace();
         }

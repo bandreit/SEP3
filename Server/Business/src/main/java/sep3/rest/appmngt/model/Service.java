@@ -9,14 +9,16 @@ public class Service {
     private String title;
     private String description;
     private int duration;
+    private String businessId;
 
-    public Service(ObjectId _id, String id, String pictureUrl, String title, String description, int duration) {
+    public Service(ObjectId _id, String id, String pictureUrl, String title, String description, int duration, String businessId) {
         this._id = _id;
         this.id = id;
         this.pictureUrl = pictureUrl;
         this.title = title;
         this.description = description;
         this.duration = duration;
+        this.businessId = businessId;
     }
 
     public ObjectId get_id() {
@@ -65,5 +67,13 @@ public class Service {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 }

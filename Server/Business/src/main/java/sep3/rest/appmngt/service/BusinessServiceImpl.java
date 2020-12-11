@@ -19,13 +19,8 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public sep3.rest.appmngt.model.Service addService(sep3.rest.appmngt.model.Service service, String id) throws IOException {
-        return businessModel.addService(service, id);
-    }
-
-    @Override
-    public Employee addEmployee(Employee employee, String businessId) throws IOException {
-        return businessModel.addEmployee(employee, businessId);
+    public void addEmployee(String employeeId, String businessId) throws IOException {
+        businessModel.addEmployee(employeeId, businessId);
     }
 
     @Override

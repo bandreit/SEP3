@@ -3,14 +3,20 @@ package sep3.db.model;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class ServiceModelManager implements ServiceModel {
     private final MongoCollection<Document> serviceCollection;
+    private final MongoCollection<Document> businessCollection;
     private final Gson gson;
 
     public ServiceModelManager(MongoDatabase database) {
         serviceCollection = database.getCollection("services");
+        businessCollection = database.getCollection("business");
         gson = new Gson();
     }
 
@@ -21,14 +27,16 @@ public class ServiceModelManager implements ServiceModel {
         newService.append("title", service.getTitle());
         newService.append("description", service.getDescription());
         newService.append("duration", service.getDuration());
+        newService.append("businessId", service.getBusinessId());
 
         serviceCollection.insertOne(newService);
 
-        Service serviceWithId = service;
-        String objectId = newService.get("_id").toString();
-        serviceWithId.setId(objectId);
+        ObjectId generatedServiceObjectID = (ObjectId) newService.get("_id");
+        service.setId(generatedServiceObjectID.toString());
 
-        return serviceWithId;
+        businessCollection.updateOne(eq("_id", new ObjectId(service.getBusinessId())), Updates.addToSet("servicesIds", generatedServiceObjectID));
+
+        return service;
 
     }
 }
