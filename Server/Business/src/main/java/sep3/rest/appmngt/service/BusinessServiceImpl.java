@@ -27,4 +27,9 @@ public class BusinessServiceImpl implements BusinessService {
     public List<Business> getAllBusiness() throws IOException {
         return businessModel.getAllBusiness();
     }
+
+    @Override
+    public List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException {
+        return businessModel.getOwnedBusinesses(businessOwnerId);
+    }
 }

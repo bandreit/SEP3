@@ -18,4 +18,6 @@ public class Employee extends User {
     public List<String> getServiceList() {
         return serviceIdList;
     }
+
 }
+

@@ -1,6 +1,7 @@
 package sep3.db.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBList;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -33,10 +34,10 @@ public class BusinessModelManager implements BusinessModel {
         Document newBusiness = new Document();
         newBusiness.append("name", business.getName());
         newBusiness.append("mail", business.getMail());
-        newBusiness.append("businessOwnerID", new ObjectId(business.getBusinessOwnerID()));
+        newBusiness.append("businessOwnerID", new ObjectId(business.get_businessOwnerID()));
 
         if (business.getLocations() != null)
-        newBusiness.append("locations", business.getLocations());
+            newBusiness.append("locations", business.getLocations());
 
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
@@ -81,13 +82,30 @@ public class BusinessModelManager implements BusinessModel {
         if (businessCollection.find().first() != null) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
+                Gson gson = new GsonBuilder()
+                        .excludeFieldsWithoutExposeAnnotation()
+                        .create();
                 Business fromDocumentToObject = gson.fromJson(document.toJson(), Business.class);
+                fromDocumentToObject.set_businessOwnerID(document.get("businessOwnerID").toString());
+                fromDocumentToObject.setId(document.get("_id").toString());
+                List<String> serviceIds = new ArrayList<>();
+                List<String> employeeIds = new ArrayList<>();
+
+                for (ObjectId serviceId: (List<ObjectId>) document.get("services")) {
+                    serviceIds.add(serviceId.toString());
+                }
+
+                for (ObjectId employeeId: (List<ObjectId>) document.get("employees")) {
+                    employeeIds.add(employeeId.toString());
+                }
+
+                fromDocumentToObject.setServices(serviceIds);
+                fromDocumentToObject.setEmployees(employeeIds);
                 listOfBusiness.add(fromDocumentToObject);
             }
             return listOfBusiness;
         }
         return listOfBusiness;
     }
-
 
 }

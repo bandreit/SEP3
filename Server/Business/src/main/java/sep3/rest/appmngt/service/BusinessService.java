@@ -13,4 +13,6 @@ public interface BusinessService {
     void addEmployee(String employeeId, String businessId) throws IOException;
 
     List<Business> getAllBusiness() throws IOException;
+
+    List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException;
 }
