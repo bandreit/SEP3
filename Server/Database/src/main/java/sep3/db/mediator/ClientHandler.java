@@ -6,6 +6,7 @@ import sep3.db.network.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -94,6 +95,15 @@ public class ClientHandler implements Runnable {
 
                         String employeeResponse = gson.toJson(outgoingEmployeePackage);
                         sendData(employeeResponse);
+                        break;
+                    case BUSINESSLIST :
+                        List<Business> businessList = businessModel.getAllBusiness();
+
+                        BusinessListPackage outgoingBusinessListPackage = new BusinessListPackage(NetworkType.BUSINESS, businessList);
+
+                        String businessListResponse = gson.toJson(outgoingBusinessListPackage);
+                        sendData(businessListResponse);
+
                         break;
                     case ERROR:
                     default:

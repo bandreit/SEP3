@@ -65,13 +65,12 @@ public class BusinessModelImpl implements BusinessModel {
 
     @Override
     public List<Business> getAllBusiness() throws IOException {
-        //wtf is in here?
-//        BusinessListPackage businessListPackage = new BusinessListPackage(NetworkType.BUSINESSLIST,new ArrayList<>());
-//        String data = gson.toJson(businessListPackage);
-//        connectionManager.sendToServer(data);
-//        String receivedData = connectionManager.readFromServer();
-//        businessListPackage = gson.fromJson(receivedData, BusinessListPackage.class);
-//        return businessListPackage.getBusinessList();
-        return null;
+        List<Business> listOfBuinesses = new ArrayList<>();
+        BusinessListPackage businessListPackage = new BusinessListPackage(NetworkType.BUSINESSLIST, listOfBuinesses);
+        String data = gson.toJson(businessListPackage);
+        connectionManager.sendToServer(data);
+        String receivedData = connectionManager.readFromServer();
+        businessListPackage = gson.fromJson(receivedData, BusinessListPackage.class);
+        return businessListPackage.getBusinessList();
     }
 }

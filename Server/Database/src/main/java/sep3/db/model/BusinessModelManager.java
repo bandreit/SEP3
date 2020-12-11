@@ -33,7 +33,7 @@ public class BusinessModelManager implements BusinessModel {
         Document newBusiness = new Document();
         newBusiness.append("name", business.getName());
         newBusiness.append("mail", business.getMail());
-        newBusiness.append("businessOwnerID", new ObjectId(business.getBusinessOwnerID()));
+        newBusiness.append("businessOwnerID", new ObjectId(business.get_businessOwnerID()));
 
         if (business.getLocations() != null)
         newBusiness.append("locations", business.getLocations());
@@ -104,10 +104,12 @@ public class BusinessModelManager implements BusinessModel {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
                 Business fromDocumentToObject = gson.fromJson(document.toJson(), Business.class);
+                fromDocumentToObject.setId(fromDocumentToObject.getBusinessOwnerID().toString());
                 listOfBusiness.add(fromDocumentToObject);
             }
             return listOfBusiness;
         }
+
         return listOfBusiness;
     }
 
