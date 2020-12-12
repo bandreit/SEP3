@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Business {
     private String id;
-    private ObjectId _id;
     private String name;
     private List<String> locations;
     private String mail;
@@ -16,14 +15,6 @@ public class Business {
     private ObjectId businessOwnerID;
 
     public Business() {
-    }
-
-    public ObjectId get_id() {
-        return _id;
-    }
-
-    public void set_id(ObjectId _id) {
-        this._id = _id;
     }
 
     public void setLocations(List<String> locations) {

@@ -108,6 +108,26 @@ public class ClientHandler implements Runnable {
 
                         businessModel.removeEmployee(removedEmployeeId, businessId);
                         break;
+                    case EMPLOYEELIST:
+                        List<Employee> employeeList = modelManager.getAllEmployees();
+
+                        EmployeeListPackage outgoingUserListPackage = new EmployeeListPackage(NetworkType.EMPLOYEELIST, employeeList);
+
+                        String userListResponse = gson.toJson(outgoingUserListPackage);
+                        sendData(userListResponse);
+                        break;
+
+                    case SERVICELIST:
+                        ServiceListPackage incomingServiceListPackage = gson.fromJson(message, ServiceListPackage.class);
+                        String businessIdService = incomingServiceListPackage.getBusinessId();
+
+                        List<Service> serviceList = serviceModel.getServicesByBusinessId(businessIdService);
+                        ServiceListPackage outgoingServiceListPackage = new ServiceListPackage(NetworkType.SERVICELIST, serviceList, businessIdService);
+
+                        String serviceListResponse = gson.toJson(outgoingServiceListPackage);
+                        sendData(serviceListResponse);
+                        break;
+
                     case ERROR:
                     default:
                         sendData("ERROR");

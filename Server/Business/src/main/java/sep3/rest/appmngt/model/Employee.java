@@ -15,4 +15,8 @@ public class Employee extends User
     public List<String> getServiceList() {
         return serviceIdList;
     }
+
+    public void setServiceIdList(List<String> serviceIdList) {
+        this.serviceIdList = serviceIdList;
+    }
 }
