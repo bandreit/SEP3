@@ -1,9 +1,15 @@
 package sep3.db.model;
 
 import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -32,4 +38,18 @@ public class UserModelManager implements UserModel {
         }
     }
 
+    @Override
+    public List<Employee> getAllEmployees() {
+        List<Employee> listOfEmployees = new ArrayList<>();
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("role", "Employee");
+        MongoCursor<Document> cursor = usersCollection.find(whereQuery).iterator();
+        while (cursor.hasNext()) {
+                Document document = cursor.next();
+                Employee fromDocumentToObject = gson.fromJson(document.toJson(), Employee.class);
+                fromDocumentToObject.setId(document.get("_id").toString());
+                listOfEmployees.add(fromDocumentToObject);
+        }
+        return listOfEmployees;
+    }
 }

@@ -33,5 +33,15 @@ namespace Client.Data.Impl
             BusinessOwner result = JsonSerializer.Deserialize<BusinessOwner>(reply);
             return responseMessage.StatusCode;
         }
+
+        public Task<HttpStatusCode> AddEmployee(string employeeId, string businessId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> RemoveEmployee(string employeeId, string businessId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

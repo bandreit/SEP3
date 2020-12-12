@@ -3,7 +3,6 @@ package sep3.rest.appmngt.model;
 import org.bson.types.ObjectId;
 
 public class Service {
-    private ObjectId _id;
     private String id;
     private String pictureUrl;
     private String title;
@@ -11,22 +10,13 @@ public class Service {
     private int duration;
     private String businessId;
 
-    public Service(ObjectId _id, String id, String pictureUrl, String title, String description, int duration, String businessId) {
-        this._id = _id;
+    public Service(String id, String pictureUrl, String title, String description, int duration, String businessId) {
         this.id = id;
         this.pictureUrl = pictureUrl;
         this.title = title;
         this.description = description;
         this.duration = duration;
         this.businessId = businessId;
-    }
-
-    public ObjectId get_id() {
-        return _id;
-    }
-
-    public void set_id(ObjectId _id) {
-        this._id = _id;
     }
 
     public String getId() {

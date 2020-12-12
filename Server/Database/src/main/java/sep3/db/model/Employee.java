@@ -19,5 +19,8 @@ public class Employee extends User {
         return serviceIdList;
     }
 
+    public void setServiceIdList(List<String> serviceIdList) {
+        this.serviceIdList = serviceIdList;
+    }
 }
 
