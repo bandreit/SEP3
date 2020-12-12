@@ -17,6 +17,8 @@ namespace Client.Models
         public Business()
         {
             Locations = new List<Location>();
+            Services = new List<string>();
+            Employees = new List<string>();
         }
     }
 }

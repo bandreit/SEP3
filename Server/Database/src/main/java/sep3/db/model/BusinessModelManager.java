@@ -8,8 +8,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.xml.sax.Locator;
 
@@ -21,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.in;
 
 public class BusinessModelManager implements BusinessModel {
 
@@ -41,15 +44,26 @@ public class BusinessModelManager implements BusinessModel {
         newBusiness.append("businessOwnerID", new ObjectId(business.getBusinessOwnerID()));
 
         BasicDBList listOfLocations = new BasicDBList();
-        for (Location location : business.getLocations()) {
-            Document newLocation = new Document();
-            newLocation.put("streetNumber", location.getStreetNumber());
-            newLocation.put("streetName", location.getStreetName());
-            listOfLocations.add(newLocation);
+        if (business.getLocations() != null) {
+            for (Location location : business.getLocations()) {
+                Document newLocation = new Document();
+                newLocation.put("streetNumber", location.getStreetNumber());
+                newLocation.put("streetName", location.getStreetName());
+                listOfLocations.add(newLocation);
+            }
         }
 
-        if (business.getLocations() != null)
-            newBusiness.append("locations", listOfLocations);
+        newBusiness.append("locations", listOfLocations);
+
+        if (business.getEmployees() != null) {
+
+            newBusiness.append("employees", business.getEmployees());
+        }
+
+        if (business.getServices() != null) {
+
+            newBusiness.append("services", business.getServices());
+        }
 
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
@@ -64,8 +78,8 @@ public class BusinessModelManager implements BusinessModel {
     }
 
     @Override
-    public void removeEmployee(String id) {
-
+    public void removeEmployee(String employeeId, String businessId) {
+        businessCollection.updateOne(eq("_id", new ObjectId(businessId)), Updates.pull("employees", new ObjectId(employeeId)));
     }
 
     @Override
@@ -86,13 +100,13 @@ public class BusinessModelManager implements BusinessModel {
                 List<String> employeeIds = new ArrayList<>();
                 List<Location> locations = new ArrayList<>();
 
-//                for (ObjectId serviceId : (List<ObjectId>) document.get("services")) {
-//                    serviceIds.add(serviceId.toString());
-//                }
-//
-//                for (ObjectId employeeId : (List<ObjectId>) document.get("employees")) {
-//                    employeeIds.add(employeeId.toString());
-//                }
+                for (ObjectId serviceId : (List<ObjectId>) document.get("services")) {
+                    serviceIds.add(serviceId.toString());
+                }
+
+                for (ObjectId employeeId : (List<ObjectId>) document.get("employees")) {
+                    employeeIds.add(employeeId.toString());
+                }
 
                 List<Document> objs = (List<Document>) document.get("locations");
 

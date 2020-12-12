@@ -4,6 +4,7 @@ import sep3.rest.appmngt.model.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,5 +27,10 @@ public class UserServiceImpl implements UserService {
 //                    user.getCity(),user.getRole(),user.getFirstName(),user.getLastName(),user.getPhone());
 //            businessOwnerModel.addBusinessOwner(businessOwner);
 //        }
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() throws IOException {
+        return userModel.getAllEmployees();
     }
 }

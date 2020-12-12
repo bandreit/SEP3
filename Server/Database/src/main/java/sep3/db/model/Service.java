@@ -9,10 +9,20 @@ public class Service {
     private String title;
     private String description;
     private int duration;
+    private ObjectId _businessId;
     private String businessId;
 
     public Service(ObjectId _id, String id, String pictureUrl, String title, String description, int duration) {
 
+    }
+
+
+    public ObjectId get_businessId() {
+        return _businessId;
+    }
+
+    public void set_businessId(ObjectId _businessId) {
+        this._businessId = _businessId;
     }
 
     public ObjectId get_id() {

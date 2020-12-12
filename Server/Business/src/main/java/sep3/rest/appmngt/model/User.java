@@ -5,7 +5,6 @@ import org.bson.types.ObjectId;
 import java.util.Objects;
 
 public class User {
-    private ObjectId _id;
     private String id;
     private String userName;
     private String password;
@@ -17,7 +16,6 @@ public class User {
     private String phone;
 
     public User(String id, String userName, String password, String email, String city, String role, String firstName, String lastName, String phone) {
-        this._id=null;
         this.id = id;
         this.userName = userName;
         this.password = password;

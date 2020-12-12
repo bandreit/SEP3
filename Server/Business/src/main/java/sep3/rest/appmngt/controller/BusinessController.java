@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sep3.rest.appmngt.model.Business;
 import sep3.rest.appmngt.model.Employee;
-import sep3.rest.appmngt.model.Service;
 import sep3.rest.appmngt.service.BusinessService;
+import sep3.rest.appmngt.service.UserService;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +16,8 @@ import java.util.List;
 public class BusinessController {
     @Autowired
     private BusinessService businessService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/business")
     public ResponseEntity<Business> addBusiness(@RequestBody Business business) {
@@ -51,13 +53,37 @@ public class BusinessController {
     }
 
     @PostMapping("/employee")
-    public ResponseEntity<Employee> addEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
+    public ResponseEntity addEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
         try {
             businessService.addEmployee(employeeId, businessId);
-            return ResponseEntity.ok(null);
+            return ResponseEntity.ok().build();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @DeleteMapping("/employee")
+    public ResponseEntity removeEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
+        try {
+            businessService.removeEmployee(employeeId, businessId);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/employee")
+    public ResponseEntity<List<Employee>> getEmployees() {
+        try {
+            List<Employee> returnedEmployee = userService.getAllEmployees();
+            return ResponseEntity.ok(returnedEmployee);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+
 }
