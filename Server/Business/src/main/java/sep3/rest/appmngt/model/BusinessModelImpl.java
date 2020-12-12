@@ -28,14 +28,12 @@ public class BusinessModelImpl implements BusinessModel {
         String receivedData = connectionManager.readFromServer();
         businessPackage = gson.fromJson(receivedData, BusinessPackage.class);
 
-        Business receivedBusiness = SetNullToEmptyArrays(businessPackage.getBusiness());
-
-        return receivedBusiness;
+        return SetNullToEmptyArrays(businessPackage.getBusiness());
     }
 
     private Business SetNullToEmptyArrays(Business business) {
         if (business.getLocations() == null) {
-            business.setLocation(new ArrayList<>());
+            business.setLocations(new ArrayList<>());
         }
 
         if (business.getEmployees() == null) {
@@ -71,9 +69,9 @@ public class BusinessModelImpl implements BusinessModel {
 
     @Override
     public List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException {
-     List<Business> listOfbusiness = getAllBusiness();
-     listOfbusiness.removeIf(business -> !(business.get_businessOwnerID().equals(businessOwnerId)));
-     return listOfbusiness;
+        List<Business> listOfbusiness = getAllBusiness();
+        listOfbusiness.removeIf(business -> !(business.getBusinessOwnerID().equals(businessOwnerId)));
+        return listOfbusiness;
     }
 
 }

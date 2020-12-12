@@ -1,48 +1,35 @@
 package sep3.rest.appmngt.model;
 
+import com.google.gson.annotations.Expose;
 import org.bson.types.ObjectId;
 
 import java.util.List;
 
 public class Business {
     private String id;
-    private ObjectId _id;
     private String name;
-    private List<String> locations;
+    private List<Location> locations;
     private String mail;
     private List<String> services;
     private List<String> employees;
-    private String _businessOwnerID;
-    private ObjectId businessOwnerID;
+    private String businessOwnerID;
 
     public Business() {
     }
 
-    public ObjectId get_id() {
-        return _id;
-    }
-
-    public void set_id(ObjectId _id) {
-        this._id = _id;
-    }
-
-    public void setLocations(List<String> locations) {
+    public void setLocations(List<Location> locations) {
         this.locations = locations;
     }
 
-    public String get_businessOwnerID() {
-        return _businessOwnerID;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    public void set_businessOwnerID(String _businessOwnerID) {
-        this._businessOwnerID = _businessOwnerID;
-    }
-
-    public ObjectId getBusinessOwnerID() {
+    public String getBusinessOwnerID() {
         return businessOwnerID;
     }
 
-    public void setBusinessOwnerID(ObjectId businessOwnerID) {
+    public void setBusinessOwnerID(String businessOwnerID) {
         this.businessOwnerID = businessOwnerID;
     }
 
@@ -62,13 +49,6 @@ public class Business {
         this.name = name;
     }
 
-    public List<String> getLocations() {
-        return locations;
-    }
-
-    public void setLocation(List<String> location) {
-        this.locations = location;
-    }
 
     public String getMail() {
         return mail;
@@ -93,5 +73,4 @@ public class Business {
     public void setEmployees(List<String> employees) {
         this.employees = employees;
     }
-
 }
