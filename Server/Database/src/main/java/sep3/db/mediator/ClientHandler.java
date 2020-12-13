@@ -117,12 +117,32 @@ public class ClientHandler implements Runnable {
                         sendData(userListResponse);
                         break;
 
-                    case SERVICELIST:
-                        ServiceListPackage incomingServiceListPackage = gson.fromJson(message, ServiceListPackage.class);
-                        String businessIdService = incomingServiceListPackage.getBusinessId();
+                    case SERVICELISTBYBUSINESSID:
+                        ServiceListPackage incomingServiceListByIdPackage = gson.fromJson(message, ServiceListPackage.class);
+                        String businessIdService = incomingServiceListByIdPackage.getFilter();
 
-                        List<Service> serviceList = serviceModel.getServicesByBusinessId(businessIdService);
-                        ServiceListPackage outgoingServiceListPackage = new ServiceListPackage(NetworkType.SERVICELIST, serviceList, businessIdService);
+                        List<Service> serviceListById = serviceModel.getServicesByBusinessId(businessIdService);
+                        ServiceListPackage outgoingServiceListByIdPackage = new ServiceListPackage(NetworkType.SERVICELIST, serviceListById, businessIdService);
+
+                        String serviceListByIdResponse = gson.toJson(outgoingServiceListByIdPackage);
+                        sendData(serviceListByIdResponse);
+                        break;
+
+                    case SERVICELISTBYTITLE:
+                        ServiceListPackage incomingServiceListByTitlePackage = gson.fromJson(message, ServiceListPackage.class);
+                        String title = incomingServiceListByTitlePackage.getFilter();
+
+                        List<Service> serviceListByTitle = serviceModel.getServiceByTitle(title);
+                        ServiceListPackage outgoingServiceListByTitlePackage = new ServiceListPackage(NetworkType.SERVICELIST, serviceListByTitle, title);
+
+                        String serviceListByTitleResponse = gson.toJson(outgoingServiceListByTitlePackage);
+                        sendData(serviceListByTitleResponse);
+                        break;
+
+                    case SERVICELIST:
+                        List<Service> serviceList = serviceModel.getAllServices();
+
+                        ServiceListPackage outgoingServiceListPackage = new ServiceListPackage(NetworkType.SERVICELIST, serviceList);
 
                         String serviceListResponse = gson.toJson(outgoingServiceListPackage);
                         sendData(serviceListResponse);

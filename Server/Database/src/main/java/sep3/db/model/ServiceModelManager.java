@@ -63,4 +63,37 @@ public class ServiceModelManager implements ServiceModel {
         }
         return serviceList;
     }
+
+    @Override
+    public List<Service> getServiceByTitle(String title) {
+        List<Service> serviceList = new ArrayList<>();
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("title", "title");
+        MongoCursor<Document> cursor = serviceCollection.find(whereQuery).iterator();
+        while (cursor.hasNext()) {
+            Document document = cursor.next();
+            Service fromDocumentToObject = gson.fromJson(document.toJson(), Service.class);
+            fromDocumentToObject.setId(document.get("_id").toString());
+            fromDocumentToObject.setBusinessId(document.get("_businessId").toString());
+            serviceList.add(fromDocumentToObject);
+        }
+        return serviceList;
+    }
+
+    @Override
+    public List<Service> getAllServices() {
+        List<Service> serviceList = new ArrayList<>();
+        MongoCursor<Document> cursor = serviceCollection.find().iterator();
+        if (serviceCollection.find().first() != null) {
+            while (cursor.hasNext()) {
+                Document document = cursor.next();
+                Service fromDocumentToObject = gson.fromJson(document.toJson(), Service.class);
+                fromDocumentToObject.setId(document.get("_id").toString());
+                fromDocumentToObject.setBusinessId(document.get("_businessId").toString());
+                serviceList.add(fromDocumentToObject);
+            }
+            return serviceList;
+        }
+        return serviceList;
+    }
 }

@@ -7,19 +7,24 @@ import java.util.List;
 
 public class ServiceListPackage extends NetworkPackage {
     private List<Service> serviceList;
-    private String businessId;
+    private String filter;
 
-    public ServiceListPackage(NetworkType type, List<Service> services, String businessId) {
+    public ServiceListPackage(NetworkType type, List<Service> services, String filter) {
         super(type);
         this.serviceList = services;
-        this.businessId = businessId;
+        this.filter = filter;
+    }
+
+    public ServiceListPackage(NetworkType type, List<Service> serviceList) {
+        super(type);
+        this.serviceList = serviceList;
     }
 
     public List<Service> getServiceList() {
         return serviceList;
     }
 
-    public String getBusinessId() {
-        return businessId;
+    public String getFilter() {
+        return filter;
     }
 }
