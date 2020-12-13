@@ -13,5 +13,6 @@ namespace Client.Data.Impl
         Task RemoveEmployee(string employeeId, string businessId);
         Task<List<Employee>> GetAllEmployees();
         Task<IList<Business>> GetBusinessesAsync();
+        Task<IList<Business>> GetOwnedBusinessesAsync(string userClaimValue);
     }
 }

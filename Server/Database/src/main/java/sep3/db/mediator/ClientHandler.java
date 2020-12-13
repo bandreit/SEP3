@@ -30,8 +30,15 @@ public class ClientHandler implements Runnable {
 
 
     private void sendData(String response) throws IOException {
-        byte[] responseAsBytes = response.getBytes();
-        outputStream.write(responseAsBytes, 0, responseAsBytes.length);
+        byte[] toSendBytes = response.getBytes();
+        int toSendLen = toSendBytes.length;
+        byte[] toSendLenBytes = new byte[4];
+        toSendLenBytes[0] = (byte) (toSendLen & 0xff);
+        toSendLenBytes[1] = (byte) ((toSendLen >> 8) & 0xff);
+        toSendLenBytes[2] = (byte) ((toSendLen >> 16) & 0xff);
+        toSendLenBytes[3] = (byte) ((toSendLen >> 24) & 0xff);
+        outputStream.write(toSendLenBytes);
+        outputStream.write(toSendBytes);
     }
 
     @Override
@@ -39,10 +46,14 @@ public class ClientHandler implements Runnable {
         while (true) {
             try {
                 //input bytes
-                byte[] lenbytes = new byte[1024];
-                int read = inputStream.read(lenbytes, 0, lenbytes.length);
-                String message = new String(lenbytes, 0, read);
+                byte[] lenBytes = new byte[4];
+                inputStream.read(lenBytes, 0, 4);
+                int len = (((lenBytes[3] & 0xff) << 24) | ((lenBytes[2] & 0xff) << 16) |
+                        ((lenBytes[1] & 0xff) << 8) | (lenBytes[0] & 0xff));
+                byte[] receivedBytes = new byte[len];
+                inputStream.read(receivedBytes, 0, len);
 
+                String message = new String(receivedBytes, 0, len);
 
                 //incoming data
                 System.out.println("Tier2>" + message);
