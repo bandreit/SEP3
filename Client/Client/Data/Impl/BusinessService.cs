@@ -86,9 +86,11 @@ namespace Client.Data.Impl
 
         public async Task<List<Employee>> GetAllEmployees()
         {
-            string message = await client.GetStringAsync("http://localhost:8083/SEP3/employee");
-            List<Employee> result = JsonSerializer.Deserialize<List<Employee>>(message);
-            return result;
+            List<Employee> employees = new List<Employee>();
+            HttpResponseMessage responseMessage = await client.GetAsync("http://localhost:8083/SEP3/employee");
+            String reply = await responseMessage.Content.ReadAsStringAsync();
+            employees = JsonSerializer.Deserialize<List<Employee>>(reply);
+            return employees;
         }
     }
 }
