@@ -6,7 +6,7 @@
 @inject NavigationManager NavigationManager
 @inject IBusinessService BusinessService
 @inject AuthenticationStateProvider CustomAuthenticationStateProvider
-
+@attribute [Authorize(Policy = "BusinessOwner")]
 
 <style>
     .services-layout {

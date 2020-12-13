@@ -2,13 +2,39 @@
 @using Client.Models
 @using Syncfusion.Blazor.Buttons
 
+<style>
+    .button {
+    border: none;
+    background: grey;
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 5px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+    }
+    .button:hover {
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
+    }
+</style>
+
 <EditForm Model="@ServiceModel" OnValidSubmit="@HandleSubmit">
     <SfTextBox @bind-Value="ServiceModel.title" Placeholder="Title" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
     <SfTextBox @bind-Value="ServiceModel.description" Placeholder="Description" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
     <SfTextBox @bind-Value="ServiceModel.pictureUrl" Placeholder="Picture Url" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
     <SfNumericTextBox @bind-Value="ServiceModel.duration" Placeholder="Duration" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfNumericTextBox>
 
-    <SfButton IsPrimary="true" @onclick="HandleSubmit">Reserve</SfButton>
+    <div class="p-2">
+        <SfButton IsPrimary="true" @onclick="HandleSubmit">Create</SfButton>
+    </div>
+    
 </EditForm>
 
 @code {

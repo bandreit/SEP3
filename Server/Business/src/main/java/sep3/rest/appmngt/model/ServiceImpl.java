@@ -45,7 +45,7 @@ public class ServiceImpl implements ServiceModel {
     @Override
     public List<Service> getServiceByTitle(String title) throws IOException {
         List<Service> serviceListByTitle = new ArrayList<>();
-        ServiceListPackage serviceListByTitlePackage = new ServiceListPackage(NetworkType.SERVICELISTBYTITLE,serviceListByTitle);
+        ServiceListPackage serviceListByTitlePackage = new ServiceListPackage(NetworkType.SERVICELISTBYTITLE,serviceListByTitle, title);
         String data = gson.toJson(serviceListByTitlePackage);
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();

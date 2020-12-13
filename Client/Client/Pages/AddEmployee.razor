@@ -1,5 +1,25 @@
 @page "/AddEmployee"
-<h3>AddEmployee</h3>
+@using Client.Data.Impl
+@attribute [Authorize(Policy = "BusinessOwner")]
+@inject NavigationManager NavigationManager
+@inject IBusinessService BusinessService
+
+<style>
+    .content-wrapper {
+        width: 90%;
+        margin: 0 auto;
+        min-width: 85px;
+    }
+</style>
+
+<div class="col-lg-12 content-wrapper">
+    <div>
+        <h2 class="font-weight-bold">Add an employee to your business</h2>
+        <p>Please enter details below to add the employee</p>
+        <hr/>
+    </div>
+    
+</div>
 
 @code {
     

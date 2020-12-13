@@ -68,7 +68,7 @@ public class ServiceModelManager implements ServiceModel {
     public List<Service> getServiceByTitle(String title) {
         List<Service> serviceList = new ArrayList<>();
         BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("title", "title");
+        whereQuery.put("title", title);
         MongoCursor<Document> cursor = serviceCollection.find(whereQuery).iterator();
         while (cursor.hasNext()) {
             Document document = cursor.next();
