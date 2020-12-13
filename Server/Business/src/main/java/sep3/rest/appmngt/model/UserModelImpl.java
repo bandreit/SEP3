@@ -3,6 +3,7 @@ package sep3.rest.appmngt.model;
 import com.google.gson.Gson;
 import sep3.rest.appmngt.mediator.ConnectionHandler;
 import sep3.rest.appmngt.mediator.ConnectionManager;
+import sep3.rest.appmngt.network.CreateUserPackage;
 import sep3.rest.appmngt.network.EmployeeListPackage;
 import sep3.rest.appmngt.network.NetworkType;
 import sep3.rest.appmngt.network.UserPackage;
@@ -22,14 +23,22 @@ public class UserModelImpl implements UserModel {
 
     @Override
     public User ValidateUser(String userName, String password) throws IOException {
-        {
-            UserPackage userPackage = new UserPackage(NetworkType.USER, new User(userName, password));
-            String data = gson.toJson(userPackage);
-            connectionManager.sendToServer(data);
-            String receivedData = connectionManager.readFromServer();
-            userPackage = gson.fromJson(receivedData, UserPackage.class);
-            return userPackage.getUser();
-        }
+        UserPackage userPackage = new UserPackage(NetworkType.USER, new User(userName, password));
+        String data = gson.toJson(userPackage);
+        connectionManager.sendToServer(data);
+        String receivedData = connectionManager.readFromServer();
+        userPackage = gson.fromJson(receivedData, UserPackage.class);
+        return userPackage.getUser();
+    }
+
+    @Override
+    public User RegisterUser(User user) throws IOException {
+        CreateUserPackage userPackage = new CreateUserPackage(NetworkType.CREATE_USER, user);
+        String data = gson.toJson(userPackage);
+        connectionManager.sendToServer(data);
+        String receivedData = connectionManager.readFromServer();
+        userPackage = gson.fromJson(receivedData, CreateUserPackage.class);
+        return userPackage.getUser();
     }
 
     @Override

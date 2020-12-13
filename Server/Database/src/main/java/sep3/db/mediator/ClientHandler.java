@@ -74,6 +74,17 @@ public class ClientHandler implements Runnable {
                         sendData(response);
                         break;
 
+                    case CREATE_USER:
+                        CreateUserPackage incomingCreateUserPackageNumber = gson.fromJson(message, CreateUserPackage.class);
+                        User userToCreate = incomingCreateUserPackageNumber.getUser();
+
+                        User toReturnCreatedUser = modelManager.RegisterUser(userToCreate);
+                        UserPackage outgoingCreatedUserPackage = new UserPackage(NetworkType.USER, toReturnCreatedUser);
+
+                        String createdUserResponse = gson.toJson(outgoingCreatedUserPackage);
+                        sendData(createdUserResponse);
+                        break;
+
                     case BUSINESS:
                         BusinessPackage incomingBusinessPackageNumber = gson.fromJson(message, BusinessPackage.class);
                         Business business = incomingBusinessPackageNumber.getBusiness();
@@ -103,7 +114,7 @@ public class ClientHandler implements Runnable {
 
                         businessModel.addEmployee(employeeId, businessIdEmpl);
                         break;
-                    case BUSINESSLIST :
+                    case BUSINESSLIST:
                         List<Business> businessList = businessModel.getAllBusiness();
 
                         BusinessListPackage outgoingBusinessListPackage = new BusinessListPackage(NetworkType.BUSINESS, businessList);

@@ -9,7 +9,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserModel userModel = new UserModelImpl();
-//    private final BusinessOwnerModel businessOwnerModel = new BusinessOwnerImpl();
 
     public UserServiceImpl() throws IOException {
     }
@@ -21,12 +20,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) throws IOException {
-//        if (user.getRole().equals("businessOwner")) {
-//            BusinessOwner businessOwner = new BusinessOwner(user.getId(),user.getUserName(),user.getPassword(),user.getEmail(),
-//                    user.getCity(),user.getRole(),user.getFirstName(),user.getLastName(),user.getPhone());
-//            businessOwnerModel.addBusinessOwner(businessOwner);
-//        }
+    public User addUser(User user) throws IOException {
+        User userToRegister = new User(user.getId(), user.getUserName(), user.getPassword(), user.getEmail(),
+                user.getCity(), user.getRole(), user.getFirstName(), user.getLastName(), user.getPhone());
+        return userModel.RegisterUser(userToRegister);
     }
 
     @Override
