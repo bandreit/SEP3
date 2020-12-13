@@ -6,120 +6,126 @@
 @using Syncfusion.Blazor.Charts
 
 
-<LogInComponent/>
-<div class="control-section" id="target">
-    <SfDashboardLayout @ref="dashboardObject" Columns="5" AllowResizing="false" AllowDragging="false">
-        <DashboardLayoutPanels>
+@* <LogInComponent/> *@
 
-            <DashboardLayoutPanel Id="one" Row="0" Col="0" SizeX="1" SizeY="1">
-                <ContentTemplate>
-                    <div class="p-4 d-flex justify-content-between flex-column">
-                        <span class="oi oi-folder" style="font-size: 30px"></span>
-                        <div>
-                            <div class="card-content number">
-                                2
-                            </div>
-                            <div class="card-content text">
-                                Businesses
+<AuthorizeView>
+    <Authorized>
+    <div class="control-section" id="target">
+        <SfDashboardLayout @ref="dashboardObject" Columns="5" AllowResizing="false" AllowDragging="false">
+            <DashboardLayoutPanels>
+
+                <DashboardLayoutPanel Id="one" Row="0" Col="0" SizeX="1" SizeY="1">
+                    <ContentTemplate>
+                        <div class="p-4 d-flex justify-content-between flex-column">
+                            <span class="oi oi-folder" style="font-size: 30px"></span>
+                            <div>
+                                <div class="card-content number">
+                                    2
+                                </div>
+                                <div class="card-content text">
+                                    Businesses
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </ContentTemplate>
-            </DashboardLayoutPanel>
+                    </ContentTemplate>
+                </DashboardLayoutPanel>
 
-            <DashboardLayoutPanel Id="two" Row="1" Col="0" SizeX="1" SizeY="1">
-                <ContentTemplate>
-                    <div class="p-4 d-flex justify-content-between flex-column">
-                        <span class="oi oi-list-rich" style="font-size: 30px"></span>
-                        <div>
-                            <div class="card-content number">
-                                2
-                            </div>
-                            <div class="card-content text">
-                                Services
-                            </div>
-                        </div>
-                    </div>
-                </ContentTemplate>
-            </DashboardLayoutPanel>
-
-            <DashboardLayoutPanel Id="three" Row="0" Col="1" SizeX="3" SizeY="2">
-                <HeaderTemplate>
-                    <div>Traffic History</div>
-                </HeaderTemplate>
-                <ContentTemplate>
-                    <div style="height:100%; width:100%">
-                        <SfChart HtmlAttributes="ChartAttribute" @ref="TrafficHistoryInstance">
-                            <ChartArea>
-                                <ChartAreaBorder Width="0"></ChartAreaBorder>
-                            </ChartArea>
-                            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" LabelFormat="MMM" IntervalType="@Syncfusion.Blazor.Charts.IntervalType.Months" EdgeLabelPlacement="@Syncfusion.Blazor.Charts.EdgeLabelPlacement.Shift">
-                                <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
-                            </ChartPrimaryXAxis>
-                            <ChartPrimaryYAxis LabelFormat="{value}%" Minimum="0" Maximum="4" Interval="1">
-                                <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
-                                <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
-                            </ChartPrimaryYAxis>
-                            <ChartTooltipSettings Enable="true"></ChartTooltipSettings>
-                            <ChartSeriesCollection>
-                                <ChartSeries DataSource="@LineDataSource" Name="Jan" XName="x" Width="2"
-                                             Opacity="0.5" YName="y" Type="ChartSeriesType.SplineArea">
-                                </ChartSeries>
-                                <ChartSeries DataSource="@LineDataSource1" Name="Feb" XName="x" Width="2"
-                                             Opacity="0.5" YName="y" Type="ChartSeriesType.SplineArea">
-                                </ChartSeries>
-                            </ChartSeriesCollection>
-                        </SfChart>
-                    </div>
-                </ContentTemplate>
-            </DashboardLayoutPanel>
-
-            <DashboardLayoutPanel Id="four" Row="0" Col="4" SizeX="1" SizeY="1">
-                <ContentTemplate>
-                    <div class="p-4 d-flex justify-content-between flex-column">
-                        <span class="oi oi-people" style="font-size: 30px"></span>
-                        <div>
-                            <div class="card-content number">
-                                2
-                            </div>
-                            <div class="card-content text">
-                                Employees
+                <DashboardLayoutPanel Id="two" Row="1" Col="0" SizeX="1" SizeY="1">
+                    <ContentTemplate>
+                        <div class="p-4 d-flex justify-content-between flex-column">
+                            <span class="oi oi-list-rich" style="font-size: 30px"></span>
+                            <div>
+                                <div class="card-content number">
+                                    2
+                                </div>
+                                <div class="card-content text">
+                                    Services
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </ContentTemplate>
-            </DashboardLayoutPanel>
+                    </ContentTemplate>
+                </DashboardLayoutPanel>
 
-            <DashboardLayoutPanel Id="five" Row="0" Col="4" SizeX="1" SizeY="1">
-                <ContentTemplate>
-                    <div class="p-4 d-flex justify-content-between flex-column">
-                        <span class="oi oi-plus" style="font-size: 30px"></span>
-                        <div>
-                            <div class="card-content number">
-                                2
-                            </div>
-                            <div class="card-content text">
-                                Bookings
+                <DashboardLayoutPanel Id="three" Row="0" Col="1" SizeX="3" SizeY="2">
+                    <HeaderTemplate>
+                        <div>Traffic History</div>
+                    </HeaderTemplate>
+                    <ContentTemplate>
+                        <div style="height:100%; width:100%">
+                            <SfChart HtmlAttributes="ChartAttribute" @ref="TrafficHistoryInstance">
+                                <ChartArea>
+                                    <ChartAreaBorder Width="0"></ChartAreaBorder>
+                                </ChartArea>
+                                <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" LabelFormat="MMM" IntervalType="@Syncfusion.Blazor.Charts.IntervalType.Months" EdgeLabelPlacement="@Syncfusion.Blazor.Charts.EdgeLabelPlacement.Shift">
+                                    <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+                                </ChartPrimaryXAxis>
+                                <ChartPrimaryYAxis LabelFormat="{value}%" Minimum="0" Maximum="4" Interval="1">
+                                    <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
+                                    <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
+                                </ChartPrimaryYAxis>
+                                <ChartTooltipSettings Enable="true"></ChartTooltipSettings>
+                                <ChartSeriesCollection>
+                                    <ChartSeries DataSource="@LineDataSource" Name="Jan" XName="x" Width="2"
+                                                 Opacity="0.5" YName="y" Type="ChartSeriesType.SplineArea">
+                                    </ChartSeries>
+                                    <ChartSeries DataSource="@LineDataSource1" Name="Feb" XName="x" Width="2"
+                                                 Opacity="0.5" YName="y" Type="ChartSeriesType.SplineArea">
+                                    </ChartSeries>
+                                </ChartSeriesCollection>
+                            </SfChart>
+                        </div>
+                    </ContentTemplate>
+                </DashboardLayoutPanel>
+
+                <DashboardLayoutPanel Id="four" Row="0" Col="4" SizeX="1" SizeY="1">
+                    <ContentTemplate>
+                        <div class="p-4 d-flex justify-content-between flex-column">
+                            <span class="oi oi-people" style="font-size: 30px"></span>
+                            <div>
+                                <div class="card-content number">
+                                    2
+                                </div>
+                                <div class="card-content text">
+                                    Employees
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </ContentTemplate>
-            </DashboardLayoutPanel>
+                    </ContentTemplate>
+                </DashboardLayoutPanel>
+
+                <DashboardLayoutPanel Id="five" Row="0" Col="4" SizeX="1" SizeY="1">
+                    <ContentTemplate>
+                        <div class="p-4 d-flex justify-content-between flex-column">
+                            <span class="oi oi-plus" style="font-size: 30px"></span>
+                            <div>
+                                <div class="card-content number">
+                                    2
+                                </div>
+                                <div class="card-content text">
+                                    Bookings
+                                </div>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </DashboardLayoutPanel>
 
 
-        </DashboardLayoutPanels>
-    </SfDashboardLayout>
-</div>
+            </DashboardLayoutPanels>
+        </SfDashboardLayout>
+    </div>
+    </Authorized>
+</AuthorizeView>
+
 
 @code {
     SfDashboardLayout dashboardObject;
     public int Count = 8;
     SfChart TrafficHistoryInstance;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        this.TrafficHistoryInstance.Refresh();
-    }
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     // this.TrafficHistoryInstance.Refresh();
+    // }
 
     public class lineData
     {
@@ -152,25 +158,6 @@
     };
 
 }
-
-
-
-@*     public void AddClick(EventArgs args) *@
-@*     { *@
-@*         string ContentValue = this.Count.ToString(); *@
-@*         PanelModel panel = new PanelModel *@
-@*         { *@
-@*             Id = this.Count.ToString() + "_layout", *@
-@*             SizeX = 1, *@
-@*             SizeY = 1, *@
-@*             Col = 0, *@
-@*             Row = 0, *@
-@*             Content = @<div class='text-align'> @ContentValue </div> *@
-@*         }; *@
-@*         dashboardObject.AddPanel(panel); *@
-@*         this.Count = this.Count + 1; *@
-@*     } *@
-@* } *@
 
 <style>
     .sidebar-content {
