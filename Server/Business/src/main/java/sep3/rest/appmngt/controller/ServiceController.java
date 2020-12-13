@@ -38,4 +38,26 @@ public class ServiceController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @GetMapping("/servicesByTitle")
+    public ResponseEntity<List<Service>> getServicesByTitle(@RequestParam String title) {
+        try {
+            List<Service> returnedServices = serviceService.getServiceByTitle(title);
+            return ResponseEntity.ok(returnedServices);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/services")
+    public ResponseEntity<List<Service>> getAllServices() {
+        try {
+            List<Service> returnedServices = serviceService.getAllServices();
+            return ResponseEntity.ok(returnedServices);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }

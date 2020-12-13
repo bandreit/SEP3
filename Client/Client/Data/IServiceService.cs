@@ -9,5 +9,8 @@ namespace Client.Data
     {
         Task addService(Service service);
         Task<List<Service>> GetServicesByBusinessId(string businessId);
+        Task<List<Service>> GetServicesByTitle(string title);
+        Task<List<Service>> GetAllServices();
+        
     }
 }

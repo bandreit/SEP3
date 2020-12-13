@@ -33,8 +33,30 @@ public class ServiceImpl implements ServiceModel {
 
     @Override
     public List<Service> getServicesByBusinessId(String businessId) throws IOException {
+        List<Service> serviceListById = new ArrayList<>();
+        ServiceListPackage serviceListByIdPackage = new ServiceListPackage(NetworkType.SERVICELISTBYBUSINESSID,serviceListById, businessId);
+        String data = gson.toJson(serviceListByIdPackage);
+        connectionManager.sendToServer(data);
+        String receivedData = connectionManager.readFromServer();
+        serviceListByIdPackage = gson.fromJson(receivedData, ServiceListPackage.class);
+        return serviceListByIdPackage.getServiceList();
+    }
+
+    @Override
+    public List<Service> getServiceByTitle(String title) throws IOException {
+        List<Service> serviceListByTitle = new ArrayList<>();
+        ServiceListPackage serviceListByTitlePackage = new ServiceListPackage(NetworkType.SERVICELISTBYTITLE,serviceListByTitle, title);
+        String data = gson.toJson(serviceListByTitlePackage);
+        connectionManager.sendToServer(data);
+        String receivedData = connectionManager.readFromServer();
+        serviceListByTitlePackage = gson.fromJson(receivedData, ServiceListPackage.class);
+        return serviceListByTitlePackage.getServiceList();
+    }
+
+    @Override
+    public List<Service> getAllServices() throws IOException {
         List<Service> serviceList = new ArrayList<>();
-        ServiceListPackage serviceListPackage = new ServiceListPackage(NetworkType.SERVICELIST,serviceList, businessId);
+        ServiceListPackage serviceListPackage = new ServiceListPackage(NetworkType.SERVICELIST,serviceList);
         String data = gson.toJson(serviceListPackage);
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();
