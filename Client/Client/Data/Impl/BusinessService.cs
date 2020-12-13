@@ -50,6 +50,22 @@ namespace Client.Data.Impl
             return businesses;
         }
 
+        public async Task<IList<Business>> GetOwnedBusinessesAsync(string userClaimValue)
+        {
+            string requestURI = $"http://localhost:8083/SEP3/owned-business?businessOwnerID={userClaimValue}";
+
+            HttpClient client = new HttpClient();
+            List<Business> ownedBusinesses = new List<Business>();
+
+            HttpResponseMessage responseMessage =
+                await client.GetAsync(requestURI);
+
+            String reply = await responseMessage.Content.ReadAsStringAsync();
+            ownedBusinesses = JsonSerializer.Deserialize<List<Business>>(reply);
+            
+            return ownedBusinesses;
+        }
+
         public async Task<HttpStatusCode> AddEmployee(string employeeId, string businessId)
         {
             string uri = "http://localhost:8083/SEP3/employee?";

@@ -1,0 +1,53 @@
+﻿@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.Buttons
+@using Microsoft.Extensions.Logging
+
+
+<style>
+    #BasicCard, #NewIconCard {
+        height: 180px;
+        margin: 16px;
+    }
+    #SideCard {
+        height: 376px;
+        margin: 16px;
+    }
+    .e-card > .e-card-image {
+        background-repeat: no-repeat;
+        min-height: 205px;
+    }
+   
+    .e-card .e-card-content {
+        padding-top: 0px;
+    }
+</style>
+
+<SfCard ID="BasicCard">
+    <CardHeader Title="@Name"/>
+    <CardContent>
+        <p>@Services services</p>
+        <p>@Employees employees</p>
+    </CardContent>
+    <CardFooter>
+        <CardFooterContent>
+            <SfButton CssClass="e-btn e-outline e-primary">Edit</SfButton>
+            @* <SfButton CssClass="e-btn e-outline e-primary" @onclick="@(() => OnClick?.Invoke())">Book an appointment</SfButton> *@
+        </CardFooterContent>
+    </CardFooter>
+</SfCard>
+
+@code {
+
+    [Parameter]
+    public String Name { get; set; }
+
+    [Parameter]
+    public int Services { get; set; }
+    
+    [Parameter]
+    public int Employees { get; set; }
+
+    [Parameter]
+    public Action OnClick { get; set; }
+
+}
