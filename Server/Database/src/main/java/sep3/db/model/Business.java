@@ -3,6 +3,7 @@ package sep3.db.model;
 import com.google.gson.annotations.Expose;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Business {
@@ -25,7 +26,15 @@ public class Business {
     @Expose(serialize = true, deserialize = false) // expected string
     private ObjectId _businessOwnerID;
 
-    public Business() {
+    public Business(String id, ObjectId _id, String name, String mail, String businessOwnerID, ObjectId _businessOwnerID) {
+        this.id = id;
+        this._id = _id;
+        this.name = name;
+        this.mail = mail;
+        this.businessOwnerID = businessOwnerID;
+        this._businessOwnerID = _businessOwnerID;
+        this.services = new ArrayList<>();
+        this.employees = new ArrayList<>();
     }
 
     public ObjectId get_id() {

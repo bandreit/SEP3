@@ -3,6 +3,7 @@ package sep3.rest.appmngt.model;
 import com.google.gson.annotations.Expose;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Business {
@@ -14,7 +15,14 @@ public class Business {
     private List<String> employees;
     private String businessOwnerID;
 
-    public Business() {
+    public Business(String id, String name, String mail, String businessOwnerID) {
+        this.id = id;
+        this.name = name;
+        this.mail = mail;
+        this.businessOwnerID = businessOwnerID;
+        this.locations = new ArrayList<>();
+        this.services = new ArrayList<>();
+        this.employees = new ArrayList<>();
     }
 
     public void setLocations(List<Location> locations) {

@@ -46,8 +46,7 @@ namespace Client.Data.Impl
 
             String reply = await responseMessage.Content.ReadAsStringAsync();
             businesses = JsonSerializer.Deserialize<List<Business>>(reply);
-
-
+            
             return businesses;
         }
 

@@ -13,6 +13,7 @@
 
 <div class="col-lg-12 control-section">
     <EditForm Model="@_business" OnValidSubmit="@AddNewBusiness" class="content-wrapper">
+        <ObjectGraphDataAnnotationsValidator/>
         <div>
             <h2 class="font-weight-bold">Add your business</h2>
             <p>Please enter details below to add your business</p>
@@ -33,6 +34,8 @@
             </div>
 
 
+            <h3 class="mt-4">Locations:</h3>
+            <hr/>
             <div class=@(_business.Locations.Count > 0 ? "card px-4 mb-4" : "")}>
                 @for (var j = 0; j < _business.Locations.Count; j++)
                 {
@@ -42,11 +45,11 @@
                     <div class="card px-4 my-4">
                         <div class="row">
                             <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
-                                <SfTextBox @bind-Value="location.StreetName" Placeholder="location" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                                <SfTextBox @bind-Value="location.StreetName" Placeholder="Street Name" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
                                 <ValidationMessage For="@(() => location)"/>
                             </div>
                             <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
-                                <SfTextBox @bind-Value="location.StreetNumber" Placeholder="location" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                                <SfTextBox @bind-Value="location.StreetNumber" Placeholder="Street Number" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
                                 <ValidationMessage For="@(() => location)"/>
                             </div>
                         </div>
@@ -60,23 +63,32 @@
                 </div>
             </div>
 
-
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-lg-6 col-md-6 my-2">
-                    <a class="button" href="/AddService" target="_blank" rel="nofollow noopener">Add Service</a>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-lg-6 col-md-6 my-2">
-                    <a class="button" href="" target="_blank" rel="nofollow noopener">Add Employee</a>
-                </div>
-            </div>
-
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-lg-6 col-md-6 my-2">
-                <SfButton IsPrimary="true" type="submit" color="grey" > Create Business</SfButton>
+                <SfButton IsPrimary="true" type="submit" color="grey"> Create Business</SfButton>
             </div>
         </div>
     </EditForm>
+
+    @if (listOfBusinessToshow == null)
+    {
+        <p>
+            <em>Loading Businesses</em>
+        </p>
+    }
+    else
+    {
+        <p> Businesses:</p>
+        <ul>
+            @foreach (var business in listOfBusinessToshow)
+            {
+                <li>@business.Name</li>
+            }
+        </ul>
+    }
+
+
 </div>
 
 <style>
@@ -174,8 +186,8 @@ display: flex;
 
     protected override async Task OnInitializedAsync()
     {
-        // listOfBusinessToshow = await BusinessService.GetBusinessesAsync();
-        // listOfBusiness = listOfBusinessToshow;
+        listOfBusiness = await BusinessService.GetBusinessesAsync();
+        listOfBusinessToshow = listOfBusiness;
     }
 
     private async void AddNewBusiness()
