@@ -37,8 +37,7 @@ namespace Client
             services.AddSyncfusionBlazor();
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IServiceService, ServiceService>();
-            services.AddScoped<IBusinessOwnerService, BusinessOwnerService>();
-            services.AddScoped<IBusinessService, BusinessService>();
+            services.AddSingleton<IBusinessService, BusinessService>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
             services.AddAuthorization(options =>

@@ -12,7 +12,7 @@ namespace Client.Data.Impl
 {
     public class BusinessService : IBusinessService
     {
-        private readonly HttpClient client;
+        private HttpClient client;
 
         public BusinessService()
         {
@@ -22,6 +22,7 @@ namespace Client.Data.Impl
         public async Task<HttpStatusCode> AddBusiness(Business business)
         {
             string familySerialized = JsonSerializer.Serialize(business);
+            HttpClient client = new HttpClient();
 
             StringContent content = new StringContent(
                 familySerialized,
@@ -30,9 +31,23 @@ namespace Client.Data.Impl
             );
             HttpResponseMessage responseMessage =
                 await client.PostAsync("http://localhost:8083/SEP3/business", content);
-            String reply = await responseMessage.Content.ReadAsStringAsync();
-            BusinessOwner result = JsonSerializer.Deserialize<BusinessOwner>(reply);
             return responseMessage.StatusCode;
+        }
+
+        public async Task<IList<Business>> GetBusinessesAsync()
+        {
+            string requestURI = "http://localhost:8083/SEP3/business";
+
+            HttpClient client = new HttpClient();
+            List<Business> businesses = new List<Business>();
+
+            HttpResponseMessage responseMessage =
+                await client.GetAsync(requestURI);
+
+            String reply = await responseMessage.Content.ReadAsStringAsync();
+            businesses = JsonSerializer.Deserialize<List<Business>>(reply);
+            
+            return businesses;
         }
 
         public async Task<HttpStatusCode> AddEmployee(string employeeId, string businessId)
@@ -42,6 +57,7 @@ namespace Client.Data.Impl
             {
                 uri += $"businessId={businessId}&employeeId={employeeId}";
             }
+
             HttpResponseMessage responseMessage = await client.PostAsync(uri, null);
             return responseMessage.StatusCode;
         }

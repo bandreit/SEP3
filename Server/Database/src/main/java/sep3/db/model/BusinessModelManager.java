@@ -16,7 +16,10 @@ import org.bson.types.ObjectId;
 import org.xml.sax.Locator;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -38,10 +41,29 @@ public class BusinessModelManager implements BusinessModel {
         Document newBusiness = new Document();
         newBusiness.append("name", business.getName());
         newBusiness.append("mail", business.getMail());
-        newBusiness.append("businessOwnerID", new ObjectId(business.get_businessOwnerID()));
+        newBusiness.append("businessOwnerID", new ObjectId(business.getBusinessOwnerID()));
 
-        if (business.getLocations() != null)
-            newBusiness.append("locations", business.getLocations());
+        BasicDBList listOfLocations = new BasicDBList();
+        if (business.getLocations() != null) {
+            for (Location location : business.getLocations()) {
+                Document newLocation = new Document();
+                newLocation.put("streetNumber", location.getStreetNumber());
+                newLocation.put("streetName", location.getStreetName());
+                listOfLocations.add(newLocation);
+            }
+        }
+
+        newBusiness.append("locations", listOfLocations);
+
+        if (business.getEmployees() != null) {
+
+            newBusiness.append("employees", business.getEmployees());
+        }
+
+        if (business.getServices() != null) {
+
+            newBusiness.append("services", business.getServices());
+        }
 
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
@@ -61,24 +83,6 @@ public class BusinessModelManager implements BusinessModel {
     }
 
     @Override
-    public List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException {
-        List<Business> listOfBusiness = new ArrayList<>();
-        MongoCursor<Document> cursor = businessCollection.find().iterator();
-
-        if (businessCollection.find().first() != null) {
-            while (cursor.hasNext()) {
-                if (cursor.next().get("_id").equals(new ObjectId(businessOwnerId))) {
-                    Document document = cursor.next();
-                    Business fromDocumentToObject = gson.fromJson(document.toJson(), Business.class);
-                    listOfBusiness.add(fromDocumentToObject);
-                }
-            }
-            return listOfBusiness;
-        }
-        return listOfBusiness;
-    }
-
-    @Override
     public List<Business> getAllBusiness() throws IOException {
         List<Business> listOfBusiness = new ArrayList<>();
         MongoCursor<Document> cursor = businessCollection.find().iterator();
@@ -90,19 +94,28 @@ public class BusinessModelManager implements BusinessModel {
                         .excludeFieldsWithoutExposeAnnotation()
                         .create();
                 Business fromDocumentToObject = gson.fromJson(document.toJson(), Business.class);
-                fromDocumentToObject.set_businessOwnerID(document.get("businessOwnerID").toString());
+                fromDocumentToObject.setBusinessOwnerID(document.get("businessOwnerID").toString());
                 fromDocumentToObject.setId(document.get("_id").toString());
                 List<String> serviceIds = new ArrayList<>();
                 List<String> employeeIds = new ArrayList<>();
+                List<Location> locations = new ArrayList<>();
 
-                for (ObjectId serviceId: (List<ObjectId>) document.get("services")) {
+                for (ObjectId serviceId : (List<ObjectId>) document.get("services")) {
                     serviceIds.add(serviceId.toString());
                 }
 
-                for (ObjectId employeeId: (List<ObjectId>) document.get("employees")) {
+                for (ObjectId employeeId : (List<ObjectId>) document.get("employees")) {
                     employeeIds.add(employeeId.toString());
                 }
 
+                List<Document> objs = (List<Document>) document.get("locations");
+
+                for (Document locationDocument : objs) {
+                    Location location = new Location(locationDocument.get("streetNumber").toString(), locationDocument.get("streetName").toString());
+                    locations.add(location);
+                }
+
+                fromDocumentToObject.setLocations(locations);
                 fromDocumentToObject.setServices(serviceIds);
                 fromDocumentToObject.setEmployees(employeeIds);
                 listOfBusiness.add(fromDocumentToObject);

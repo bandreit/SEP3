@@ -12,5 +12,6 @@ namespace Client.Data.Impl
         Task<HttpStatusCode> AddEmployee(string employeeId, string businessId);
         Task RemoveEmployee(string employeeId, string businessId);
         Task<List<Employee>> GetAllEmployees();
+        Task<IList<Business>> GetBusinessesAsync();
     }
 }

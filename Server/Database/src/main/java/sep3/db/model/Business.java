@@ -13,20 +13,28 @@ public class Business {
     private ObjectId _id;
     @Expose(serialize = true, deserialize = true)
     private String name;
-    @Expose(serialize = true, deserialize = true)
-    private List<String> locations;
+    @Expose(serialize = true, deserialize = false)
+    private List<Location> locations;
     @Expose(serialize = true, deserialize = true)
     private String mail;
     @Expose(serialize = true, deserialize = false)
     private List<String> services;
     @Expose(serialize = true, deserialize = false)
     private List<String> employees;
-    @Expose(serialize = true, deserialize = true)
-    private String _businessOwnerID;
-    @Expose(serialize = true, deserialize = true)
-    private ObjectId businessOwnerID;
+    @Expose(serialize = true, deserialize = false) // null pointer if false
+    private String businessOwnerID;
+    @Expose(serialize = true, deserialize = false) // expected string
+    private ObjectId _businessOwnerID;
 
-    public Business() {
+    public Business(String id, ObjectId _id, String name, String mail, String businessOwnerID, ObjectId _businessOwnerID) {
+        this.id = id;
+        this._id = _id;
+        this.name = name;
+        this.mail = mail;
+        this.businessOwnerID = businessOwnerID;
+        this._businessOwnerID = _businessOwnerID;
+        this.services = new ArrayList<>();
+        this.employees = new ArrayList<>();
     }
 
     public ObjectId get_id() {
@@ -37,24 +45,28 @@ public class Business {
         this._id = _id;
     }
 
-    public void setLocations(List<String> locations) {
+    public void setLocations(List<Location> locations) {
         this.locations = locations;
     }
 
-    public String get_businessOwnerID() {
-        return _businessOwnerID;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    public void set_businessOwnerID(String _businessOwnerID) {
-        this._businessOwnerID = _businessOwnerID;
-    }
-
-    public ObjectId getBusinessOwnerID() {
+    public String getBusinessOwnerID() {
         return businessOwnerID;
     }
 
-    public void setBusinessOwnerID(ObjectId businessOwnerID) {
+    public void setBusinessOwnerID(String businessOwnerID) {
         this.businessOwnerID = businessOwnerID;
+    }
+
+    public ObjectId get_businessOwnerID() {
+        return _businessOwnerID;
+    }
+
+    public void set_businessOwnerID(ObjectId _businessOwnerID) {
+        this._businessOwnerID = _businessOwnerID;
     }
 
     public String getId() {
@@ -73,13 +85,6 @@ public class Business {
         this.name = name;
     }
 
-    public List<String> getLocations() {
-        return locations;
-    }
-
-    public void setLocation(List<String> location) {
-        this.locations = location;
-    }
 
     public String getMail() {
         return mail;

@@ -23,30 +23,30 @@
     }
 </style>
 
-<div class="bs-container">
-    <BookServiceSidebar CurrentStep=@BookingStep/>
-
-    <div>
-        @switch (BookingStep)
-        {
-            case 0:
-                <ReserveLocation OnReserve="@HandleReserveLocation"/>
-                break;
-            case 1:
-                <ReserveProvider OnReserve="@HandleReserveProvider"/>
-                break;
-            case 2:
-                <ReserveTime OnReserve="@HandleReserveTime"/>
-                break;
-            case 3:
-                <ReserveClient OnSubmit="@HandleSubmit"/>
-                break;
-            default:
-                <div></div>
-                break;
-        }
-    </div>
-</div>
+@* <div class="bs-container"> *@
+@*     <BookServiceSidebar CurrentStep=@BookingStep/> *@
+@* *@
+@*     <div> *@
+@*         @switch (BookingStep) *@
+@*         { *@
+@*             case 0: *@
+@*                 <ReserveLocation OnReserve="@HandleReserveLocation"/> *@
+@*                 break; *@
+@*             case 1: *@
+@*                 <ReserveProvider OnReserve="@HandleReserveProvider"/> *@
+@*                 break; *@
+@*             case 2: *@
+@*                 <ReserveTime OnReserve="@HandleReserveTime"/> *@
+@*                 break; *@
+@*             case 3: *@
+@*                 <ReserveClient OnSubmit="@HandleSubmit"/> *@
+@*                 break; *@
+@*             default: *@
+@*                 <div></div> *@
+@*                 break; *@
+@*         } *@
+@*     </div> *@
+@* </div> *@
 
 @code {
     string ServiceId = null;
