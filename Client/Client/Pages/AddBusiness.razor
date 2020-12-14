@@ -70,25 +70,6 @@
             </div>
         </div>
     </EditForm>
-
-    @if (listOfBusinessToshow == null)
-    {
-        <p>
-            <em>Loading Businesses</em>
-        </p>
-    }
-    else
-    {
-        <p> Businesses:</p>
-        <ul>
-            @foreach (var business in listOfBusinessToshow)
-            {
-                <li>@business.Name</li>
-            }
-        </ul>
-    }
-
-
 </div>
 
 <style>

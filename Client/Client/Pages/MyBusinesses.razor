@@ -19,8 +19,8 @@
 
 <div class="services-layout">
     @* <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/> *@
-    
-    
+
+
     @if (listOfBusiness == null)
     {
         <p>Loading businesses...</p>
@@ -29,7 +29,7 @@
     {
         foreach (var business in listOfBusiness)
         {
-            <BusinessCard Name="@business.Name" Services="@business.Services.Count" Employees="@business.Employees.Count"></BusinessCard>
+            <BusinessCard Name="@business.Name" Locations="@business.Locations" Services="@business.Services.Count" Employees="@business.Employees.Count"></BusinessCard>
         }
     }
 </div>
@@ -44,7 +44,7 @@
         Claim userClaim = user.FindFirst(claim => claim.Type.Equals("Id"));
         listOfBusiness = await BusinessService.GetOwnedBusinessesAsync(userClaim.Value);
     }
-    
+
     public void OnClick(String ServiceId)
     {
         NavigationManager.NavigateTo($"/BookService?ServiceId={ServiceId}");

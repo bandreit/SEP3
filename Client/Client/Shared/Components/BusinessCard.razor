@@ -1,11 +1,14 @@
 ﻿@using Syncfusion.Blazor.Cards
 @using Syncfusion.Blazor.Buttons
 @using Microsoft.Extensions.Logging
+@using Client.Models
+@using Client.Data.Impl
+@inject IBusinessService BusinessService
 
 
 <style>
     #BasicCard, #NewIconCard {
-        height: 180px;
+        height: 190px;
         margin: 16px;
     }
     #SideCard {
@@ -19,13 +22,19 @@
    
     .e-card .e-card-content {
         padding-top: 0px;
+        
     }
 </style>
 
 <SfCard ID="BasicCard">
     <CardHeader Title="@Name"/>
     <CardContent>
-        <p>@Services services</p>
+      
+            @foreach (var location in Locations)
+            {
+                <p>@location.StreetName @location.StreetNumber </p>
+            }
+            <p>@Services services</p>
         <p>@Employees employees</p>
     </CardContent>
     <CardFooter>
@@ -37,13 +46,16 @@
 </SfCard>
 
 @code {
-
+    
     [Parameter]
     public String Name { get; set; }
 
     [Parameter]
+    public List<Location> Locations { get; set; }
+
+    [Parameter]
     public int Services { get; set; }
-    
+
     [Parameter]
     public int Employees { get; set; }
 

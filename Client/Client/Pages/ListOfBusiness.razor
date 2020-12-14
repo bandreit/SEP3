@@ -1,0 +1,63 @@
+﻿@page "/ListOfBusiness"
+@using Client.Shared.Components
+@using Client.Models
+@using Client.Data.Impl
+@using System.Diagnostics.CodeAnalysis
+@inject IBusinessService BusinessService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider CustomAuthenticationStateProvider
+
+<div class="services-layout">
+    @if (Businesses == null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else
+    {
+        foreach (var business in Businesses)
+        {
+            <BusinessCard Name="@business.Name" Locations="@business.Locations" Services="@business.Services.Count" Employees="@business.Employees.Count"></BusinessCard>
+        }
+    }
+</div>
+
+
+@code {
+    private IList<Business> Businesses { get; set; }
+    List<Location> locationsToShow = new List<Location>();
+    private string? filterByLocation ;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Businesses = await BusinessService.GetBusinessesAsync();
+    }
+
+    private void FilterByLocation(ChangeEventArgs changeEventArgs)
+    {
+        filterByLocation = null;
+        try
+        {
+            filterByLocation = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {
+        }
+        ExecuteFilter();
+    }
+
+    private void ExecuteFilter()
+    {
+        foreach (var business in Businesses)
+        {
+            locationsToShow = business.Locations.Where(l => filterByLocation != null && l.StreetName == filterByLocation).ToList();
+        }
+    }
+
+    public void OnClick(String ServiceId)
+    {
+        NavigationManager.NavigateTo($"/BookService?ServiceId={ServiceId}");
+    }
+
+}
