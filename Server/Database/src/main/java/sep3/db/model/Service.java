@@ -5,14 +5,24 @@ import org.bson.types.ObjectId;
 public class Service {
     private ObjectId _id;
     private String id;
-    private String name;
+    private String pictureUrl;
+    private String title;
+    private String description;
     private int duration;
+    private ObjectId _businessId;
+    private String businessId;
 
-    public Service(ObjectId _id, String id, String name, int duration) {
-        this._id = _id;
-        this.id = id;
-        this.name = name;
-        this.duration = duration;
+    public Service(ObjectId _id, String id, String pictureUrl, String title, String description, int duration) {
+
+    }
+
+
+    public ObjectId get_businessId() {
+        return _businessId;
+    }
+
+    public void set_businessId(ObjectId _businessId) {
+        this._businessId = _businessId;
     }
 
     public ObjectId get_id() {
@@ -31,12 +41,28 @@ public class Service {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getDuration() {
@@ -45,5 +71,13 @@ public class Service {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 }

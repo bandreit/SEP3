@@ -1,6 +1,10 @@
 ﻿@page "/Services"
 @using Client.Shared.Components
+@using Client.Data
+@using Client.Models
+@using Microsoft.AspNetCore.Mvc.Formatters
 @inject NavigationManager NavigationManager
+@inject IServiceService ServiceService
 
 <style>
     .services-layout {
@@ -9,19 +13,45 @@
         column-gap: 1rem;
         row-gap: 1rem;
     }
+    .search-bar {
+    margin-left: 1.06rem;
+    }
 </style>
 
-<div class="services-layout">
-    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
-    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
-    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
-    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
-    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
-    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
-    <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/>
+<div class="search-bar">
+    <input @bind-value="filterByTitle" @bind-value:event="oninput" placeholder="Search by title"/>
 </div>
 
+<div class="services-layout">
+    @if (_services == null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else
+    {
+        foreach (var service in _servicesToShow)
+        {
+            <ServiceCard Title="@service.title" Content="@service.description" OnClick="@(() => OnClick(@service.id))"/>
+        }
+    }
+</div>
+
+
 @code {
+    private IList<Service> _services { get; set; }
+
+    private string filterByTitle { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _services = await ServiceService.GetAllServices();
+    }
+
+    List<Service> _servicesToShow => _services.Where(t => t.title.ToLower().Contains(filterByTitle.ToLower())).ToList();
+    
+
     public void OnClick(String ServiceId)
     {
         NavigationManager.NavigateTo($"/BookService?ServiceId={ServiceId}");

@@ -1,0 +1,209 @@
+﻿@page "/AddBusiness"
+@using Client.Models
+@using Syncfusion.Blazor.Inputs
+@using System.Net
+@using System.Security.Claims
+@using Client.Authentication
+@using Client.Data.Impl
+@using Syncfusion.Blazor.Charts
+@using Syncfusion.Blazor.Buttons
+@inject IBusinessService BusinessService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider CustomAuthenticationStateProvider
+@attribute [Authorize(Policy = "BusinessOwner")]
+
+<div class="col-lg-12 control-section">
+    <EditForm Model="@_business" OnValidSubmit="@AddNewBusiness" class="content-wrapper">
+        <ObjectGraphDataAnnotationsValidator/>
+        <div>
+            <h2 class="font-weight-bold">Add your business</h2>
+            <p>Please enter details below to add your business</p>
+            <hr/>
+        </div>
+
+        <div class="card px-4 mb-4 pb-4">
+
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                    <SfTextBox @bind-Value="_business.Name" Placeholder="First Name" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                    <ValidationMessage For="@(() => _business.Name)"/>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                    <SfTextBox @bind-Value="_business.Mail" Placeholder="Email" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                    <ValidationMessage For="@(() => _business.Mail)"/>
+                </div>
+            </div>
+
+
+            <h3 class="mt-4">Locations:</h3>
+            <hr/>
+            <div class=@(_business.Locations.Count > 0 ? "card px-4 mb-4" : "")}>
+                @for (var j = 0; j < _business.Locations.Count; j++)
+                {
+                    var locationIndex = j;
+                    Location location = _business.Locations[locationIndex];
+
+                    <div class="card px-4 my-4">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
+                                <SfTextBox @bind-Value="location.StreetName" Placeholder="Street Name" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                                <ValidationMessage For="@(() => location)"/>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
+                                <SfTextBox @bind-Value="location.StreetNumber" Placeholder="Street Number" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                                <ValidationMessage For="@(() => location)"/>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mb-2">
+                            <SfButton CssClass="e-danger" type="button" @onclick="@(() => _business.Locations.RemoveAt(locationIndex))">Remove location</SfButton>
+                        </div>
+                    </div>
+                }
+                <div class="d-flex justify-content-end mb-2">
+                    <SfButton IconCss="e-btn-sb-icons e-add-icon" type="button" CssClass="e-small e-round" IsPrimary="true" @onclick="@(() => _business.Locations.Add(new Location()))"></SfButton>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-lg-6 col-md-6 my-2">
+                <SfButton IsPrimary="true" type="submit" color="grey"> Create Business</SfButton>
+            </div>
+        </div>
+    </EditForm>
+
+    @if (listOfBusinessToshow == null)
+    {
+        <p>
+            <em>Loading Businesses</em>
+        </p>
+    }
+    else
+    {
+        <p> Businesses:</p>
+        <ul>
+            @foreach (var business in listOfBusinessToshow)
+            {
+                <li>@business.Name</li>
+            }
+        </ul>
+    }
+
+
+</div>
+
+<style>
+.button {
+border: none;
+background: grey;
+color: #ffffff !important;
+font-weight: 100;
+padding: 5px;
+text-transform: uppercase;
+border-radius: 6px;
+display: inline-block;
+transition: all 0.3s ease 0s;
+}
+.button:hover {
+color: #404040 !important;
+font-weight: 700 !important;
+letter-spacing: 3px;
+background: none;
+-webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+-moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+transition: all 0.3s ease 0s;
+}
+
+.content-wrapper {
+    width: 90%;
+    margin: 0 auto;
+    min-width: 85px;
+}
+.content-wrapper div.row {
+    padding: 8px 0px;
+}
+.interest-list > ul{
+display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+@@media only screen and (max-width: 480px) {
+    .content-wrapper {
+        width: 92%;
+    }
+
+    .content-wrapper div.row {
+        padding: 0px;
+    }
+}
+#description td {
+    vertical-align: top;
+}
+.e-float-input,
+.e-float-input.e-control-wrapper {
+    margin-top: 0;
+}
+
+
+/*gae*/
+#button-control .col-xs-12 {
+    margin: 15px 0;
+}
+@@font-face {
+    font-family: 'button-icons';
+    src: url(data:application/x-font-ttf;charset=utf-8;base64,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) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+.e-btn-sb-icons {
+    font-family: 'button-icons';
+    line-height: 1;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.e-play-icon::before {
+    content: '\e701';
+}
+.e-pause-icon::before {
+    content: '\e705';
+}
+.e-open-icon::before {
+    content: '\e70d';
+}
+.e-add-icon::before {
+    content: '\e70a';
+}
+</style>
+
+@code {
+    private Business _business = new Business();
+    private IList<Business> listOfBusiness;
+    private IList<Business> listOfBusinessToshow;
+
+    protected override async Task OnInitializedAsync()
+    {
+        listOfBusiness = await BusinessService.GetBusinessesAsync();
+        listOfBusinessToshow = listOfBusiness;
+    }
+
+    private async void AddNewBusiness()
+    {
+        var authState = await CustomAuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        Claim userClaim = user.FindFirst(claim => claim.Type.Equals("Id"));
+        _business.BusinessOwnerId = userClaim.Value;
+        HttpStatusCode statusCode = await BusinessService.AddBusiness(_business);
+
+        if (statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.OK)
+        {
+            NavigationManager.NavigateTo("/BookService");
+            StateHasChanged();
+        }
+    }
+
+}

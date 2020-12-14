@@ -1,8 +1,7 @@
 package sep3.rest.appmngt.controller;
 
-import sep3.rest.appmngt.model.BusinessOwner;
+import sep3.rest.appmngt.model.Business;
 import sep3.rest.appmngt.model.User;
-import sep3.rest.appmngt.service.BusinessOwnerService;
 import sep3.rest.appmngt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +40,17 @@ public class AuthenticateController {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
+    }
+    @PostMapping("/newUser")
+    public ResponseEntity<User> postUser(@RequestBody User user){
+        try {
+            System.out.println("zdarova");
+            System.out.println(user);
+            userService.addUser(user);
+            return ResponseEntity.ok(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

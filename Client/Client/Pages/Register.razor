@@ -13,59 +13,59 @@
         <EditForm Model="@newUser" OnValidSubmit="@RegisterUser">
             <DataAnnotationsValidator/>
             <div class="col-md-12 align-items-start">
-            <h2>Register</h2>
-            <p class="mb-2">
-                Fill out the form
-            </p>
-        </div>
-        <div class="col-md-12">
-            <SfTextBox @bind-Value="newUser.UserName" Placeholder="Username" name="username" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-            <ValidationMessage For="@(() => newUser.UserName)"/>
-        </div>
-        <div class="col-md-12">
-            <SfTextBox @bind-Value="newUser.FirstName" Placeholder="First Name" name="fname" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-            <ValidationMessage For="@(() => newUser.FirstName)"/>
-        </div>
-        <div class="col-md-12">
-            <SfTextBox @bind-Value="newUser.LastName" Placeholder="Last Name" Name="lname" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-            <ValidationMessage For="@(() => newUser.LastName)"/>
-        </div>
-        <div class="col-md-12 mt-2">
-            <SfTextBox @bind-Value="newUser.Password" Placeholder="Password" name="pwd" Type="InputType.Password" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-            <ValidationMessage For="@(() => newUser.Password)"/>
-        </div>
-        <div class="col-md-12 mt-2">
-            <SfTextBox @bind-Value="newUser.Email" Placeholder="Email" name="email" Type="InputType.Email" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-            <ValidationMessage For="@(() => newUser.Email)"/>
-        </div>
-        <div class="col-md-12 mt-2">
-            <SfTextBox @bind-Value="newUser.Phone" Placeholder="Phone number" name="phone" Type="InputType.Tel" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-            <ValidationMessage For="@(() => newUser.Phone)"/>
-        </div>
-        <div class="col-md-12 mt-2">
-            <SfTextBox @bind-Value="newUser.City" Placeholder="City" Type="InputType.Text" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-            <ValidationMessage For="@(() => newUser.City)"/>
-        </div>
-        <div class="col-md-12 mt-2">
-            <div class="control-section">
-                <div class="radio-control">
-                    <p class="row">Role</p>
-                    <div class="row">
-                        <SfRadioButton Label="Client" Value="client" type="radio" Checked="@CheckedValue" @onchange="SelectionChange" Name="role"></SfRadioButton>
-                    </div>
-                    <div class="row">
-                        <SfRadioButton Label="Business Owner" Value="businessOwner" type="radio" Checked="@CheckedValue" @onchange="SelectionChange" Name="role"></SfRadioButton>
-                    </div>
-                    <div class="row">
-                        <SfRadioButton Label="Employee" Value="employee" type="radio" Checked="@CheckedValue" @onchange="SelectionChange" Name="role"></SfRadioButton>
+                <h2>Register</h2>
+                <p class="mb-2">
+                    Fill out the form
+                </p>
+            </div>
+            <div class="col-md-12">
+                <SfTextBox @bind-Value="newUser.UserName" Placeholder="Username" name="username" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => newUser.UserName)"/>
+            </div>
+            <div class="col-md-12">
+                <SfTextBox @bind-Value="newUser.FirstName" Placeholder="First Name" name="fname" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => newUser.FirstName)"/>
+            </div>
+            <div class="col-md-12">
+                <SfTextBox @bind-Value="newUser.LastName" Placeholder="Last Name" Name="lname" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => newUser.LastName)"/>
+            </div>
+            <div class="col-md-12 mt-2">
+                <SfTextBox @bind-Value="newUser.Password" Placeholder="Password" name="pwd" Type="InputType.Password" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => newUser.Password)"/>
+            </div>
+            <div class="col-md-12 mt-2">
+                <SfTextBox @bind-Value="newUser.Email" Placeholder="Email" name="email" Type="InputType.Email" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => newUser.Email)"/>
+            </div>
+            <div class="col-md-12 mt-2">
+                <SfTextBox @bind-Value="newUser.Phone" Placeholder="Phone number" name="phone" Type="InputType.Tel" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => newUser.Phone)"/>
+            </div>
+            <div class="col-md-12 mt-2">
+                <SfTextBox @bind-Value="newUser.City" Placeholder="City" Type="InputType.Text" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => newUser.City)"/>
+            </div>
+            <div class="col-md-12 mt-2 px-5">
+                <div class="control-section">
+                    <div class="radio-control">
+                        <p class="row">Role</p>
+                        <div class="row">
+                            <SfRadioButton Label="Client" Value="client" type="radio" Checked="@CheckedValue" @onchange="SelectionChange" Name="role"></SfRadioButton>
+                        </div>
+                        <div class="row">
+                            <SfRadioButton Label="Business Owner" Value="businessOwner" type="radio" Checked="@CheckedValue" @onchange="SelectionChange" Name="role"></SfRadioButton>
+                        </div>
+                        <div class="row">
+                            <SfRadioButton Label="Employee" Value="employee" type="radio" Checked="@CheckedValue" @onchange="SelectionChange" Name="role"></SfRadioButton>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-12 my-4">
-            <SfButton IsPrimary="true" CssClass="e-info" type="submit">Register</SfButton>
-        </div>
-        <div style="color:red">@errorMessage</div>
+            <div class="col-md-12 my-4">
+                <SfButton IsPrimary="true" CssClass="e-info" type="submit">Register</SfButton>
+            </div>
+            <div style="color:red">@errorMessage</div>
         </EditForm>
     </div>
 </div>
@@ -74,12 +74,16 @@
     .e-info {
        width: 100%;
     }
+    
+    form {
+    width: 100%
+    }
 </style>
 
 @code {
     private string errorMessage;
-    private string CheckedValue="client";
-    private User newUser=new User();
+    private string CheckedValue = "client";
+    private User newUser = new User();
 
     public async Task RegisterUser()
     {

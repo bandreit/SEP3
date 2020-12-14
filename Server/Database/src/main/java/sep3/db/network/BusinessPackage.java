@@ -1,7 +1,6 @@
 package sep3.db.network;
 
 import sep3.db.model.Business;
-import sep3.db.model.BusinessOwner;
 
 public class BusinessPackage extends NetworkPackage {
 

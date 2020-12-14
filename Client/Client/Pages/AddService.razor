@@ -1,0 +1,56 @@
+﻿@page "/AddService"
+@using Client.Shared.Components
+@inject IServiceService ServiceService;
+@using Client.Models
+@using Client.Data
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager NavigationManager;
+@attribute [Authorize(Policy = "BusinessOwner")]
+
+<style>
+    .content-wrapper {
+        width: 90%;
+        margin: 0 auto;
+        min-width: 85px;
+    }
+</style>
+
+<div class="col-lg-12 content-wrapper">
+    <div>
+        <h2 class="font-weight-bold">Add a service to your business</h2>
+        <p>Please enter details below to add the service</p>
+        <hr/>
+    </div>
+    <div class="card">
+        <AddServiceForm OnSubmit="@HandleSubmit"/>
+    </div>
+    
+</div>
+
+@code {
+    private String businessId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var query = new Uri(NavigationManager.Uri).Query;
+
+        if (QueryHelpers.ParseQuery(query).TryGetValue("businessId", out var value))
+        {
+            businessId = Convert.ToString(value);
+        }
+    }
+
+    public async void HandleSubmit(Service service)
+    {
+        try
+        {
+            service.businessId = businessId;
+            await ServiceService.addService(service);
+            NavigationManager.NavigateTo("/services");
+        }
+        catch
+        {
+        }
+    }
+
+}

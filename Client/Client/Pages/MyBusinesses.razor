@@ -1,0 +1,53 @@
+﻿@page "/OwnedBusinesses"
+@using Client.Shared.Components
+@using Client.Data.Impl
+@using Client.Models
+@using System.Security.Claims
+@inject NavigationManager NavigationManager
+@inject IBusinessService BusinessService
+@inject AuthenticationStateProvider CustomAuthenticationStateProvider
+@attribute [Authorize(Policy = "BusinessOwner")]
+
+<style>
+    .services-layout {
+        display:  grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 1rem;
+        row-gap: 1rem;
+    }
+</style>
+
+<div class="services-layout">
+    @* <ServiceCard Title="Hello" Content="World" OnClick="@(() => OnClick("Hello"))"/> *@
+    
+    
+    @if (listOfBusiness == null)
+    {
+        <p>Loading businesses...</p>
+    }
+    else
+    {
+        foreach (var business in listOfBusiness)
+        {
+            <BusinessCard Name="@business.Name" Services="@business.Services.Count" Employees="@business.Employees.Count"></BusinessCard>
+        }
+    }
+</div>
+
+@code {
+    private IList<Business> listOfBusiness;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await CustomAuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        Claim userClaim = user.FindFirst(claim => claim.Type.Equals("Id"));
+        listOfBusiness = await BusinessService.GetOwnedBusinessesAsync(userClaim.Value);
+    }
+    
+    public void OnClick(String ServiceId)
+    {
+        NavigationManager.NavigateTo($"/BookService?ServiceId={ServiceId}");
+    }
+
+}

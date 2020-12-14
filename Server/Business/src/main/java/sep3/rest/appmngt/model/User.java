@@ -1,34 +1,45 @@
 package sep3.rest.appmngt.model;
 
+import org.bson.types.ObjectId;
+
 import java.util.Objects;
 
 public class User {
     private String id;
     private String userName;
     private String password;
-    private String domain;
+    private String email;
     private String city;
     private String role;
-    private int securityLevel;
+    private String firstName;
+    private String lastName;
+    private String phone;
 
-    public User(String id, String userName, String password, String domain, String city, String role, int securityLevel) {
+    public User(String id, String userName, String password, String email, String city, String role, String firstName, String lastName, String phone) {
         this.id = id;
         this.userName = userName;
         this.password = password;
-        this.domain = domain;
+        this.email = email;
         this.city = city;
         this.role = role;
-        this.securityLevel = securityLevel;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+    }
+
+    public User() {
     }
 
     public User(String userName, String password) {
         this.id = null;
         this.userName = userName;
         this.password = password;
-        this.domain = null;
+        this.email = null;
         this.city = null;
         this.role = null;
-        this.securityLevel = 0;
+        this.firstName=null;
+        this.lastName=null;
+        this.phone=null;
     }
 
     public String getId() {
@@ -55,14 +66,6 @@ public class User {
         this.password = password;
     }
 
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
     public String getCity() {
         return city;
     }
@@ -79,12 +82,36 @@ public class User {
         this.role = role;
     }
 
-    public int getSecurityLevel() {
-        return securityLevel;
+    public String getEmail() {
+        return email;
     }
 
-    public void setSecurityLevel(int securityLevel) {
-        this.securityLevel = securityLevel;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int hashCode() {

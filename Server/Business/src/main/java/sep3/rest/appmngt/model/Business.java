@@ -1,69 +1,84 @@
 package sep3.rest.appmngt.model;
 
+import com.google.gson.annotations.Expose;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Business {
-    private ObjectId _id;
     private String id;
     private String name;
-    private String location;
+    private List<Location> locations;
     private String mail;
-    private String service;
+    private List<String> services;
+    private List<String> employees;
+    private String businessOwnerID;
 
-    public Business(ObjectId _id,String id,String name, String location, String mail, String service) {
-        this._id = _id;
-        this.id=id;
-        this.name = name;
-        this.location = location;
-        this.mail = mail;
-        this.service = service;
-    }
-
-    public ObjectId get_id() {
-        return _id;
-    }
-
-    public void setId(String id) {
+    public Business(String id, String name, String mail, String businessOwnerID) {
         this.id = id;
+        this.name = name;
+        this.mail = mail;
+        this.businessOwnerID = businessOwnerID;
+        this.locations = new ArrayList<>();
+        this.services = new ArrayList<>();
+        this.employees = new ArrayList<>();
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public String getBusinessOwnerID() {
+        return businessOwnerID;
+    }
+
+    public void setBusinessOwnerID(String businessOwnerID) {
+        this.businessOwnerID = businessOwnerID;
     }
 
     public String getId() {
         return id;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public String getService() {
-        return service;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+
+    public String getMail() {
+        return mail;
     }
 
     public void setMail(String mail) {
         this.mail = mail;
     }
 
-    public void setService(String service) {
-        this.service = service;
+    public List<String> getServices() {
+        return services;
+    }
+
+    public void setServices(List<String> services) {
+        this.services = services;
+    }
+
+    public List<String> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<String> employees) {
+        this.employees = employees;
     }
 }
