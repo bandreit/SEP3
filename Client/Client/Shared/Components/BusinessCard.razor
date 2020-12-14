@@ -1,6 +1,7 @@
 ﻿@using Syncfusion.Blazor.Cards
 @using Syncfusion.Blazor.Buttons
 @using Microsoft.Extensions.Logging
+@using Client.Models
 
 
 <style>
@@ -30,7 +31,7 @@
     </CardContent>
     <CardFooter>
         <CardFooterContent>
-            <SfButton CssClass="e-btn e-outline e-primary">Edit</SfButton>
+            <SfButton CssClass="e-btn e-outline e-primary" @onclick="@(() => EditThisBusiness.InvokeAsync(Business.Id))">Edit</SfButton>
             @* <SfButton CssClass="e-btn e-outline e-primary" @onclick="@(() => OnClick?.Invoke())">Book an appointment</SfButton> *@
         </CardFooterContent>
     </CardFooter>
@@ -38,6 +39,8 @@
 
 @code {
 
+    [Parameter]
+    public Business Business { get; set; }
     [Parameter]
     public String Name { get; set; }
 
@@ -47,7 +50,9 @@
     [Parameter]
     public int Employees { get; set; }
 
+    /*[Parameter]
+    public Action OnClick { get; set; }*/
     [Parameter]
-    public Action OnClick { get; set; }
+    public EventCallback<string?> EditThisBusiness { get; set; }
 
 }
