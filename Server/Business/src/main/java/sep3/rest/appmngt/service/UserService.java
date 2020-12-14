@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService {
     User ValidateUser(String userName, String password) throws IOException;
 
-    void addUser(User user) throws IOException;
+    User addUser(User user) throws IOException;
 
     List<Employee> getAllEmployees() throws IOException;
 }

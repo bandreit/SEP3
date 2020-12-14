@@ -5,6 +5,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -36,6 +37,26 @@ public class UserModelManager implements UserModel {
             }
             return null;
         }
+    }
+
+    @Override
+    public User RegisterUser(User user) {
+        Document newUser = new Document();
+        newUser.append("userName", user.getUserName());
+        newUser.append("password", user.getPassword());
+        newUser.append("email", user.getEmail());
+        newUser.append("city", user.getCity());
+        newUser.append("role", user.getRole());
+        newUser.append("firstName", user.getFirstName());
+        newUser.append("lastName", user.getLastName());
+        newUser.append("phone", user.getPhone());
+
+        usersCollection.insertOne(newUser);
+
+        ObjectId generatedServiceObjectID = (ObjectId) newUser.get("_id");
+        user.setId(generatedServiceObjectID.toString());
+
+        return user;
     }
 
     @Override
