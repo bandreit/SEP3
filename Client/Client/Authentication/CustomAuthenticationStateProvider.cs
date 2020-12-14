@@ -78,11 +78,6 @@ namespace Client.Authentication
             claims.Add(new Claim("Id", user.Id));
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             claims.Add(new Claim("Role", user.Role));
-            claims.Add(new Claim("City", user.City));
-            claims.Add(new Claim("Email", user.Email));
-            claims.Add(new Claim("FirstName", user.FirstName));
-            claims.Add(new Claim("LastName", user.LastName));
-            claims.Add(new Claim("Phone", user.Phone));
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
         }

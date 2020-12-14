@@ -23,15 +23,12 @@
                     <SfTextBox @bind-Value="password" Placeholder="Password" Type="InputType.Password" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
                 </div>
                 <div class="col-md-12 my-4">
-                    <SfButton IsPrimary="true" CssClass="e-info" type="button" @onclick="PerformLogin">Log In</SfButton>
+                    <SfButton IsPrimary="true" CssClass="e-info" type="button" disabled="@buttonDisabled" @onclick="PerformLogin">Log In</SfButton>
                 </div>
                 <div style="color:red">@errorMessage</div>
             </div>
         </div>
     </NotAuthorized>
-    <Authorized>
-        <a href="" @onclick="PerformLogout"> Log out </a>
-    </Authorized>
 </AuthorizeView>
 
 <style>
@@ -44,19 +41,23 @@
     private string username;
     private string password;
     private string errorMessage;
+    private bool buttonDisabled = false;
 
     public async Task PerformLogin()
     {
         errorMessage = "";
         try
         {
+            buttonDisabled = true;
             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(username, password);
+            buttonDisabled = false;
             username = "";
             password = "";
             NavigationManager.NavigateTo("/");
         }
         catch (Exception e)
         {
+            buttonDisabled = false;
             errorMessage = e.Message;
         }
     }

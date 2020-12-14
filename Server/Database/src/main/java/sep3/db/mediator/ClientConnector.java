@@ -8,22 +8,25 @@ import sep3.db.model.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientConnector implements Runnable {
     final int PORT = 9876;
     private ServerSocket welcomeSocket;
     private UserModel modelManager;
     private BusinessModel businessModel;
-    private BusinessOwnerModel businessOwnerModel;
+    private ServiceModel serviceModel;
 
     public ClientConnector() throws IOException {
+        Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
         this.welcomeSocket = new ServerSocket(PORT);
         MongoClient mongoClient = MongoClients.create(
                 "mongodb+srv://user:7olkRK2xZV6pPp1a@cluster.efwee.mongodb.net/Cluster?retryWrites=true&w=majority");
         MongoDatabase database = mongoClient.getDatabase("sep3");
         this.modelManager = new UserModelManager(database);
         this.businessModel = new BusinessModelManager(database);
-        this.businessOwnerModel = new BusinessOwnerModelManager(database);
+        this.serviceModel = new ServiceModelManager(database);
     }
 
     @Override
@@ -33,7 +36,7 @@ public class ClientConnector implements Runnable {
             try {
                 Socket socket = welcomeSocket.accept();
                 System.out.println("Tier 2 connected");
-                ClientHandler clientHandler = new ClientHandler(socket, modelManager,businessOwnerModel,businessModel);
+                ClientHandler clientHandler = new ClientHandler(socket, modelManager, businessModel, serviceModel);
                 Thread t = new Thread(clientHandler);
                 t.setDaemon(true);
                 t.start();
