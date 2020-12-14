@@ -66,10 +66,10 @@ namespace Client.Data.Impl
             return ownedBusinesses;
         }
 
-        public async Task<Business> GetBusiness(int id)
+        public async Task<Business> GetBusiness(string id)
         {
             HttpClient client = new HttpClient();
-                string requestURI = $"http://localhost:8083/SEP3/business/{id}";
+                string requestURI = $"http://localhost:8083/SEP3/this-business?businessId={id}";
                 string message = await client.GetStringAsync(requestURI);
                 Business result = JsonSerializer.Deserialize<Business>(message);
                 return result;
@@ -87,7 +87,7 @@ namespace Client.Data.Impl
                 MediaTypeNames.Application.Json
             );
 
-            HttpResponseMessage responseMessage = await client.PutAsync($"http://localhost:8083/SEP3/business/{newBusiness.Id}", content);
+            HttpResponseMessage responseMessage = await client.PutAsync($"http://localhost:8083/SEP3/this-business", content);
         }
 
         public async Task<HttpStatusCode> AddEmployee(string employeeId, string businessId)
