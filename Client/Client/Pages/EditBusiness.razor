@@ -1,0 +1,132 @@
+﻿@page "/EditBusiness"
+@using Client.Models
+@using Syncfusion.Blazor.Inputs
+@using System.Net
+@using Syncfusion.Blazor.DropDowns
+@inject NavigationManager NavigationManager
+@using Syncfusion.Blazor.Buttons
+@using System.Web
+@using Client.Data.Impl
+@using Microsoft.VisualBasic.CompilerServices
+@inject IBusinessService BusinessService
+
+<div class="col-lg-12 control-section">
+<EditForm Model="@newBusiness" OnValidSubmit="@EditThisBusiness" class="content-wrapper">
+<ObjectGraphDataAnnotationsValidator/>
+
+<div>
+    <h2 class="font-weight-bold">Edit Business</h2>
+    <p>Please enter details below to edit the business</p>
+    <hr/>
+</div>
+
+<div id="form-div" class="card p-4">
+<hr style="margin-bottom: 0"/>
+<div class="row">
+    <div class="col-xs-8 col-sm-8 col-lg-8 col-md-8">
+        <SfTextBox @bind-Value="newBusiness.Name" Placeholder="First Name" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+        <ValidationMessage For="@(() => newBusiness.Name)"/>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-lg-4 col-md-4">
+        <SfTextBox CssClass="e-bigger" @bind-Value="@newBusiness.Mail" Placeholder="Email" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+        <ValidationMessage For="@(() => newBusiness.Mail)"/>
+    </div>
+</div>
+
+@* Locations *@
+<h3 class="mt-4">Locations:</h3>
+<hr/>
+@for (var i = 0; i < newBusiness.Locations.Count; i++)
+{
+    var index = i;
+    var location = newBusiness.Locations[index];
+
+    <div class="card px-4 mb-4">
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <SfTextBox @bind-Value="location.StreetName" Placeholder="Street Name" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => location.StreetName)"/>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <SfTextBox @bind-Value="location.StreetNumber" Placeholder="Street Number" CssClass="e-bigger e-rtl" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => location.StreetNumber)"/>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end mb-2">
+            <SfButton CssClass="e-danger" type="button" @onclick="@(() => newBusiness.Locations.RemoveAt(index))">Remove Location</SfButton>
+        </div>
+    </div>
+}
+
+<div class="d-flex justify-content-end mb-2">
+    <SfButton IconCss="e-btn-sb-icons e-add-icon" CssClass="e-small e-round" IsPrimary="true" type="button" @onclick="@(() => newBusiness.Locations.Add(new Location()))"></SfButton>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-lg-6 col-md-6 my-2">
+    <SfButton IsPrimary="true" type="submit">Edit Family</SfButton>
+</div>
+</div>
+</EditForm>
+</div>
+
+<style>
+.content-wrapper {
+    width: 90%;
+    margin: 0 auto;
+    min-width: 85px;
+}
+.content-wrapper div.row {
+    padding: 8px 0px;
+}
+.interest-list > ul{
+display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+@@media only screen and (max-width: 480px) {
+    .content-wrapper {
+        width: 92%;
+    }
+    
+    .content-wrapper div.row {
+        padding: 0px;
+    }
+}
+#description td {
+    vertical-align: top;
+}
+        
+        
+/*gae*/
+#button-control .col-xs-12 {
+    margin: 15px 0;
+}
+@@font-face {
+    font-family: 'button-icons';
+    src: url(data:application/x-font-ttf;charset=utf-8;base64,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) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}       
+       
+        
+</style>
+
+@code {
+    private Business newBusiness = new Business();
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        string businessId = HttpUtility.ParseQueryString(NavigationManager.ToAbsoluteUri(NavigationManager.Uri).Query).Get("id");
+        newBusiness = await BusinessService.GetBusiness(IntegerType.FromString(businessId));
+    }
+
+    private async void EditThisBusiness()
+    {
+        await BusinessService.EditBusiness(newBusiness);
+        NavigationManager.NavigateTo("/OwnedBusinesses");
+    }
+
+}

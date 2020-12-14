@@ -66,6 +66,30 @@ namespace Client.Data.Impl
             return ownedBusinesses;
         }
 
+        public async Task<Business> GetBusiness(int id)
+        {
+            HttpClient client = new HttpClient();
+                string requestURI = $"http://localhost:8083/SEP3/business/{id}";
+                string message = await client.GetStringAsync(requestURI);
+                Business result = JsonSerializer.Deserialize<Business>(message);
+                return result;
+        }
+
+        public async Task EditBusiness(Business newBusiness)
+        {
+            HttpClient client = new HttpClient();
+
+            string businessSerialized = JsonSerializer.Serialize(newBusiness);
+
+            StringContent content = new StringContent(
+                businessSerialized,
+                Encoding.UTF8,
+                MediaTypeNames.Application.Json
+            );
+
+            HttpResponseMessage responseMessage = await client.PutAsync($"http://localhost:8083/SEP3/business/{newBusiness.Id}", content);
+        }
+
         public async Task<HttpStatusCode> AddEmployee(string employeeId, string businessId)
         {
             string uri = "http://localhost:8083/SEP3/employee?";
