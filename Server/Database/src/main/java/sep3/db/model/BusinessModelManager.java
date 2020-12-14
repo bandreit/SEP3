@@ -125,4 +125,27 @@ public class BusinessModelManager implements BusinessModel {
         return listOfBusiness;
     }
 
+    @Override
+    public void editBusiness(Business business) {
+        Document query=new Document();
+        query.append("_id", new ObjectId(business.getId()));
+        Document editedBusiness = new Document();
+        editedBusiness.append("name", business.getName());
+        editedBusiness.append("mail", business.getMail());
+
+        BasicDBList locations = new BasicDBList();
+        if (business.getLocations() != null) {
+            for (Location location : business.getLocations()) {
+                Document newLocation = new Document();
+                newLocation.put("streetNumber", location.getStreetNumber());
+                newLocation.put("streetName", location.getStreetName());
+                locations.add(newLocation);
+            }
+        }
+        editedBusiness.append("locations", locations);
+        Document update=new Document();
+        update.append("$set", editedBusiness);
+        businessCollection.updateOne(query,update);
+    }
+
 }

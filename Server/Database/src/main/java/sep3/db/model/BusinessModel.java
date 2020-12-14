@@ -10,4 +10,5 @@ public interface BusinessModel {
     void addEmployee(String employeeId, String businessId);
     void removeEmployee(String employeeId, String businessId);
     public List<Business> getAllBusiness() throws IOException;
+    void editBusiness(Business business);
 }
