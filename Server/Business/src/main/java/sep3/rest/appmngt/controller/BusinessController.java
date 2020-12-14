@@ -53,9 +53,9 @@ public class BusinessController {
     }
 
     @PostMapping("/employee")
-    public ResponseEntity addEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
+    public ResponseEntity addEmployee(@RequestParam String businessId, @RequestParam String employeeId, @RequestParam String serviceId) {
         try {
-            businessService.addEmployee(employeeId, businessId);
+            businessService.addEmployee(employeeId, businessId, serviceId);
             return ResponseEntity.ok().build();
         } catch (IOException e) {
             e.printStackTrace();

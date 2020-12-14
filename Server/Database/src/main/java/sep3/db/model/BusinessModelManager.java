@@ -29,10 +29,12 @@ public class BusinessModelManager implements BusinessModel {
 
 
     private final MongoCollection<Document> businessCollection;
+    private final MongoCollection<Document> employeeCollection;
     private final Gson gson;
 
     public BusinessModelManager(MongoDatabase database) {
         businessCollection = database.getCollection("business");
+        employeeCollection = database.getCollection("users");
         gson = new Gson();
     }
 
@@ -73,8 +75,9 @@ public class BusinessModelManager implements BusinessModel {
     }
 
     @Override
-    public void addEmployee(String employeeId, String businessId) {
+    public void addEmployee(String employeeId, String businessId, String serviceId) {
         businessCollection.updateOne(eq("_id", new ObjectId(businessId)), Updates.addToSet("employees", new ObjectId(employeeId)));
+        employeeCollection.updateOne(eq("_id", new ObjectId(employeeId)), Updates.addToSet("serviceIdList", new ObjectId(serviceId)));
     }
 
     @Override

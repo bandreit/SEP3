@@ -1,14 +1,42 @@
 @page "/AddEmployee"
 @using Client.Data.Impl
+@using Client.Models
+@using Client.Data
+@using System.Security.Claims
+@using Microsoft.AspNetCore.WebUtilities
 @attribute [Authorize(Policy = "BusinessOwner")]
 @inject NavigationManager NavigationManager
 @inject IBusinessService BusinessService
+@inject IServiceService ServiceService
+@inject AuthenticationStateProvider CustomAuthenticationStateProvider
+@using Syncfusion.Blazor.DropDowns
+
 
 <style>
     .content-wrapper {
         width: 90%;
         margin: 0 auto;
         min-width: 85px;
+    }
+    .button {
+    border: none;
+    background: grey;
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 5px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+    }
+    .button:hover {
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
     }
 </style>
 
@@ -18,10 +46,95 @@
         <p>Please enter details below to add the employee</p>
         <hr/>
     </div>
-    
+    <div class="card px-4 mb-4 pb-4">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <SfDropDownList TValue="string?" TItem="Service" PopupHeight="350px" PopupWidth="350px" Placeholder="Select a service" DataSource="@_services">
+                    <DropDownListEvents TItem="Service" TValue="string" ValueChange="@(args) => {this.selectedServiceId = args.ItemData.id; }"></DropDownListEvents>
+                    <DropDownListFieldSettings Value="id" Text="title"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <SfDropDownList TValue="string?" TItem="Employee" PopupHeight="350px" PopupWidth="350px" Placeholder="Select an employee" DataSource="@_employees">
+                    <DropDownListEvents TItem="Employee" TValue="string" ValueChange="@(args) => {this.selectedEmployeeId = args.ItemData.Id;}"></DropDownListEvents>
+                    <DropDownListFieldSettings Value="Id" Text="UserName"></DropDownListFieldSettings>
+                </SfDropDownList>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="btn">
+            <SfButton IsPrimary="true" @onclick="HandleSubmit">Create</SfButton>
+        </div>
+    </div>
 </div>
 
+
 @code {
+    private IList<Employee> _employees = new List<Employee>();
+    private IList<Service> _services = new List<Service>();
+    private string businessId;
+    private string selectedEmployeeId;
+    private string selectedServiceId;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var query = new Uri(NavigationManager.Uri).Query;
+
+        if (QueryHelpers.ParseQuery(query).TryGetValue("businessId", out var value))
+        {
+            businessId = Convert.ToString(value);
+        }
+        if (businessId == null)
+        {
+            NavigationManager.NavigateTo("/OwnedBusinesses");
+            return;
+        }
+
+        var employeeData = await BusinessService.GetAllEmployees();
+        for (int i = 0; i < employeeData.Count; i++)
+        {
+            if (employeeData[i].serviceIdList.Count == 0)
+            {
+                _employees.Add(employeeData[i]);
+            }
+        }
+
+        var serviceData = await ServiceService.GetServicesByBusinessId(businessId);
+        for (int i = 0; i < serviceData.Count; i++)
+        {
+            _services.Add(serviceData[i]);
+        }
+    }
     
-    
+    public void OnChangeService(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string, Service> args)
+    {
+        this.selectedServiceId = args.ItemData.id;
+    }
+
+    public void OnChangeEmployee(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string, Employee> args)
+    {
+        this.selectedEmployeeId = args.ItemData.Id;
+    }
+
+    public async void HandleSubmit()
+    {
+        if (selectedEmployeeId == null)
+        {
+            return;
+        }
+        try
+        {
+           await  BusinessService.AddEmployee(selectedEmployeeId, businessId, selectedServiceId);
+            NavigationManager.NavigateTo("/EditBusiness");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
 }

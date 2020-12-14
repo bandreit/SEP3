@@ -7,21 +7,13 @@
 @inject NavigationManager NavigationManager;
 @attribute [Authorize(Policy = "BusinessOwner")]
 
-<style>
-    .content-wrapper {
-        width: 90%;
-        margin: 0 auto;
-        min-width: 85px;
-    }
-</style>
-
 <div class="col-lg-12 content-wrapper">
     <div>
         <h2 class="font-weight-bold">Add a service to your business</h2>
         <p>Please enter details below to add the service</p>
         <hr/>
     </div>
-    <div class="card">
+    <div>
         <AddServiceForm OnSubmit="@HandleSubmit"/>
     </div>
     
@@ -46,7 +38,7 @@
         {
             service.businessId = businessId;
             await ServiceService.addService(service);
-            NavigationManager.NavigateTo("/services");
+            NavigationManager.NavigateTo("/EditBusiness");
         }
         catch
         {

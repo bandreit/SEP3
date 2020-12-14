@@ -66,12 +66,12 @@ namespace Client.Data.Impl
             return ownedBusinesses;
         }
 
-        public async Task<HttpStatusCode> AddEmployee(string employeeId, string businessId)
+        public async Task<HttpStatusCode> AddEmployee(string employeeId, string businessId, string serviceId)
         {
             string uri = "http://localhost:8083/SEP3/employee?";
             if (employeeId != null && businessId != null)
             {
-                uri += $"businessId={businessId}&employeeId={employeeId}";
+                uri += $"businessId={businessId}&employeeId={employeeId}&serviceId={serviceId}";
             }
 
             HttpResponseMessage responseMessage = await client.PostAsync(uri, null);
