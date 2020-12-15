@@ -5,6 +5,7 @@
 @using Client.Shared.Containers
 @using Client.Models
 @using Client.Data
+@using Client.Data.Impl
 @inject IAppointmentService AppointmentService
 
 <style>
@@ -36,10 +37,10 @@
                 <ReserveLocation OnReserve="@HandleReserveLocation"/>
                 break;
             case 1:
-                <ReserveProvider OnReserve="@HandleReserveProvider"/>
+                <ReserveTime Appointments="@_appointments" OnReserve="@HandleReserveTime"/>
                 break;
             case 2:
-                <ReserveTime OnReserve="@HandleReserveTime"/>
+                <ReserveEmployee OnReserve="@HandleReserveEmployee"/>
                 break;
             case 3:
                 <ReserveClient OnSubmit="@HandleSubmit"/>
@@ -52,6 +53,7 @@
 </div>
 
 @code {
+    List<Appointment> _appointments = new List<Appointment>();
     Appointment _appointment = new Appointment();
     int BookingStep = 0;
 
@@ -67,6 +69,15 @@
         if( _appointment.serviceId == null)
         {
             NavigationManager.NavigateTo("/Services");
+        }
+
+        try
+        {
+            _appointments = await AppointmentService.getAppointments(_appointment.serviceId);
+        }
+        catch(Exception error)
+        {
+            Console.WriteLine(error);
         }
     }
     
@@ -97,16 +108,15 @@
 
     
     
-    public void HandleReserveProvider(string EmployeeId)
+    public void HandleReserveEmployee(string EmployeeId)
     {
         _appointment.selectedEmployeeId = EmployeeId;
         HandleNext();
     }
     
-    public void HandleReserveTime(DateTime? date, DateTime? hour)
+    public void HandleReserveTime(DateTime date)
     {
-        DateTime appointmentDate = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day, hour.Value.Hour, hour.Value.Minute, hour.Value.Second);
-        _appointment.scheduledTime = appointmentDate.ToString("MM/dd/yyyy h:mm tt");
+        _appointment.scheduledTime = date.ToString("MM/dd/yyyy h:mm tt");
         HandleNext();
     }
 

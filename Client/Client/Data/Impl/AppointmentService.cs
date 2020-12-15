@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -18,6 +19,18 @@ namespace Client.Data.Impl
                 StringContent content = new StringContent(serializedContent, Encoding.UTF8, "application/json");
 
                 await client.PostAsync($"{_endpoint}/appointment", content);
+            }
+        }
+
+        public async Task<List<Appointment>> getAppointments(string serviceId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync($"{_endpoint}/appointments?serviceId={serviceId}");
+                string reply = await response.Content.ReadAsStringAsync();
+                
+                List<Appointment> appointments =  JsonSerializer.Deserialize<List<Appointment>>(reply);
+                return appointments;
             }
         }
     }
