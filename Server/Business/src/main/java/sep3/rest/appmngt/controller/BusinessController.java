@@ -40,6 +40,26 @@ public class BusinessController {
         }
         return ResponseEntity.badRequest().build();
     }
+    @GetMapping("/this-business")
+    public ResponseEntity<Business> getBusiness(@RequestParam String businessId) {
+        try {
+            Business returnedBusiness = businessService.getBusinessById(businessId);
+            return ResponseEntity.ok(returnedBusiness);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @PutMapping("/this-business")
+    public ResponseEntity<Business> editBusiness(@RequestBody Business business){
+        try {
+            businessService.editBusiness(business);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
 
     @GetMapping("/owned-business")
     public ResponseEntity<List<Business>> getOwnedBusinesses(@RequestParam String businessOwnerID) {
