@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserModelImpl implements UserModel {
-    private ConnectionHandler connectionManager;
+    private final ConnectionHandler connectionManager;
     private final Gson gson;
 
     public UserModelImpl() throws IOException {
@@ -50,12 +50,5 @@ public class UserModelImpl implements UserModel {
         String receivedData = connectionManager.readFromServer();
         employeeListPackage = gson.fromJson(receivedData, EmployeeListPackage.class);
         return employeeListPackage.getEmployeeList();
-    }
-
-    private Employee SetNullToEmptyArrays(Employee employee) {
-        if (employee.getServiceList() == null) {
-            employee.setServiceIdList(new ArrayList<>());
-        }
-        return employee;
     }
 }

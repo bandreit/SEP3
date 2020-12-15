@@ -43,7 +43,6 @@ public class ServiceModelManager implements ServiceModel {
         service.setId(generatedServiceObjectID.toString());
 
         businessCollection.updateOne(eq("_id", new ObjectId(service.getBusinessId())), Updates.addToSet("services", generatedServiceObjectID));
-
         return service;
     }
 

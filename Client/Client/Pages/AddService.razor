@@ -4,10 +4,13 @@
 @using Client.Models
 @using Client.Data
 @using Microsoft.AspNetCore.WebUtilities
+@using Syncfusion.Blazor.Diagrams
 @inject NavigationManager NavigationManager;
+@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.Buttons
 @attribute [Authorize(Policy = "BusinessOwner")]
 
-<div class="col-lg-12 content-wrapper">
+<div class="col-lg-12 content-wrapper vh-100">
     <div>
         <h2 class="font-weight-bold">Add a service to your business</h2>
         <p>Please enter details below to add the service</p>
@@ -16,20 +19,54 @@
     <div>
         <AddServiceForm OnSubmit="@HandleSubmit"/>
     </div>
-    
+
+    @if (MyServices != null)
+    {
+        <h3 class="mt-4">Services:</h3>
+        <hr/>
+        <div class="grid-services">
+            @foreach (var item in MyServices)
+            {
+                <SfCard ID="DynamicCard">
+                    <CardHeader Title="@item.title" SubTitle="Chief Executive"/>
+
+                    <CardContent Content="@item.description"/>
+
+                    <div class="d-flex justify-content-between px-2 mb-2">
+                        <SfButton @onclick=@(() => RemoveService(item.id))>
+                            <i class="oi oi-pencil" style="color: yellow"></i>
+                        </SfButton>
+
+                        <SfButton @onclick=@(() => RemoveService(item.id))>
+                            <i class="oi oi-trash" style="color: red"></i>
+                        </SfButton>
+                    </div>
+                </SfCard>
+            }
+        </div>
+    }
 </div>
 
 @code {
     private String businessId;
+    private IList<Service> MyServices { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         var query = new Uri(NavigationManager.Uri).Query;
 
-        if (QueryHelpers.ParseQuery(query).TryGetValue("businessId", out var value))
+        if (QueryHelpers.ParseQuery(query).TryGetValue("id", out var value))
         {
             businessId = Convert.ToString(value);
+            MyServices = await ServiceService.GetAllServices();
+            MyServices = MyServices.Where(service => service.businessId == businessId).ToList();
         }
+    }
+
+    private void RemoveService(string serviceId)
+    {
+    // ServiceService.RemoveService(serviceId);
+        StateHasChanged();
     }
 
     public async void HandleSubmit(Service service)
@@ -38,7 +75,7 @@
         {
             service.businessId = businessId;
             await ServiceService.addService(service);
-            NavigationManager.NavigateTo("/EditBusiness");
+            NavigationManager.NavigateTo("/OwnedBusinesses");
         }
         catch
         {
@@ -46,3 +83,13 @@
     }
 
 }
+
+<style>
+   
+    .grid-services{
+        display:  grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 1rem;
+        row-gap: 1rem;
+    }
+</style>
