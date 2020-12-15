@@ -179,7 +179,12 @@ public class ClientHandler implements Runnable {
 
             } catch (Exception e) {
                 System.out.println("Client disconnected");
-                e.printStackTrace();
+                try {
+                    sendData("ERROR");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                e.printStackTrace();    
                 break;
             }
         }
