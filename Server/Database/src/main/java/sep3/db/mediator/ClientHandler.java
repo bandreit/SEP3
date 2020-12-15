@@ -16,9 +16,10 @@ public class ClientHandler implements Runnable {
     private Gson gson;
     private BusinessModel businessModel;
     private ServiceModel serviceModel;
+    private AppointmentModel appointmentModel;
 
 
-    public ClientHandler(Socket socket, UserModel modelManager, BusinessModel businessModel, ServiceModel serviceModel) throws IOException {
+    public ClientHandler(Socket socket, UserModel modelManager, BusinessModel businessModel, ServiceModel serviceModel, AppointmentModel appointmentModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
         outputStream = socket.getOutputStream();
@@ -26,6 +27,7 @@ public class ClientHandler implements Runnable {
         this.gson = new Gson();
         this.businessModel = businessModel;
         this.serviceModel = serviceModel;
+        this.appointmentModel = appointmentModel;
     }
 
 
@@ -174,7 +176,25 @@ public class ClientHandler implements Runnable {
                         String serviceListResponse = gson.toJson(outgoingServiceListPackage);
                         sendData(serviceListResponse);
                         break;
+                    case BOOK_APPOINTMENT:
+                        BookAppointmentPackage incomingBAPackage = gson.fromJson(message, BookAppointmentPackage.class);
+                        Appointment appointment = incomingBAPackage.getAppointment();
 
+                        Appointment addedAppointment = appointmentModel.addAppointment(appointment);
+
+                        BookAppointmentPackage outgoingBAPackage = new BookAppointmentPackage(NetworkType.LIST_APPOINTMENTS, addedAppointment);
+                        String outgoingBAPackageJson = gson.toJson(outgoingBAPackage);
+                        sendData(outgoingBAPackageJson);
+                        break;
+                    case LIST_APPOINTMENTS:
+                        AppointmentListPackage incomingLAPackage = gson.fromJson(message, AppointmentListPackage.class);
+                        String serviceId = incomingLAPackage.getServiceId();
+
+                        List<Appointment> appointments = appointmentModel.getAppointments(serviceId);
+
+                        AppointmentListPackage outgoingLAPackage = new AppointmentListPackage(NetworkType.LIST_APPOINTMENTS, serviceId, appointments);
+                        String outgoingLAPackageJson = gson.toJson(outgoingLAPackage);
+                        sendData(outgoingLAPackageJson);
                     case ERROR:
                     default:
                         sendData("ERROR");
