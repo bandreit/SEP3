@@ -11,5 +11,7 @@ public interface BusinessModel {
     void removeEmployee(String employeeId, String businessId) throws IOException;
 
     List<Business> getAllBusiness() throws IOException;
-    public List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException;
+    List<Business> getOwnedBusinesses(String businessOwnerId) throws IOException;
+    Business getBusinessById(String id)throws IOException;
+    void editBusiness(Business business)throws IOException;
 }

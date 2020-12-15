@@ -95,7 +95,12 @@ public class ClientHandler implements Runnable {
                         String businessResponse = gson.toJson(outgoingBusinessPackage);
                         sendData(businessResponse);
                         break;
+                    case EDITBUSINESS:
+                        BusinessPackage incomingEditedBusinessPackageNumber = gson.fromJson(message, BusinessPackage.class);
+                        Business editedBusiness = incomingEditedBusinessPackageNumber.getBusiness();
 
+                        businessModel.editBusiness(editedBusiness);
+                        break;
                     case SERVICE:
                         ServicePackage incomingServicePackageNumber = gson.fromJson(message, ServicePackage.class);
                         Service service = incomingServicePackageNumber.getService();

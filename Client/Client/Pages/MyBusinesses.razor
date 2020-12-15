@@ -29,7 +29,7 @@
     {
         foreach (var business in listOfBusiness)
         {
-            <BusinessCard Name="@business.Name" Services="@business.Services.Count" Employees="@business.Employees.Count"></BusinessCard>
+            <BusinessCard Business="@business" Name="@business.Name" Services="@business.Services.Count" Employees="@business.Employees.Count" EditThisBusiness="EditThisBusiness"></BusinessCard>
         }
     }
 </div>
@@ -48,6 +48,11 @@
     public void OnClick(String ServiceId)
     {
         NavigationManager.NavigateTo($"/BookService?ServiceId={ServiceId}");
+    }
+
+    public void EditThisBusiness(string? businessId)
+    {
+        NavigationManager.NavigateTo($"/EditBusiness?id={businessId}");
     }
 
 }

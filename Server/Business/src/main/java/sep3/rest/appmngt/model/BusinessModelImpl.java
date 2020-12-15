@@ -81,4 +81,21 @@ public class BusinessModelImpl implements BusinessModel {
         return listOfbusiness;
     }
 
+    @Override
+    public Business getBusinessById(String id) throws IOException {
+        for(int i=0;i<getAllBusiness().size();i++){
+            if(getAllBusiness().get(i).getId().equals(id)){
+                return getAllBusiness().get(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void editBusiness(Business business) throws IOException {
+        BusinessPackage businessPackage=new BusinessPackage(NetworkType.EDITBUSINESS, business);
+        String data = gson.toJson(businessPackage);
+        connectionManager.sendToServer(data);
+    }
+
 }
