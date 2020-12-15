@@ -38,6 +38,7 @@ namespace Client
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IServiceService, ServiceService>();
             services.AddSingleton<IBusinessService, BusinessService>();
+            services.AddSingleton<IAppointmentService, AppointmentService>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
             services.AddAuthorization(options =>
