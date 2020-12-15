@@ -70,15 +70,8 @@
         {
             NavigationManager.NavigateTo("/Services");
         }
-
-        try
-        {
-            _appointments = await AppointmentService.getAppointments(_appointment.serviceId);
-        }
-        catch(Exception error)
-        {
-            Console.WriteLine(error);
-        }
+        
+        _appointments = await AppointmentService.getAppointments(_appointment.serviceId);
     }
     
 

@@ -48,6 +48,7 @@ public class AppointmentModelManager implements AppointmentModel {
         while(cursor.hasNext()) {
             Document document = cursor.next();
             Appointment fromDocumentToObject = gson.fromJson(document.toJson(), Appointment.class);
+            fromDocumentToObject.setId(document.get("_id").toString());
 
             listOfAppointments.add(fromDocumentToObject);
         }

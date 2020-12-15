@@ -74,6 +74,7 @@
             IsAvailable = isAppointmentAvailable(initialDateTime)
         });
         
+        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!");
         // populate schedule
         for (int i = 1; i < 15; i++)
         {
@@ -98,10 +99,15 @@
 
     private  bool isAppointmentAvailable(DateTime time)
     {
-        DateTime completeTime = new DateTime(AppointmentDate.Year, AppointmentDate.Month, AppointmentDate.Day, time.Hour, time.Minute, time.Second);
-        string formatedTime = completeTime.ToString("MM/dd/yyyy h:mm tt");
+        string formatedTime = time.ToString("MM/dd/yyyy h:mm tt");
         
-        return !Appointments.Exists(x => x.scheduledTime == formatedTime);
+        return !Appointments.Exists(x =>
+        {
+            Console.WriteLine(x.scheduledTime);
+            Console.WriteLine(formatedTime);
+            Console.WriteLine("======");
+            return x.scheduledTime == formatedTime;
+        });
     }
 
     public void HandleChangeDatePicker(ChangedEventArgs<DateTime?> args)
@@ -111,18 +117,15 @@
             return;
         }
 
-        AppointmentDate.AddYears(AppointmentDate.Year - args.Value.Value.Year);
-        AppointmentDate.AddMonths(AppointmentDate.Month - args.Value.Value.Month);
-        AppointmentDate.AddDays(AppointmentDate.Day - args.Value.Value.Day);
+        DateTime date = args.Value.Value;
+        AppointmentDate = new DateTime(date.Year, date.Month, date.Day, AppointmentDate.Hour, AppointmentDate.Minute, AppointmentDate.Second);
     }
 
     public void HandleSelectAvailableTime(AppointmentDate availableTime)
     {
         if (availableTime.IsAvailable)
         {
-            AppointmentDate.AddHours(AppointmentDate.Hour - availableTime.Date.Hour);
-            AppointmentDate.AddMinutes(AppointmentDate.Minute - availableTime.Date.Minute);
-            
+            AppointmentDate = new DateTime(AppointmentDate.Year, AppointmentDate.Month, AppointmentDate.Day,availableTime.Date.Hour, availableTime.Date.Minute, availableTime.Date.Second);
             OnReserve(AppointmentDate);
         }
     }

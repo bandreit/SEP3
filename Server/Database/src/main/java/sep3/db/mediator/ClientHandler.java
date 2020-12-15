@@ -195,6 +195,7 @@ public class ClientHandler implements Runnable {
                         AppointmentListPackage outgoingLAPackage = new AppointmentListPackage(NetworkType.LIST_APPOINTMENTS, serviceId, appointments);
                         String outgoingLAPackageJson = gson.toJson(outgoingLAPackage);
                         sendData(outgoingLAPackageJson);
+                        break;
                     case ERROR:
                     default:
                         sendData("ERROR");
