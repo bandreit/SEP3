@@ -9,7 +9,7 @@ namespace Client.Data.Impl
     public interface IBusinessService
     {
         Task<HttpStatusCode> AddBusiness(Business business);
-        Task<HttpStatusCode> AddEmployee(string employeeId, string businessId, string serviceId);
+        Task<HttpStatusCode> AddEmployee(List<string> employeeId, string businessId, string serviceId);
         Task RemoveEmployee(string employeeId, string businessId);
         Task<List<Employee>> GetAllEmployees();
         Task<IList<Business>> GetBusinessesAsync();

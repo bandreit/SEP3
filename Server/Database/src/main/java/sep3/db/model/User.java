@@ -1,19 +1,30 @@
 package sep3.db.model;
 
+import com.google.gson.annotations.Expose;
 import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
 public class User {
+    @Expose(serialize = true, deserialize = false)
     private ObjectId _id;
+    @Expose(serialize = true, deserialize = false)
     private String id;
+    @Expose(serialize = true, deserialize = true)
     private String userName;
+    @Expose(serialize = true, deserialize = true)
     private String password;
+    @Expose(serialize = true, deserialize = true)
     private String email;
+    @Expose(serialize = true, deserialize = true)
     private String city;
+    @Expose(serialize = true, deserialize = true)
     private String role;
+    @Expose(serialize = true, deserialize = true)
     private String firstName;
+    @Expose(serialize = true, deserialize = true)
     private String lastName;
+    @Expose(serialize = true, deserialize = true)
     private String phone;
 
     public User(String id, String userName, String password, String email, String city, String role, String firstName, String lastName, String phone) {

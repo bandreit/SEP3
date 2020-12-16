@@ -90,15 +90,23 @@ namespace Client.Data.Impl
             HttpResponseMessage responseMessage = await client.PutAsync($"http://localhost:8083/SEP3/this-business", content);
         }
 
-        public async Task<HttpStatusCode> AddEmployee(string employeeId, string businessId, string serviceId)
+        public async Task<HttpStatusCode> AddEmployee(List<string> employeeIds, string businessId, string serviceId)
         {
+            string employeeList = JsonSerializer.Serialize(employeeIds);
+
+            StringContent content = new StringContent(
+                employeeList,
+                Encoding.UTF8,
+                MediaTypeNames.Application.Json
+            );
+            
             string uri = "http://localhost:8083/SEP3/employee?";
-            if (employeeId != null && businessId != null)
+            if (employeeIds != null && businessId != null)
             {
-                uri += $"businessId={businessId}&employeeId={employeeId}&serviceId={serviceId}";
+                uri += $"businessId={businessId}&serviceId={serviceId}";
             }
 
-            HttpResponseMessage responseMessage = await client.PostAsync(uri, null);
+            HttpResponseMessage responseMessage = await client.PutAsync(uri, content);
             return responseMessage.StatusCode;
         }
 

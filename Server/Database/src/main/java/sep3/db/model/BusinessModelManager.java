@@ -75,9 +75,14 @@ public class BusinessModelManager implements BusinessModel {
     }
 
     @Override
-    public void addEmployee(String employeeId, String businessId, String serviceId) {
-        businessCollection.updateOne(eq("_id", new ObjectId(businessId)), Updates.addToSet("employees", new ObjectId(employeeId)));
-        employeeCollection.updateOne(eq("_id", new ObjectId(employeeId)), Updates.addToSet("serviceIdList", new ObjectId(serviceId)));
+    public void addEmployee(List<String>  employeeIds, String businessId, String serviceId) {
+        for (String employeeId : employeeIds) {
+            businessCollection.updateOne(eq("_id", new ObjectId(businessId)), Updates.addToSet("employees", new ObjectId(employeeId)));
+        }
+
+        for (String employeeId : employeeIds) {
+            employeeCollection.updateOne(eq("_id", new ObjectId(employeeId)), Updates.addToSet("serviceIdList", new ObjectId(serviceId)));
+        }
     }
 
     @Override
@@ -130,7 +135,7 @@ public class BusinessModelManager implements BusinessModel {
 
     @Override
     public void editBusiness(Business business) {
-        Document query=new Document();
+        Document query = new Document();
         query.append("_id", new ObjectId(business.getId()));
         Document editedBusiness = new Document();
         editedBusiness.append("name", business.getName());
@@ -146,9 +151,9 @@ public class BusinessModelManager implements BusinessModel {
             }
         }
         editedBusiness.append("locations", locations);
-        Document update=new Document();
+        Document update = new Document();
         update.append("$set", editedBusiness);
-        businessCollection.updateOne(query,update);
+        businessCollection.updateOne(query, update);
     }
 
 }

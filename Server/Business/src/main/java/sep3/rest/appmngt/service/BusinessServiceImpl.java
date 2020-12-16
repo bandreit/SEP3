@@ -19,7 +19,7 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public void addEmployee(String employeeId, String businessId, String serviceId) throws IOException {
+    public void addEmployee(List<String>  employeeId, String businessId, String serviceId) throws IOException {
         businessModel.addEmployee(employeeId, businessId, serviceId);
     }
 

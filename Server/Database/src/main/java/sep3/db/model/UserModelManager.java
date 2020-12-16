@@ -1,6 +1,7 @@
 package sep3.db.model;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -66,10 +67,22 @@ public class UserModelManager implements UserModel {
         whereQuery.put("role", "Employee");
         MongoCursor<Document> cursor = usersCollection.find(whereQuery).iterator();
         while (cursor.hasNext()) {
-                Document document = cursor.next();
-                Employee fromDocumentToObject = gson.fromJson(document.toJson(), Employee.class);
-                fromDocumentToObject.setId(document.get("_id").toString());
-                listOfEmployees.add(fromDocumentToObject);
+            Document document = cursor.next();
+            Gson gsonWithExclude = new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .create();
+            Employee fromDocumentToObject = gsonWithExclude.fromJson(document.toJson(), Employee.class);
+
+            List<String> serviceIds = new ArrayList<>();
+
+            if (document.get("serviceIdList") != null)
+                for (ObjectId serviceId : (List<ObjectId>) document.get("serviceIdList")) {
+                    serviceIds.add(serviceId.toString());
+                }
+
+            fromDocumentToObject.setServiceIdList(serviceIds);
+            fromDocumentToObject.setId(document.get("_id").toString());
+            listOfEmployees.add(fromDocumentToObject);
         }
         return listOfEmployees;
     }

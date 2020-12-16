@@ -6,7 +6,7 @@ import java.util.List;
 public interface BusinessModel {
     Business addBusiness(Business business) throws IOException;
 
-    void addEmployee(String employeeId, String businessId, String serviceId) throws IOException;
+    void addEmployee(List<String>  employeeId, String businessId, String serviceId) throws IOException;
 
     void removeEmployee(String employeeId, String businessId) throws IOException;
 

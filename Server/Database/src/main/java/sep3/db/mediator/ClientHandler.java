@@ -114,11 +114,11 @@ public class ClientHandler implements Runnable {
 
                     case EMPLOYEE:
                         EmployeePackage incomingEmployeePackageNumber = gson.fromJson(message, EmployeePackage.class);
-                        String employeeId = incomingEmployeePackageNumber.getEmployeeId();
+                        List<String>  employeeIds = incomingEmployeePackageNumber.getEmployeeIds();
                         String businessIdEmpl = incomingEmployeePackageNumber.getBusinessId();
                         String serviceId = incomingEmployeePackageNumber.getServiceId();
 
-                        businessModel.addEmployee(employeeId, businessIdEmpl, serviceId);
+                        businessModel.addEmployee(employeeIds, businessIdEmpl, serviceId);
                         break;
                     case BUSINESSLIST:
                         List<Business> businessList = businessModel.getAllBusiness();
@@ -184,11 +184,11 @@ public class ClientHandler implements Runnable {
 
             } catch (Exception e) {
                 System.out.println("Client disconnected");
-                try {
-                    sendData("ERROR");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+//                try {
+//                    sendData("ERROR");
+//                } catch (IOException ioException) {
+//                    ioException.printStackTrace();
+//                }
                 e.printStackTrace();    
                 break;
             }

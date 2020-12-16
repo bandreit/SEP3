@@ -57,7 +57,7 @@
     <div class="card px-4 pt-4 mb-4 pb-4">
         <div class="row d-flex justify-content-center mb-4">
             <div>
-                <SfDropDownList TValue="string?" TItem="Service" PopupHeight="350px" PopupWidth="350px" Placeholder="Select a service" DataSource="@_services">
+                <SfDropDownList TValue="string?" TItem="Service" PopupHeight="350px" PopupWidth="350px" Placeholder="Select a service" DataSource="@_services" @bind-Value="@selectedServiceId">
                     <DropDownListEvents TItem="Service" TValue="string"></DropDownListEvents>
                     <DropDownListFieldSettings Value="id" Text="title"></DropDownListFieldSettings>
                 </SfDropDownList>
@@ -72,21 +72,17 @@
                 @* @bind-Value=@Values[index].Value *@
                 <SfListBox CssClass="interest-list" DataSource="@_employees" TItem="Employee" TValue="string[]" @bind-Value="@Selected">
                     <ListBoxSelectionSettings ShowCheckbox="true"></ListBoxSelectionSettings>
-                    <ListBoxFieldSettings Text="FirstName" Value="FirstName"></ListBoxFieldSettings>
+                    <ListBoxFieldSettings Text="UserName" Value="Id"></ListBoxFieldSettings>
                 </SfListBox>
             </div>
         </div>
         
-        @if (Selected != null)
-        {
-            @Selected.Length
-        }
-
         <div class="row">
             <div class="btn">
                 <SfButton IsPrimary="true" @onclick="HandleSubmit">Update</SfButton>
             </div>
         </div>
+        <p style="color: red">@ErrorString</p>
     </div>
 </div>
 
@@ -97,9 +93,10 @@
     private string businessId;
     private string selectedEmployeeId;
     private string selectedServiceId;
+    private string ErrorString = "";
 
     public string[] Selected;
-
+    
     protected override async Task OnInitializedAsync()
     {
         var query = new Uri(NavigationManager.Uri).Query;
@@ -129,27 +126,19 @@
             _services.Add(serviceData[i]);
         }
     }
-
-    public void OnChangeService(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string, Service> args)
-    {
-        this.selectedServiceId = args.ItemData.id;
-    }
-
-    public void OnChangeEmployee(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string, Employee> args)
-    {
-        this.selectedEmployeeId = args.ItemData.Id;
-    }
-
+    
     public async void HandleSubmit()
     {
-        if (selectedEmployeeId == null)
+        if (selectedServiceId == null || Selected.Length == 0 || Selected == null)
         {
+            ErrorString = "Please select a service and the employees that can provide it";
             return;
         }
         try
         {
-            await BusinessService.AddEmployee(selectedEmployeeId, businessId, selectedServiceId);
+            await BusinessService.AddEmployee(Selected.ToList(), businessId, selectedServiceId);
             NavigationManager.NavigateTo($"/OwnedBusinesses");
+            ErrorString = "";
         }
         catch (Exception e)
         {
