@@ -8,7 +8,7 @@
         public string name { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
-        public string selectedLocation { get; set; }
+        public Location selectedLocation { get; set; }
         public string selectedEmployeeId { get; set; }
     }
 }

@@ -29,8 +29,13 @@ public class AppointmentModelManager implements AppointmentModel {
         newAppointment.append("name", appointment.getName());
         newAppointment.append("email", appointment.getEmail());
         newAppointment.append("phone", appointment.getPhone());
-        newAppointment.append("selectedLocation", appointment.getSelectedLocation());
         newAppointment.append("selectedEmployeeId", appointment.getSelectedEmployeeId());
+
+        BasicDBObject locationDoc = new BasicDBObject();
+        locationDoc.put("streetNumber", appointment.getSelectedLocation().getStreetNumber());
+        locationDoc.put("streetName", appointment.getSelectedLocation().getStreetName());
+
+        newAppointment.append("selectedLocation", locationDoc);
 
         appointmentCollection.insertOne(newAppointment);
 

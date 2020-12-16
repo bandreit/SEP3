@@ -8,6 +8,7 @@
 @using Client.Data.Impl
 @inject IAppointmentService AppointmentService
 @inject IServiceService ServiceService
+@inject IBusinessService BusinessService
 
 <style>
     .bs-container {
@@ -28,35 +29,43 @@
     }
 </style>
 
-<div class="bs-container">
-    <BookServiceSidebar CurrentStep=@BookingStep/>
+@if (_service == null || _business == null)
+{
+    <p>Loading</p>
+}
+else
+{
+    <div class="bs-container">
+        <BookServiceSidebar CurrentStep=@BookingStep/>
 
-    <div>
-        @switch (BookingStep)
-        {
-            case 0:
-                <ReserveLocation OnReserve="@HandleReserveLocation"/>
-                break;
-            case 1:
-                <ReserveTime Service="@_service" Appointments="@_appointments" OnReserve="@HandleReserveTime"/>
-                break;
-            case 2:
-                <ReserveEmployee OnReserve="@HandleReserveEmployee"/>
-                break;
-            case 3:
-                <ReserveClient OnSubmit="@HandleSubmit"/>
-                break;
-            default:
-                <div></div>
-                break;
-        }
+        <div>
+            @switch (BookingStep)
+            {
+                case 0:
+                    <ReserveLocation Locations="@_business.Locations" OnReserve="@HandleReserveLocation"/>
+                    break;
+                case 1:
+                    <ReserveTime Service="@_service" Appointments="@_appointments" OnReserve="@HandleReserveTime"/>
+                    break;
+                case 2:
+                    <ReserveEmployee OnReserve="@HandleReserveEmployee"/>
+                    break;
+                case 3:
+                    <ReserveClient OnSubmit="@HandleSubmit"/>
+                    break;
+                default:
+                    <div></div>
+                    break;
+            }
+        </div>
     </div>
-</div>
+}
 
 @code {
     List<Appointment> _appointments = new List<Appointment>();
     Appointment _appointment = new Appointment();
     Service _service;
+    Business _business;
     int BookingStep = 0;
 
     protected override async Task OnInitializedAsync()
@@ -77,6 +86,7 @@
         {
             _appointments = await AppointmentService.getAppointments(_appointment.serviceId);
             _service = await ServiceService.getServiceById(_appointment.serviceId);
+            _business = await BusinessService.GetBusiness(_service.businessId);
         }
         catch
         {
@@ -104,9 +114,9 @@
         }
     }
     
-    public void HandleReserveLocation(string LocationId)
+    public void HandleReserveLocation(Location location)
     {
-        _appointment.selectedLocation = LocationId;
+        _appointment.selectedLocation = location;
         HandleNext();
     }
 

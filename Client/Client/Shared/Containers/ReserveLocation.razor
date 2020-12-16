@@ -1,4 +1,5 @@
 ﻿@using Client.Shared.Components
+@using Client.Models
 
 <style>
     .rl-container {
@@ -9,13 +10,22 @@
 </style>
 
 <div class="rl-container">
-    <ReserveCard PictureUrl="https://daintydemo.simplybook.it/uploads/daintydemo/image_files/preview/daeb16509f61d78cbe6c988b4f21b468.jpg" Title="Test" Description="Description" OnClick="@(() => OnReserve("1"))"/>
-    <ReserveCard PictureUrl="https://daintydemo.simplybook.it/uploads/daintydemo/image_files/preview/daeb16509f61d78cbe6c988b4f21b468.jpg" Title="Test" Description="Description" OnClick="@(() => OnReserve("2"))"/>
-    <ReserveCard PictureUrl="https://daintydemo.simplybook.it/uploads/daintydemo/image_files/preview/daeb16509f61d78cbe6c988b4f21b468.jpg" Title="Test" Description="Description" OnClick="@(() => OnReserve("3"))"/>
+    @foreach (Location Location in Locations)
+    {
+        <ReserveCard 
+            PictureUrl="https://daintydemo.simplybook.it/uploads/daintydemo/image_files/preview/daeb16509f61d78cbe6c988b4f21b468.jpg" 
+            Title="@(Location.StreetName + " - " + Location.StreetNumber)"
+            Description=""
+            OnClick="@(() => OnReserve(Location))"
+            />     
+    }
 </div>
 
 
 @code {
     [Parameter]
-    public Action<string> OnReserve { get; set; }
+    public List<Location> Locations { get; set; }
+    
+    [Parameter]
+    public Action<Location> OnReserve { get; set; }
 }

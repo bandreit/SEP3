@@ -10,10 +10,10 @@ public class Appointment {
     private String name;
     private String email;
     private String phone;
-    private String selectedLocation;
+    private Location selectedLocation;
     private String selectedEmployeeId;
 
-    public Appointment(ObjectId _id, String id, String serviceId, String scheduledTime, String name, String email, String phone, String selectedLocation, String selectedEmployeeId) {
+    public Appointment(ObjectId _id, String id, String serviceId, String scheduledTime, String name, String email, String phone, Location selectedLocation, String selectedEmployeeId) {
         this._id = _id;
         this.id = id;
         this.serviceId = serviceId;
@@ -81,11 +81,11 @@ public class Appointment {
         this.phone = phone;
     }
 
-    public String getSelectedLocation() {
+    public Location getSelectedLocation() {
         return selectedLocation;
     }
 
-    public void setSelectedLocation(String selectedLocation) {
+    public void setSelectedLocation(Location selectedLocation) {
         this.selectedLocation = selectedLocation;
     }
 
