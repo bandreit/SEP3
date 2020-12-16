@@ -52,10 +52,10 @@
     private string PhoneNumber;
     
     [Parameter]
-    public Action OnSubmit { get; set; }
+    public Action<string, string, string, string> OnSubmit { get; set; }
 
     public void HandleSubmit()
     {
-        OnSubmit();
+        OnSubmit(FirstName, LastName, Email, PhoneNumber);
     }
 }

@@ -1,0 +1,31 @@
+﻿@using Client.Shared.Components
+@using Client.Models
+
+<style>
+    .rp-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+    }
+</style>
+
+<div class="rp-container">
+    @foreach (var Employee in Employees)
+    {
+        <ReserveCard 
+            PictureUrl="https://daintydemo.simplybook.it/uploads/daintydemo/image_files/preview/daeb16509f61d78cbe6c988b4f21b468.jpg" 
+            Title="@(Employee.FirstName + " " + Employee.LastName)" 
+            Description="@Employee.Phone"
+            OnClick="@(() => OnReserve(Employee.Id))"
+            />   
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public List<Employee> Employees { get; set; }
+    
+    [Parameter]
+    public Action<string> OnReserve { get; set; }
+}

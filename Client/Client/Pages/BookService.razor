@@ -3,6 +3,12 @@
 @inject NavigationManager NavigationManager;
 @using Client.Shared.Components
 @using Client.Shared.Containers
+@using Client.Models
+@using Client.Data
+@using Client.Data.Impl
+@inject IAppointmentService AppointmentService
+@inject IServiceService ServiceService
+@inject IBusinessService BusinessService
 
 <style>
     .bs-container {
@@ -23,33 +29,45 @@
     }
 </style>
 
-@* <div class="bs-container"> *@
-@*     <BookServiceSidebar CurrentStep=@BookingStep/> *@
-@* *@
-@*     <div> *@
-@*         @switch (BookingStep) *@
-@*         { *@
-@*             case 0: *@
-@*                 <ReserveLocation OnReserve="@HandleReserveLocation"/> *@
-@*                 break; *@
-@*             case 1: *@
-@*                 <ReserveProvider OnReserve="@HandleReserveProvider"/> *@
-@*                 break; *@
-@*             case 2: *@
-@*                 <ReserveTime OnReserve="@HandleReserveTime"/> *@
-@*                 break; *@
-@*             case 3: *@
-@*                 <ReserveClient OnSubmit="@HandleSubmit"/> *@
-@*                 break; *@
-@*             default: *@
-@*                 <div></div> *@
-@*                 break; *@
-@*         } *@
-@*     </div> *@
-@* </div> *@
+@if (_service == null || _business == null || _employees == null)
+{
+    <p>Loading</p>
+}
+else
+{
+    <div class="bs-container">
+        <BookServiceSidebar CurrentStep=@BookingStep/>
+
+        <div>
+            @switch (BookingStep)
+            {
+                case 0:
+                    <ReserveLocation Locations="@_business.Locations" OnReserve="@HandleReserveLocation"/>
+                    break;
+                case 1:
+                    <ReserveTime Service="@_service" Appointments="@_appointments" OnReserve="@HandleReserveTime"/>
+                    break;
+                case 2:
+                    <ReserveEmployee Employees="@_employees" OnReserve="@HandleReserveEmployee"/>
+                    break;
+                case 3:
+                    <ReserveClient OnSubmit="@HandleSubmit"/>
+                    break;
+                default:
+                    <div></div>
+                    break;
+            }
+        </div>
+    </div>
+}
 
 @code {
-    string ServiceId = null;
+    Appointment _appointment = new Appointment();
+    List<Appointment> _appointments;
+    Service _service;
+    Business _business;
+    List<Employee> _employees;
+    
     int BookingStep = 0;
 
     protected override async Task OnInitializedAsync()
@@ -58,12 +76,26 @@
 
         if (QueryHelpers.ParseQuery(Query).TryGetValue("ServiceId", out var value))
         {
-            ServiceId = value;
+            _appointment.serviceId = value;
         }
-        else
+        
+        if( _appointment.serviceId == null)
         {
             NavigationManager.NavigateTo("/Services");
         }
+
+        try
+        {
+            _appointments = await AppointmentService.getAppointments(_appointment.serviceId);
+            _service = await ServiceService.getServiceById(_appointment.serviceId);
+            _business = await BusinessService.GetBusiness(_service.businessId);
+            _employees = await BusinessService.GetEmpoyeesDetails(_business.Employees);
+        }
+        catch
+        {
+            NavigationManager.NavigateTo("/Services");
+        }
+       
     }
     
 
@@ -85,33 +117,40 @@
         }
     }
     
-    public void HandleReserveLocation(string LocationId)
+    public void HandleReserveLocation(Location location)
     {
-        HandleNext();
-    }
-    
-    public void HandleReserveCategory(string CategoryId)
-    {
-        HandleNext();
-    }
-    
-    public void HandleReserveService(string ServiceId)
-    {
-        HandleNext();
-    }
-    
-    public void HandleReserveProvider(string ProviderId)
-    {
-        HandleNext();
-    }
-    
-    public void HandleReserveTime(DateTime? date, DateTime? hour)
-    {
+        _appointment.selectedLocation = location;
         HandleNext();
     }
 
-    public void HandleSubmit()
+    
+    
+    public void HandleReserveEmployee(string EmployeeId)
     {
-        NavigationManager.NavigateTo("/");
+        _appointment.selectedEmployeeId = EmployeeId;
+        HandleNext();
+    }
+    
+    public void HandleReserveTime(DateTime date)
+    {
+        _appointment.scheduledTime = date.ToString("MM/dd/yyyy h:mm tt");
+        HandleNext();
+    }
+
+    public async void HandleSubmit(string firstName, string lasName, string email, string phoneNumber)
+    {
+        try
+        {
+            _appointment.name = $"{firstName} {lasName}";
+            _appointment.email = email;
+            _appointment.phone = phoneNumber;
+            
+            await AppointmentService.addAppointment(_appointment);
+            NavigationManager.NavigateTo("/"); 
+        }
+        catch
+        {
+               
+        }
     }
 }

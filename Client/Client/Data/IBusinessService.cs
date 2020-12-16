@@ -16,5 +16,7 @@ namespace Client.Data.Impl
         Task<IList<Business>> GetOwnedBusinessesAsync(string userClaimValue);
         Task<Business> GetBusiness(string id);
         Task EditBusiness(Business newBusiness);
+
+        Task<List<Employee>> GetEmpoyeesDetails(List<string> employeesIds);
     }
 }

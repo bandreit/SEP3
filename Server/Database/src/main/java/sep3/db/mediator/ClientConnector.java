@@ -17,6 +17,7 @@ public class ClientConnector implements Runnable {
     private UserModel modelManager;
     private BusinessModel businessModel;
     private ServiceModel serviceModel;
+    private AppointmentModel appointmentModel;
 
     public ClientConnector() throws IOException {
         Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
@@ -27,6 +28,7 @@ public class ClientConnector implements Runnable {
         this.modelManager = new UserModelManager(database);
         this.businessModel = new BusinessModelManager(database);
         this.serviceModel = new ServiceModelManager(database);
+        this.appointmentModel = new AppointmentModelManager(database);
     }
 
     @Override
@@ -36,7 +38,7 @@ public class ClientConnector implements Runnable {
             try {
                 Socket socket = welcomeSocket.accept();
                 System.out.println("Tier 2 connected");
-                ClientHandler clientHandler = new ClientHandler(socket, modelManager, businessModel, serviceModel);
+                ClientHandler clientHandler = new ClientHandler(socket, modelManager, businessModel, serviceModel, appointmentModel);
                 Thread t = new Thread(clientHandler);
                 t.setDaemon(true);
                 t.start();

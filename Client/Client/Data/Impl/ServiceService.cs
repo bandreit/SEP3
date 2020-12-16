@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -10,7 +11,7 @@ namespace Client.Data.Impl
 {
     public class ServiceService : IServiceService
     {
-        public const string _endpoint = "http://localhost:8083/SEP3/service";
+        public const string _endpoint = "http://localhost:8083/SEP3";
 
         public async Task addService(Service service)
         {
@@ -19,7 +20,7 @@ namespace Client.Data.Impl
                 string serializedContent = JsonSerializer.Serialize(service);
                 StringContent content = new StringContent(serializedContent, Encoding.UTF8, "application/json");
 
-                await client.PostAsync(_endpoint, content);
+                await client.PostAsync($"{_endpoint}/service", content);
             }
         }
 
@@ -28,7 +29,7 @@ namespace Client.Data.Impl
             using (HttpClient client = new HttpClient())
             {
                 List<Service> servicesByBusinessId = new List<Service>();
-                HttpResponseMessage responseMessage = await client.GetAsync($"http://localhost:8083/SEP3/service?businessId={businessId}");
+                HttpResponseMessage responseMessage = await client.GetAsync($"{_endpoint}/service?businessId={businessId}");
                 String reply = await responseMessage.Content.ReadAsStringAsync();
                 servicesByBusinessId = JsonSerializer.Deserialize<List<Service>>(reply);
                 return servicesByBusinessId;
@@ -40,7 +41,7 @@ namespace Client.Data.Impl
             using (HttpClient client = new HttpClient())
             {
                 List<Service> servicesByTitle = new List<Service>();
-                HttpResponseMessage responseMessage = await client.GetAsync($"http://localhost:8083/SEP3/servicesByTitle?title={title}");
+                HttpResponseMessage responseMessage = await client.GetAsync($"{_endpoint}/servicesByTitle?title={title}");
                 String reply = await responseMessage.Content.ReadAsStringAsync();
                 servicesByTitle = JsonSerializer.Deserialize<List<Service>>(reply);
                 return servicesByTitle;
@@ -52,10 +53,22 @@ namespace Client.Data.Impl
             using (HttpClient client = new HttpClient())
             {
                 List<Service> services = new List<Service>();
-                HttpResponseMessage responseMessage = await client.GetAsync("http://localhost:8083/SEP3/services");
+                HttpResponseMessage responseMessage = await client.GetAsync($"{_endpoint}/services");
                 String reply = await responseMessage.Content.ReadAsStringAsync();
                 services = JsonSerializer.Deserialize<List<Service>>(reply);
                 return services;
+            }
+        }
+
+        public async Task<Service> getServiceById(string serviceId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync($"{_endpoint}/services");
+                String reply = await responseMessage.Content.ReadAsStringAsync();
+                List<Service> services = JsonSerializer.Deserialize<List<Service>>(reply);
+                Service service = services.FirstOrDefault(x => x.id == serviceId);
+                return service;
             }
         }
     }

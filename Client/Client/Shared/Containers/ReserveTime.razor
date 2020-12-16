@@ -1,4 +1,5 @@
 ﻿@using Syncfusion.Blazor.Calendars
+@using Client.Models
 
 <style>
     .datepicker-control {}
@@ -25,48 +26,84 @@
     .availability-container .time:hover {
         border-color: #0366d6;
     }
+    
+    .availability-container .disabled {
+        cursor: not-allowed;
+        background-color: #f2f4f6;
+    }
 </style>
 
 <div class="datepicker-control">
-    <SfDatePicker TValue="DateTime?" Value='@DateValue'  ValueChange="HandleChangeDatePicker"></SfDatePicker>
+    <SfDatePicker TValue="DateTime?" Value='@AppointmentDate'  ValueChange="HandleChangeDatePicker"></SfDatePicker>
 </div>
 
 <div class="availability-container">
-    @foreach (DateTime availableTime in availableTimes)
+    @foreach (AppointmentDate appointmentDate in schedule)
     {
-        <div class="time" @onclick="@(() => HandleSelectAvailableTime(availableTime))">
-            <span>@availableTime.ToString("HH:mm")</span>
+        <div class="time @(!appointmentDate.IsAvailable ? "disabled" : "")" @onclick="@(() => HandleSelectAvailableTime(appointmentDate))">
+            <span>@appointmentDate.Date.ToString("HH:mm")</span>
         </div>
     }
 </div>
 
 @code {
-    public List<DateTime> availableTimes = PopulateAvailableTime();
-
     [Parameter]
-    public Action<DateTime?, DateTime?> OnReserve { get; set; }
+    public List<Appointment> Appointments { get; set; }
+    
+    [Parameter]
+    public Service Service { get; set; }
+    
+    [Parameter]
+    public Action<DateTime> OnReserve { get; set; }
+    
+    public DateTime AppointmentDate { get; set; } = DateTime.Now;
+    public List<AppointmentDate> schedule { get; set; } = new List<AppointmentDate>();
 
-    public DateTime? DateValue { get; set; } = DateTime.Now;
-
-    public static List<DateTime> PopulateAvailableTime()
+    protected override void OnInitialized()
     {
-        List<DateTime> availableTime = new List<DateTime>();
+        schedule = PopulateAvailableTime();
+    }
 
-        // initiate the list
-        availableTime.Add(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 9, 0, 0));
+    
+    public List<AppointmentDate> PopulateAvailableTime()
+    {
+        List<AppointmentDate> availableTime = new List<AppointmentDate>();
 
+        // // initiate the list
+        DateTime initialDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 9, 0, 0);
+        availableTime.Add(new AppointmentDate()
+        {
+            Date = initialDateTime,
+            IsAvailable = isAppointmentAvailable(initialDateTime)
+        });
+        
+        // populate schedule
         for (int i = 1; i < 15; i++)
         {
-            int prevHour = availableTime[i - 1].Hour;
-            int prevMinutes = availableTime[i - 1].Minute;
-
+            DateTime currentDateTime = availableTime[i - 1].Date;
+            int prevHour = currentDateTime.Hour;
+            int prevMinutes = currentDateTime.Minute;
+        
             int nextHour = prevMinutes == 0 ? prevHour : prevHour + 1;
             int nextMinutes = prevMinutes == 0 ? 30 : 0;
 
-            availableTime.Add(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, nextHour, nextMinutes, 0));
+            DateTime appointmentTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, nextHour, nextMinutes, 0);
+            
+            availableTime.Add(new AppointmentDate()
+            {
+                Date = appointmentTime,
+                IsAvailable = isAppointmentAvailable(appointmentTime)
+            });
         }
-
+        
         return availableTime;
+    }
+
+    private  bool isAppointmentAvailable(DateTime time)
+    {
+        string formatedTime = time.ToString("MM/dd/yyyy h:mm tt");
+        
+        return !Appointments.Exists(x => x.scheduledTime == formatedTime);
     }
 
     public void HandleChangeDatePicker(ChangedEventArgs<DateTime?> args)
@@ -76,12 +113,17 @@
             return;
         }
 
-        DateValue = args.Value;
+        DateTime date = args.Value.Value;
+        AppointmentDate = new DateTime(date.Year, date.Month, date.Day, AppointmentDate.Hour, AppointmentDate.Minute, AppointmentDate.Second);
     }
 
-    public void HandleSelectAvailableTime(DateTime availableTime)
+    public void HandleSelectAvailableTime(AppointmentDate availableTime)
     {
-        OnReserve(DateValue, availableTime);
+        if (availableTime.IsAvailable)
+        {
+            AppointmentDate = new DateTime(AppointmentDate.Year, AppointmentDate.Month, AppointmentDate.Day,availableTime.Date.Hour, availableTime.Date.Minute, availableTime.Date.Second);
+            OnReserve(AppointmentDate);
+        }
     }
 
 }
