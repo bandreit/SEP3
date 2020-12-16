@@ -36,7 +36,7 @@
 else
 {
     <div class="bs-container">
-        <BookServiceSidebar CurrentStep=@BookingStep/>
+        <BookServiceSidebar CurrentStep=@BookingStep />
 
         <div>
             @switch (BookingStep)
@@ -146,7 +146,7 @@ else
             _appointment.phone = phoneNumber;
             
             await AppointmentService.addAppointment(_appointment);
-            NavigationManager.NavigateTo("/"); 
+            NavigationManager.NavigateTo("/Services"); 
         }
         catch
         {
