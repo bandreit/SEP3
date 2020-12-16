@@ -3,10 +3,7 @@ package sep3.rest.appmngt.model;
 import com.google.gson.Gson;
 import sep3.rest.appmngt.mediator.ConnectionHandler;
 import sep3.rest.appmngt.mediator.ConnectionManager;
-import sep3.rest.appmngt.network.BusinessPackage;
-import sep3.rest.appmngt.network.NetworkType;
-import sep3.rest.appmngt.network.ServiceListPackage;
-import sep3.rest.appmngt.network.ServicePackage;
+import sep3.rest.appmngt.network.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +31,7 @@ public class ServiceImpl implements ServiceModel {
     @Override
     public List<Service> getServicesByBusinessId(String businessId) throws IOException {
         List<Service> serviceListById = new ArrayList<>();
-        ServiceListPackage serviceListByIdPackage = new ServiceListPackage(NetworkType.SERVICELISTBYBUSINESSID,serviceListById, businessId);
+        ServiceListPackage serviceListByIdPackage = new ServiceListPackage(NetworkType.SERVICELISTBYBUSINESSID, serviceListById, businessId);
         String data = gson.toJson(serviceListByIdPackage);
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();
@@ -45,7 +42,7 @@ public class ServiceImpl implements ServiceModel {
     @Override
     public List<Service> getServiceByTitle(String title) throws IOException {
         List<Service> serviceListByTitle = new ArrayList<>();
-        ServiceListPackage serviceListByTitlePackage = new ServiceListPackage(NetworkType.SERVICELISTBYTITLE,serviceListByTitle, title);
+        ServiceListPackage serviceListByTitlePackage = new ServiceListPackage(NetworkType.SERVICELISTBYTITLE, serviceListByTitle, title);
         String data = gson.toJson(serviceListByTitlePackage);
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();
@@ -56,11 +53,18 @@ public class ServiceImpl implements ServiceModel {
     @Override
     public List<Service> getAllServices() throws IOException {
         List<Service> serviceList = new ArrayList<>();
-        ServiceListPackage serviceListPackage = new ServiceListPackage(NetworkType.SERVICELIST,serviceList);
+        ServiceListPackage serviceListPackage = new ServiceListPackage(NetworkType.SERVICELIST, serviceList);
         String data = gson.toJson(serviceListPackage);
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();
         serviceListPackage = gson.fromJson(receivedData, ServiceListPackage.class);
         return serviceListPackage.getServiceList();
+    }
+
+    @Override
+    public void deleteService(String serviceId) throws IOException {
+        QueryPackage queryPackage = new QueryPackage(NetworkType.QUERY, "delete_service", serviceId);
+        String data = gson.toJson(queryPackage);
+        connectionManager.sendToServer(data);
     }
 }

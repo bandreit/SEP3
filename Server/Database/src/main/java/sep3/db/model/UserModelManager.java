@@ -26,7 +26,7 @@ public class UserModelManager implements UserModel {
     }
 
     @Override
-    public User ValidateUser(String userName, String password) {
+    public User ValidateUser(String userName) {
         {
             if (usersCollection.find(eq("userName", userName)).first() != null) {
                 Document user = usersCollection.find(eq("userName", userName)).first();

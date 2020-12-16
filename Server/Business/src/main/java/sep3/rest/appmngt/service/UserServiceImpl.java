@@ -15,8 +15,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User ValidateUser(String userName, String password) throws IOException {
-        return userModel.ValidateUser(userName, password);
+    public User ValidateUser(String userName) throws IOException {
+        return userModel.ValidateUser(userName);
     }
 
     @Override

@@ -12,5 +12,6 @@ namespace Client.Data
         Task<List<Service>> GetServicesByTitle(string title);
         Task<List<Service>> GetAllServices();
         Task<Service> getServiceById(string serviceId);
+        Task DeleteService(string serviceId);
     }
 }

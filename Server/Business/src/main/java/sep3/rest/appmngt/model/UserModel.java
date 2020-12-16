@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface UserModel {
-    User ValidateUser(String userName, String password) throws IOException;
+    User ValidateUser(String userName) throws IOException;
 
     User RegisterUser(User user) throws IOException;
 

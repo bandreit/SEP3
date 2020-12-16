@@ -16,7 +16,7 @@ namespace Client.Data.Impl
 
             HttpResponseMessage responseMessage =
                 await client.GetAsync(
-                    $"http://localhost:8083/SEP3/validate?username={userName}&password={password}");
+                    $"http://localhost:8083/SEP3/validate?username={userName}");
 
             String reply = await responseMessage.Content.ReadAsStringAsync();
 
@@ -36,11 +36,20 @@ namespace Client.Data.Impl
             }
 
             User first = JsonSerializer.Deserialize<User>(reply);
+            
+
+            if (!BCrypt.Net.BCrypt.Verify(password,  first.Password))
+            {
+                throw new Exception("Incorrect password");
+            }
+            
             return first;
         }
 
         public async Task RegisterUser(User user)
         {
+            string hashPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            user.Password = hashPassword;
             HttpClient client = new HttpClient();
             string userSerialized = JsonSerializer.Serialize(user);
             StringContent content=new StringContent(

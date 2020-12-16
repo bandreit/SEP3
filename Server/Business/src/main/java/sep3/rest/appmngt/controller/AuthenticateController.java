@@ -23,16 +23,12 @@ public class AuthenticateController {
     private UserService userService;
 
     @GetMapping("/validate")
-    public ResponseEntity<User> ValidateUser(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<User> ValidateUser(@RequestParam String username) {
         try {
-            User user = userService.ValidateUser(username, password);
+            User user = userService.ValidateUser(username);
 
             if (user == null) {
                 return ResponseEntity.notFound().build();
-            }
-
-            if (!user.getPassword().equals(password)) {
-                return ResponseEntity.status(401).build();
             }
 
             return ResponseEntity.ok(user);

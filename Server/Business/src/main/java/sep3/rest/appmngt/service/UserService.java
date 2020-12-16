@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
-    User ValidateUser(String userName, String password) throws IOException;
+    User ValidateUser(String userName) throws IOException;
 
     User addUser(User user) throws IOException;
 

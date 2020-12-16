@@ -63,9 +63,11 @@
         }
     }
 
-    private void RemoveService(string serviceId)
+    private async void RemoveService(string serviceId)
     {
-    // ServiceService.RemoveService(serviceId);
+        await ServiceService.DeleteService(serviceId);
+        MyServices = await ServiceService.GetAllServices();
+        MyServices = MyServices.Where(service => service.businessId == businessId).ToList();
         StateHasChanged();
     }
 

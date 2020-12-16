@@ -29,7 +29,8 @@ namespace Client.Data.Impl
             using (HttpClient client = new HttpClient())
             {
                 List<Service> servicesByBusinessId = new List<Service>();
-                HttpResponseMessage responseMessage = await client.GetAsync($"{_endpoint}/service?businessId={businessId}");
+                HttpResponseMessage responseMessage =
+                    await client.GetAsync($"{_endpoint}/service?businessId={businessId}");
                 String reply = await responseMessage.Content.ReadAsStringAsync();
                 servicesByBusinessId = JsonSerializer.Deserialize<List<Service>>(reply);
                 return servicesByBusinessId;
@@ -41,7 +42,8 @@ namespace Client.Data.Impl
             using (HttpClient client = new HttpClient())
             {
                 List<Service> servicesByTitle = new List<Service>();
-                HttpResponseMessage responseMessage = await client.GetAsync($"{_endpoint}/servicesByTitle?title={title}");
+                HttpResponseMessage responseMessage =
+                    await client.GetAsync($"{_endpoint}/servicesByTitle?title={title}");
                 String reply = await responseMessage.Content.ReadAsStringAsync();
                 servicesByTitle = JsonSerializer.Deserialize<List<Service>>(reply);
                 return servicesByTitle;
@@ -69,6 +71,14 @@ namespace Client.Data.Impl
                 List<Service> services = JsonSerializer.Deserialize<List<Service>>(reply);
                 Service service = services.FirstOrDefault(x => x.id == serviceId);
                 return service;
+            }
+        }
+
+        public async Task DeleteService(string serviceId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                await client.DeleteAsync($"{_endpoint}/services?serviceId={serviceId}");
             }
         }
     }

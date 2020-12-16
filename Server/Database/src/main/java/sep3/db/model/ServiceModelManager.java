@@ -94,4 +94,9 @@ public class ServiceModelManager implements ServiceModel {
         }
         return serviceList;
     }
+
+    @Override
+    public void deleteService(String serviceId) {
+        serviceCollection.deleteOne(new Document("_id", new ObjectId(serviceId)));
+    }
 }

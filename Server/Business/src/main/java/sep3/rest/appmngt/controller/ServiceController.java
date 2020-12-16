@@ -60,4 +60,16 @@ public class ServiceController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @DeleteMapping("/services")
+    public ResponseEntity deleteService(@RequestParam String serviceId)
+    {
+        try {
+            serviceService.deleteService(serviceId);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }

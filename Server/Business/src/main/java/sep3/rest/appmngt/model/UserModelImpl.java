@@ -22,8 +22,8 @@ public class UserModelImpl implements UserModel {
     }
 
     @Override
-    public User ValidateUser(String userName, String password) throws IOException {
-        UserPackage userPackage = new UserPackage(NetworkType.USER, new User(userName, password));
+    public User ValidateUser(String userName) throws IOException {
+        UserPackage userPackage = new UserPackage(NetworkType.USER, new User(userName, ""));
         String data = gson.toJson(userPackage);
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();

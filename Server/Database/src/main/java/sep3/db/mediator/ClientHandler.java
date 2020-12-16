@@ -69,7 +69,7 @@ public class ClientHandler implements Runnable {
                         UserPackage incomingUserPackageNumber = gson.fromJson(message, UserPackage.class);
                         User user = incomingUserPackageNumber.getUser();
 
-                        User returnedUser = modelManager.ValidateUser(user.getUserName(), user.getPassword());
+                        User returnedUser = modelManager.ValidateUser(user.getUserName());
                         UserPackage outgoingUserPackage = new UserPackage(NetworkType.USER, returnedUser);
 
                         String response = gson.toJson(outgoingUserPackage);
@@ -221,13 +221,9 @@ public class ClientHandler implements Runnable {
         String query = incomingQueryPackage.getQuery();
         Object carryObject = incomingQueryPackage.getCarryObject();
         switch (query) {
-            case "get_business_owner_by_id":
-//                String idToGetBusinessOwnerBy = carryObject.toString();
-//                BusinessOwner returnedBusinessOwner = businessOwnerModel.getBusinessOwner(idToGetBusinessOwnerBy);
-//                BusinessOwnerPackage outgoingBusinessOwnerPackage = new BusinessOwnerPackage(NetworkType.BUSINESSOWNER, returnedBusinessOwner);
-//
-//                String businessOwnerResponse = gson.toJson(outgoingBusinessOwnerPackage);
-//                sendData(businessOwnerResponse);
+            case "delete_service":
+                String serviceId = carryObject.toString();
+                serviceModel.deleteService(serviceId);
                 break;
 
             default:

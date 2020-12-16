@@ -7,4 +7,5 @@ public interface ServiceModel {
     List<Service> getServicesByBusinessId(String businessId);
     List<Service> getServiceByTitle(String title);
     List<Service> getAllServices();
+    void deleteService(String serviceId);
 }

@@ -32,4 +32,9 @@ public class ServiceServiceImpl implements ServiceService {
     public List<Service> getAllServices() throws IOException {
         return serviceModel.getAllServices();
     }
+
+    @Override
+    public void deleteService(String serviceId) throws IOException {
+        serviceModel.deleteService(serviceId);
+    }
 }
