@@ -6,9 +6,14 @@
 @using Client.Models
 @using Client.Data
 @using Client.Data.Impl
+@using System.Security.Claims
+@using System.Text.Json
 @inject IAppointmentService AppointmentService
 @inject IServiceService ServiceService
 @inject IBusinessService BusinessService
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <style>
     .bs-container {
@@ -49,9 +54,6 @@ else
                     break;
                 case 2:
                     <ReserveEmployee Employees="@_employees" OnReserve="@HandleReserveEmployee"/>
-                    break;
-                case 3:
-                    <ReserveClient OnSubmit="@HandleSubmit"/>
                     break;
                 default:
                     <div></div>
@@ -128,7 +130,7 @@ else
     public void HandleReserveEmployee(string EmployeeId)
     {
         _appointment.selectedEmployeeId = EmployeeId;
-        HandleNext();
+        HandleSubmit();
     }
     
     public void HandleReserveTime(DateTime date)
@@ -137,14 +139,11 @@ else
         HandleNext();
     }
 
-    public async void HandleSubmit(string firstName, string lasName, string email, string phoneNumber)
+    public async void HandleSubmit()
     {
         try
         {
-            _appointment.name = $"{firstName} {lasName}";
-            _appointment.email = email;
-            _appointment.phone = phoneNumber;
-            
+            _appointment.createdBy = "5fae6476a93d05aab46d6537"; // TODO: Change this to the actual user id
             await AppointmentService.addAppointment(_appointment);
             NavigationManager.NavigateTo("/"); 
         }

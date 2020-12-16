@@ -7,20 +7,16 @@ public class Appointment {
     private String id;
     private String serviceId;
     private String scheduledTime;
-    private String name;
-    private String email;
-    private String phone;
+    private String createdBy;
     private Location selectedLocation;
     private String selectedEmployeeId;
 
-    public Appointment(ObjectId _id, String id, String serviceId, String scheduledTime, String name, String email, String phone, Location selectedLocation, String selectedEmployeeId) {
+    public Appointment(ObjectId _id, String id, String serviceId, String scheduledTime, String createdBy, Location selectedLocation, String selectedEmployeeId) {
         this._id = _id;
         this.id = id;
         this.serviceId = serviceId;
         this.scheduledTime = scheduledTime;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
+        this.createdBy = createdBy;
         this.selectedLocation = selectedLocation;
         this.selectedEmployeeId = selectedEmployeeId;
     }
@@ -57,28 +53,12 @@ public class Appointment {
         this.scheduledTime = scheduledTime;
     }
 
-    public String getName() {
-        return name;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Location getSelectedLocation() {
