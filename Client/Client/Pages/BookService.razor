@@ -7,6 +7,7 @@
 @using Client.Data
 @using Client.Data.Impl
 @inject IAppointmentService AppointmentService
+@inject IServiceService ServiceService
 
 <style>
     .bs-container {
@@ -37,7 +38,7 @@
                 <ReserveLocation OnReserve="@HandleReserveLocation"/>
                 break;
             case 1:
-                <ReserveTime Appointments="@_appointments" OnReserve="@HandleReserveTime"/>
+                <ReserveTime Service="@_service" Appointments="@_appointments" OnReserve="@HandleReserveTime"/>
                 break;
             case 2:
                 <ReserveEmployee OnReserve="@HandleReserveEmployee"/>
@@ -55,6 +56,7 @@
 @code {
     List<Appointment> _appointments = new List<Appointment>();
     Appointment _appointment = new Appointment();
+    Service _service;
     int BookingStep = 0;
 
     protected override async Task OnInitializedAsync()
@@ -70,8 +72,17 @@
         {
             NavigationManager.NavigateTo("/Services");
         }
-        
-        _appointments = await AppointmentService.getAppointments(_appointment.serviceId);
+
+        try
+        {
+            _appointments = await AppointmentService.getAppointments(_appointment.serviceId);
+            _service = await ServiceService.getServiceById(_appointment.serviceId);
+        }
+        catch
+        {
+            NavigationManager.NavigateTo("/Services");
+        }
+       
     }
     
 

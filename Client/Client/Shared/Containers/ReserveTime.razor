@@ -51,6 +51,9 @@
     public List<Appointment> Appointments { get; set; }
     
     [Parameter]
+    public Service Service { get; set; }
+    
+    [Parameter]
     public Action<DateTime> OnReserve { get; set; }
     
     public DateTime AppointmentDate { get; set; } = DateTime.Now;
@@ -74,7 +77,6 @@
             IsAvailable = isAppointmentAvailable(initialDateTime)
         });
         
-        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!");
         // populate schedule
         for (int i = 1; i < 15; i++)
         {
@@ -101,13 +103,7 @@
     {
         string formatedTime = time.ToString("MM/dd/yyyy h:mm tt");
         
-        return !Appointments.Exists(x =>
-        {
-            Console.WriteLine(x.scheduledTime);
-            Console.WriteLine(formatedTime);
-            Console.WriteLine("======");
-            return x.scheduledTime == formatedTime;
-        });
+        return !Appointments.Exists(x => x.scheduledTime == formatedTime);
     }
 
     public void HandleChangeDatePicker(ChangedEventArgs<DateTime?> args)
