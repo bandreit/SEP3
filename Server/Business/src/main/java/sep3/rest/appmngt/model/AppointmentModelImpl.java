@@ -23,8 +23,10 @@ public class AppointmentModelImpl implements AppointmentModel {
         BookAppointmentPackage bookAppointmentPackage = new BookAppointmentPackage(NetworkType.BOOK_APPOINTMENT, appointment);
         String data = gson.toJson(bookAppointmentPackage);
         connectionManager.sendToServer(data);
+        String receivedData = connectionManager.readFromServer();
+        bookAppointmentPackage = gson.fromJson(receivedData, BookAppointmentPackage.class);
 
-        return appointment;
+        return bookAppointmentPackage.getAppointment();
     }
 
     @Override
