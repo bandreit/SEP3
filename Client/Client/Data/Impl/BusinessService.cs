@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -115,6 +116,24 @@ namespace Client.Data.Impl
             String reply = await responseMessage.Content.ReadAsStringAsync();
             employees = JsonSerializer.Deserialize<List<Employee>>(reply);
             return employees;
+        }
+
+        public async Task<List<Employee>> GetEmpoyeesDetails(List<string> employeesIds)
+        {
+            List<Employee> allEmployees = await GetAllEmployees();
+            List<Employee> filteredEmployees = new List<Employee>();
+
+            foreach (var employeeId in employeesIds)
+            {
+                var currentEmployee = allEmployees.FirstOrDefault(x => x.Id == employeeId);
+
+                if (currentEmployee != null)
+                {
+                    filteredEmployees.Add(currentEmployee);
+                }
+            }
+            
+            return filteredEmployees;
         }
     }
 }

@@ -29,7 +29,7 @@
     }
 </style>
 
-@if (_service == null || _business == null)
+@if (_service == null || _business == null || _employees == null)
 {
     <p>Loading</p>
 }
@@ -48,7 +48,7 @@ else
                     <ReserveTime Service="@_service" Appointments="@_appointments" OnReserve="@HandleReserveTime"/>
                     break;
                 case 2:
-                    <ReserveEmployee OnReserve="@HandleReserveEmployee"/>
+                    <ReserveEmployee Employees="@_employees" OnReserve="@HandleReserveEmployee"/>
                     break;
                 case 3:
                     <ReserveClient OnSubmit="@HandleSubmit"/>
@@ -62,10 +62,12 @@ else
 }
 
 @code {
-    List<Appointment> _appointments = new List<Appointment>();
     Appointment _appointment = new Appointment();
+    List<Appointment> _appointments;
     Service _service;
     Business _business;
+    List<Employee> _employees;
+    
     int BookingStep = 0;
 
     protected override async Task OnInitializedAsync()
@@ -87,6 +89,7 @@ else
             _appointments = await AppointmentService.getAppointments(_appointment.serviceId);
             _service = await ServiceService.getServiceById(_appointment.serviceId);
             _business = await BusinessService.GetBusiness(_service.businessId);
+            _employees = await BusinessService.GetEmpoyeesDetails(_business.Employees);
         }
         catch
         {
