@@ -3,9 +3,11 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 
+<AuthorizeView Policy="BusinessOwner">
 <div class="sidebar">
     <NavMenu/>
 </div>
+</AuthorizeView>
 
 <div class="main">
     <div class="top-row px-4">
@@ -22,7 +24,7 @@
         <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
     </div>
 
-    <div class="content px-4">
+    <div class="content px-4 vh-100">
         @Body
     </div>
 </div>

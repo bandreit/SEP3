@@ -7,40 +7,28 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
+        <AuthorizeView Policy="BusinessOwner">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="Dashboard">
+                    <span class="oi oi-dashboard" aria-hidden="true"></span> Dashboard
+                </NavLink>
+            </li>
+        </AuthorizeView>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="services">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Services
             </NavLink>
         </li>
         <AuthorizeView Policy="BusinessOwner">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="AddBusiness">
-                <span class="oi oi-plus" aria-hidden="true"></span> Add Business
-            </NavLink>
-        </li>
-        </AuthorizeView>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="OwnedBusinesses">
-                <span class="oi oi-folder" aria-hidden="true"></span> My Businesses
-            </NavLink>
-        </li>
-
-        <AuthorizeView Policy="BusinessOwner">
             <li class="nav-item px-3">
-                <NavLink class="nav-link" href="AddEmployee">
-                    <span class="oi oi-plus" aria-hidden="true"></span> Add Employee
+                <NavLink class="nav-link" href="AddBusiness">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Add Business
                 </NavLink>
             </li>
-        </AuthorizeView>
-        <AuthorizeView Policy="BusinessOwner">
+
             <li class="nav-item px-3">
-                <NavLink class="nav-link" href="AddService">
-                    <span class="oi oi-plus" aria-hidden="true"></span>Add Service
+                <NavLink class="nav-link" href="OwnedBusinesses">
+                    <span class="oi oi-folder" aria-hidden="true"></span> My Businesses
                 </NavLink>
             </li>
         </AuthorizeView>

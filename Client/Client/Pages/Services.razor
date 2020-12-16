@@ -3,6 +3,7 @@
 @using Client.Data
 @using Client.Models
 @using Microsoft.AspNetCore.Mvc.Formatters
+@using Syncfusion.Blazor.Inputs
 @inject NavigationManager NavigationManager
 @inject IServiceService ServiceService
 
@@ -12,14 +13,21 @@
         grid-template-columns: repeat(4, 1fr);
         column-gap: 1rem;
         row-gap: 1rem;
+        height: 100vh;
     }
     .search-bar {
-    margin-left: 1.06rem;
+    margin-left: 1.06rem;   
+    display: flex;
+    justify-content: center;
+    }
+    
+    .sf-input {
+       width: 400px !important;
     }
 </style>
 
 <div class="search-bar">
-    <input @bind-value="filterByTitle" @bind-value:event="oninput" placeholder="Search by title"/>
+    <SfTextBox @bind-Value="filterByTitle" Placeholder="Search by title" CssClass="e-bigger sf-input" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
 </div>
 
 <div class="services-layout">

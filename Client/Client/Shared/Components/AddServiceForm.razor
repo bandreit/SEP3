@@ -13,6 +13,7 @@
     border-radius: 6px;
     display: inline-block;
     transition: all 0.3s ease 0s;
+    margin-right: 5px;
     }
     .button:hover {
     color: #404040 !important;
@@ -23,18 +24,47 @@
     -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     transition: all 0.3s ease 0s;
     }
+    .content-wrapper {
+        width: 90%;
+        margin: 0 auto;
+        min-width: 85px;
+    }
+    .content-wrapper div.row {
+        padding: 8px 0px;
+    }
 </style>
 
 <EditForm Model="@ServiceModel" OnValidSubmit="@HandleSubmit">
-    <SfTextBox @bind-Value="ServiceModel.title" Placeholder="Title" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-    <SfTextBox @bind-Value="ServiceModel.description" Placeholder="Description" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-    <SfTextBox @bind-Value="ServiceModel.pictureUrl" Placeholder="Picture Url" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
-    <SfNumericTextBox @bind-Value="ServiceModel.duration" Placeholder="Duration" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfNumericTextBox>
-
-    <div class="p-2">
-        <SfButton IsPrimary="true" @onclick="HandleSubmit">Create</SfButton>
+    <ObjectGraphDataAnnotationsValidator/>
+    <div class="card px-4 mb-4 pb-4">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <SfTextBox @bind-Value="ServiceModel.title" Placeholder="Title" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => ServiceModel.title)"/>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <SfTextBox @bind-Value="ServiceModel.description" Placeholder="Description" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => ServiceModel.description)"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <SfTextBox @bind-Value="ServiceModel.pictureUrl" Placeholder="Picture Url" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto"></SfTextBox>
+                <ValidationMessage For="@(() => ServiceModel.pictureUrl)"/>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                <SfNumericTextBox @bind-Value="ServiceModel.duration" Placeholder="Duration" CssClass="e-bigger" FloatLabelType="@FloatLabelType.Auto" Min="15"></SfNumericTextBox>
+                <ValidationMessage For="@(() => ServiceModel.duration)"/>
+            </div>
+        </div>
     </div>
-    
+
+    <div class="row">
+        <div class="btn">
+            <SfButton IsPrimary="true" type="submit">Create Service</SfButton>
+        </div>
+    </div>
+
 </EditForm>
 
 @code {

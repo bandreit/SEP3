@@ -1,15 +1,23 @@
 package sep3.db.model;
 
+import com.google.gson.annotations.Expose;
 import org.bson.types.ObjectId;
 
 public class Service {
     private ObjectId _id;
+    @Expose(serialize = true, deserialize = true)
     private String id;
+    @Expose(serialize = true, deserialize = true)
     private String pictureUrl;
+    @Expose(serialize = true, deserialize = true)
     private String title;
+    @Expose(serialize = true, deserialize = true)
     private String description;
+    @Expose(serialize = true, deserialize = true)
     private int duration;
+    @Expose(serialize = true, deserialize = false)
     private ObjectId _businessId;
+    @Expose(serialize = true, deserialize = true)
     private String businessId;
 
     public Service(ObjectId _id, String id, String pictureUrl, String title, String description, int duration) {

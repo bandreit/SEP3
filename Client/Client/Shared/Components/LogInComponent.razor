@@ -53,7 +53,7 @@
             buttonDisabled = false;
             username = "";
             password = "";
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/Services");
         }
         catch (Exception e)
         {
@@ -70,7 +70,7 @@
         try
         {
             ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/Services");
         }
         catch (Exception e)
         {

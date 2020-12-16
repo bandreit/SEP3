@@ -72,10 +72,10 @@ public class BusinessController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/employee")
-    public ResponseEntity addEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
+    @PutMapping("/employee")
+    public ResponseEntity addEmployee(@RequestParam String businessId, @RequestBody List<String> employeeIds, @RequestParam String serviceId) {
         try {
-            businessService.addEmployee(employeeId, businessId);
+            businessService.addEmployee(employeeIds, businessId, serviceId);
             return ResponseEntity.ok().build();
         } catch (IOException e) {
             e.printStackTrace();

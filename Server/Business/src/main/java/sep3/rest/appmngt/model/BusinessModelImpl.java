@@ -46,8 +46,8 @@ public class BusinessModelImpl implements BusinessModel {
     }
 
     @Override
-    public void addEmployee(String employeeId, String businessId) throws IOException {
-        EmployeePackage employeePackage = new EmployeePackage(NetworkType.EMPLOYEE, employeeId, businessId);
+    public void addEmployee(List<String>  employeeId, String businessId, String serviceId) throws IOException {
+        EmployeePackage employeePackage = new EmployeePackage(NetworkType.EMPLOYEE, employeeId, businessId, serviceId);
         String data = gson.toJson(employeePackage);
         connectionManager.sendToServer(data);
     }

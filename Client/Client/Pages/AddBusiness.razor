@@ -37,7 +37,7 @@
 
             <h3 class="mt-4">Locations:</h3>
             <hr/>
-            <div class=@(_business.Locations.Count > 0 ? "card px-4 mb-4" : "")}>
+            <div>
                 @for (var j = 0; j < _business.Locations.Count; j++)
                 {
                     var locationIndex = j;
@@ -71,25 +71,6 @@
             </div>
         </div>
     </EditForm>
-
-    @if (listOfBusinessToshow == null)
-    {
-        <p>
-            <em>Loading Businesses</em>
-        </p>
-    }
-    else
-    {
-        <p> Businesses:</p>
-        <ul>
-            @foreach (var business in listOfBusinessToshow)
-            {
-                <li>@business.Name</li>
-            }
-        </ul>
-    }
-
-
 </div>
 
 <style>
@@ -182,14 +163,6 @@ display: flex;
 
 @code {
     private Business _business = new Business();
-    private IList<Business> listOfBusiness;
-    private IList<Business> listOfBusinessToshow;
-
-    protected override async Task OnInitializedAsync()
-    {
-        listOfBusiness = await BusinessService.GetBusinessesAsync();
-        listOfBusinessToshow = listOfBusiness;
-    }
 
     private async void AddNewBusiness()
     {
@@ -201,7 +174,7 @@ display: flex;
 
         if (statusCode == HttpStatusCode.Created || statusCode == HttpStatusCode.OK)
         {
-            NavigationManager.NavigateTo("/BookService");
+            NavigationManager.NavigateTo("/OwnedBusinesses");
             StateHasChanged();
         }
     }

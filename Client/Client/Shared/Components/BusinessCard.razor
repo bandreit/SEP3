@@ -24,15 +24,18 @@
 </style>
 
 <SfCard ID="BasicCard">
-    <CardHeader Title="@Name"/>
+    <CardHeader>
+        <h1>@Name</h1>
+    </CardHeader>
     <CardContent>
-        <p>@Services services</p>
-        <p>@Employees employees</p>
+        <p>@Services @(Services == 1 ? "service" : "services")</p>
+        <p>@Employees @(Employees == 1 ? "employee" : "employees")</p>
     </CardContent>
     <CardFooter>
         <CardFooterContent>
             <SfButton CssClass="e-btn e-outline e-primary" @onclick="@(() => EditThisBusiness.InvokeAsync(Business.Id))">Edit</SfButton>
-            @* <SfButton CssClass="e-btn e-outline e-primary" @onclick="@(() => OnClick?.Invoke())">Book an appointment</SfButton> *@
+            <SfButton CssClass="e-warning" @onclick="@(() => ManageServices.InvokeAsync(Business.Id))">Services</SfButton>
+            <SfButton CssClass="e-warning" @onclick="@(() => ManageEmployees.InvokeAsync(Business.Id))">Employees</SfButton>
         </CardFooterContent>
     </CardFooter>
 </SfCard>
@@ -41,18 +44,26 @@
 
     [Parameter]
     public Business Business { get; set; }
+
     [Parameter]
     public String Name { get; set; }
 
     [Parameter]
     public int Services { get; set; }
-    
+
     [Parameter]
     public int Employees { get; set; }
 
     /*[Parameter]
     public Action OnClick { get; set; }*/
+
     [Parameter]
     public EventCallback<string?> EditThisBusiness { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ManageServices { get; set; }
+    
+    [Parameter]
+    public EventCallback<string?> ManageEmployees { get; set; }
 
 }
