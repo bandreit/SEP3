@@ -58,4 +58,20 @@ public class AppointmentModelManager implements AppointmentModel {
 
         return listOfAppointments;
     }
+
+    @Override
+    public List<Appointment> getUserAppointments(String userId) {
+        List<Appointment> listOfAppointments = new ArrayList<>();
+        MongoCursor<Document> cursor = appointmentCollection.find(eq("createdBy", userId)).iterator();
+
+        while(cursor.hasNext()) {
+            Document document = cursor.next();
+            Appointment fromDocumentToObject = gson.fromJson(document.toJson(), Appointment.class);
+            fromDocumentToObject.setId(document.get("_id").toString());
+
+            listOfAppointments.add(fromDocumentToObject);
+        }
+
+        return listOfAppointments;
+    }
 }

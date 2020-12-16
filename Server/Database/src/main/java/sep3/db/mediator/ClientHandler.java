@@ -196,6 +196,16 @@ public class ClientHandler implements Runnable {
                         String outgoingLAPackageJson = gson.toJson(outgoingLAPackage);
                         sendData(outgoingLAPackageJson);
                         break;
+                    case LIST_USER_APPOINTMENTS:
+                        UserAppointmentListPackage incomingLUPackage = gson.fromJson(message, UserAppointmentListPackage.class);
+                        String userId = incomingLUPackage.getUserId();
+
+                        List<Appointment> userAppointments = appointmentModel.getUserAppointments(userId);
+
+                        AppointmentListPackage outgoingLUPackage = new AppointmentListPackage(NetworkType.LIST_USER_APPOINTMENTS, userId, userAppointments);
+                        String outgoingLUPackageJson = gson.toJson(outgoingLUPackage);
+                        sendData(outgoingLUPackageJson);
+                        break;
                     case ERROR:
                     default:
                         sendData("ERROR");
