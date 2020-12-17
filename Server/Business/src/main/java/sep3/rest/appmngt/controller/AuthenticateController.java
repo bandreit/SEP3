@@ -40,8 +40,6 @@ public class AuthenticateController {
     @PostMapping("/newUser")
     public ResponseEntity<User> postUser(@RequestBody User user){
         try {
-            System.out.println("zdarova");
-            System.out.println(user);
             userService.addUser(user);
             return ResponseEntity.ok(user);
         } catch (IOException e) {
