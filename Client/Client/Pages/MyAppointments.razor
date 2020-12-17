@@ -1,9 +1,41 @@
 ﻿@page "/MyAppointments"
 @using Client.Data
 @using Client.Models
+@using System.Security.Claims
 @inject IAppointmentService AppointmentService
+@inject AuthenticationStateProvider CustomAuthenticationStateProvider
 
-<h3>MyAppointments</h3>
+<style>
+    .my-appointments {
+        background-color: #FFF;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        margin: 1rem 0rem;
+    }
+    
+    .my-appointments h3 {
+        font-size:  1.5rem;
+    }
+    
+    .my-appointments h4 {
+        font-size:  1rem;
+    }
+</style>
+
+@foreach (Appointment appointment in _appointments)
+{
+    <div>
+        <div>
+            <h3>@appointment.serviceName (@appointment.scheduledTime)</h3>
+            <h4>@appointment.selectedLocation.StreetName - @appointment.selectedLocation.StreetNumber</h4>
+        </div>
+        
+        <button>Delete</button>
+    </div>
+}
 
 @code {
     List<Appointment> _appointments = new List<Appointment>();
@@ -12,11 +44,14 @@
     {
         try
         {
-            _appointments = await AppointmentService.getOwnAppointments();
+            var authState = await CustomAuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            Claim userClaim = user.FindFirst(claim => claim.Type.Equals("Id"));
+
+            _appointments = await AppointmentService.getAppointmentsByUserId(userClaim.Value);
         }
         catch
         {
-            
         }
     }
 

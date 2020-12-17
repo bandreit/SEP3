@@ -6,9 +6,11 @@
 @using Client.Models
 @using Client.Data
 @using Client.Data.Impl
+@using System.Security.Claims
 @inject IAppointmentService AppointmentService
 @inject IServiceService ServiceService
 @inject IBusinessService BusinessService
+@inject AuthenticationStateProvider CustomAuthenticationStateProvider
 
 <style>
     .bs-container {
@@ -138,7 +140,13 @@ else
     {
         try
         {
-            _appointment.createdBy = "123";
+            var authState = await CustomAuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            Claim userClaim = user.FindFirst(claim => claim.Type.Equals("Id"));
+            
+            _appointment.createdBy = userClaim.Value;
+            _appointment.serviceName = _service.title;
+            
             await AppointmentService.addAppointment(_appointment);
             NavigationManager.NavigateTo("/Services"); 
         }

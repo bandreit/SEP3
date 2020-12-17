@@ -9,6 +9,6 @@ namespace Client.Data
     {
         Task addAppointment(Appointment appointment);
         Task<List<Appointment>> getAppointments(string serviceId);
-        Task<List<Appointment>> getOwnAppointments();
+        Task<List<Appointment>> getAppointmentsByUserId(string userId);
     }
 }

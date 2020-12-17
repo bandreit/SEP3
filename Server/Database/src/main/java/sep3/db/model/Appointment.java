@@ -8,6 +8,7 @@ public class Appointment {
     private String serviceId;
     private String scheduledTime;
     private String createdBy;
+    private String serviceName;
     private Location selectedLocation;
     private String selectedEmployeeId;
 
@@ -59,6 +60,14 @@ public class Appointment {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public Location getSelectedLocation() {
