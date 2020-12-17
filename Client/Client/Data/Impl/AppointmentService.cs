@@ -33,5 +33,25 @@ namespace Client.Data.Impl
                 return appointments;
             }
         }
+        
+        public async Task<List<Appointment>> getAppointmentsByUserId(string userId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync($"{_endpoint}/user-appointments?userId={userId}");
+                string reply = await response.Content.ReadAsStringAsync();
+                
+                List<Appointment> appointments =  JsonSerializer.Deserialize<List<Appointment>>(reply);
+                return appointments;
+            }
+        }
+
+        public async Task deleteAppointment(string appointmentId)
+        {
+            using (HttpClient client = new HttpClient())
+            { 
+                await client.DeleteAsync($"{_endpoint}/appointment?appointmentId={appointmentId}");
+            }
+        }
     }
 }

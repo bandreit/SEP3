@@ -22,4 +22,14 @@ public class AppointServiceImpl implements AppointmentService {
     public List<Appointment> getAppointments(String serviceId) throws IOException {
         return appointmentModel.getAppointments(serviceId);
     }
+
+    @Override
+    public List<Appointment> getUserAppointments(String userId) throws IOException {
+        return appointmentModel.getUserAppointments(userId);
+    }
+
+    @Override
+    public String deleteAppointment(String appointmentId) throws IOException {
+        return appointmentModel.deleteAppointment(appointmentId);
+    }
 }

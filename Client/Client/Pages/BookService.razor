@@ -6,9 +6,11 @@
 @using Client.Models
 @using Client.Data
 @using Client.Data.Impl
+@using System.Security.Claims
 @inject IAppointmentService AppointmentService
 @inject IServiceService ServiceService
 @inject IBusinessService BusinessService
+@inject AuthenticationStateProvider CustomAuthenticationStateProvider
 
 <style>
     .bs-container {
@@ -49,9 +51,6 @@ else
                     break;
                 case 2:
                     <ReserveEmployee Employees="@_employees" OnReserve="@HandleReserveEmployee"/>
-                    break;
-                case 3:
-                    <ReserveClient OnSubmit="@HandleSubmit"/>
                     break;
                 default:
                     <div></div>
@@ -128,7 +127,7 @@ else
     public void HandleReserveEmployee(string EmployeeId)
     {
         _appointment.selectedEmployeeId = EmployeeId;
-        HandleNext();
+        HandleSubmit();
     }
     
     public void HandleReserveTime(DateTime date)
@@ -137,13 +136,16 @@ else
         HandleNext();
     }
 
-    public async void HandleSubmit(string firstName, string lasName, string email, string phoneNumber)
+    public async void HandleSubmit()
     {
         try
         {
-            _appointment.name = $"{firstName} {lasName}";
-            _appointment.email = email;
-            _appointment.phone = phoneNumber;
+            var authState = await CustomAuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            Claim userClaim = user.FindFirst(claim => claim.Type.Equals("Id"));
+            
+            _appointment.createdBy = userClaim.Value;
+            _appointment.serviceName = _service.title;
             
             await AppointmentService.addAppointment(_appointment);
             NavigationManager.NavigateTo("/Services"); 

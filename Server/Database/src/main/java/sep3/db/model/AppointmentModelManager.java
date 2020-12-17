@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,8 @@ public class AppointmentModelManager implements AppointmentModel {
         Document newAppointment = new Document();
         newAppointment.append("serviceId", appointment.getServiceId());
         newAppointment.append("scheduledTime", appointment.getScheduledTime());
-        newAppointment.append("name", appointment.getName());
-        newAppointment.append("email", appointment.getEmail());
-        newAppointment.append("phone", appointment.getPhone());
+        newAppointment.append("createdBy", appointment.getCreatedBy());
+        newAppointment.append("serviceName", appointment.getServiceName());
         newAppointment.append("selectedEmployeeId", appointment.getSelectedEmployeeId());
 
         BasicDBObject locationDoc = new BasicDBObject();
@@ -59,5 +59,27 @@ public class AppointmentModelManager implements AppointmentModel {
         }
 
         return listOfAppointments;
+    }
+
+    @Override
+    public List<Appointment> getUserAppointments(String userId) {
+        List<Appointment> listOfAppointments = new ArrayList<>();
+        MongoCursor<Document> cursor = appointmentCollection.find(eq("createdBy", userId)).iterator();
+
+        while(cursor.hasNext()) {
+            Document document = cursor.next();
+            Appointment fromDocumentToObject = gson.fromJson(document.toJson(), Appointment.class);
+            fromDocumentToObject.setId(document.get("_id").toString());
+
+            listOfAppointments.add(fromDocumentToObject);
+        }
+
+        return listOfAppointments;
+    }
+
+    @Override
+    public String deleteAppointment(String appointmentId) {
+        appointmentCollection.deleteOne(new Document("_id", new ObjectId(appointmentId)));
+        return appointmentId;
     }
 }

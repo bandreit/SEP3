@@ -1,0 +1,75 @@
+﻿@page "/MyAppointments"
+@using Client.Data
+@using Client.Models
+@using System.Security.Claims
+@using Syncfusion.Blazor.Buttons
+@inject IAppointmentService AppointmentService
+@inject AuthenticationStateProvider CustomAuthenticationStateProvider
+
+<style>
+    .my-appointments {
+        background-color: #FFF;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        margin: 1rem 0rem;
+    }
+    
+    .my-appointments h3 {
+        font-size:  1.5rem;
+    }
+    
+    .my-appointments h4 {
+        font-size:  1rem;
+    }
+</style>
+
+@foreach (Appointment appointment in _appointments)
+{
+    <div class="my-appointments">
+        <div>
+            <h3>@appointment.serviceName (@appointment.scheduledTime)</h3>
+            <h4>@appointment.selectedLocation.StreetName - @appointment.selectedLocation.StreetNumber</h4>
+        </div>
+
+        <SfButton @onclick=@(() => deleteAppointment(appointment.id))>
+            <i class="oi oi-trash" style="color: red"></i>
+        </SfButton>
+    </div>
+}
+
+@code {
+    List<Appointment> _appointments = new List<Appointment>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await CustomAuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            Claim userClaim = user.FindFirst(claim => claim.Type.Equals("Id"));
+
+            _appointments = await AppointmentService.getAppointmentsByUserId(userClaim.Value);
+        }
+        catch
+        {
+        }
+    }
+
+    public async void deleteAppointment(string appointmentId)
+    {
+        try
+        {
+            await AppointmentService.deleteAppointment(appointmentId);
+            var updatedAppointments = _appointments.FindAll(x => x.id != appointmentId);
+            _appointments = updatedAppointments;
+            StateHasChanged();
+        }
+        catch
+        {
+        }
+    }
+
+}
