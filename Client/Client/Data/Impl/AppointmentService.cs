@@ -45,5 +45,13 @@ namespace Client.Data.Impl
                 return appointments;
             }
         }
+
+        public async Task deleteAppointment(string appointmentId)
+        {
+            using (HttpClient client = new HttpClient())
+            { 
+                await client.DeleteAsync($"{_endpoint}/appointment?appointmentId={appointmentId}");
+            }
+        }
     }
 }

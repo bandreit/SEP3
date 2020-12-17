@@ -54,4 +54,14 @@ public class AppointmentModelImpl implements AppointmentModel {
 
         return appointmentListPackage.getAppointments();
     }
+
+    @Override
+    public String deleteAppointment(String appointmentId) throws IOException {
+        DeleteAppointmentPackage deleteAppointmentPackage = new DeleteAppointmentPackage(NetworkType.DELETE_APPOINTMENT, appointmentId);
+        String data = gson.toJson(deleteAppointmentPackage);
+        connectionManager.sendToServer(data);
+        connectionManager.readFromServer();
+
+        return appointmentId;
+    }
 }

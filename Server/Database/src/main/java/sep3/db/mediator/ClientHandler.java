@@ -207,6 +207,12 @@ public class ClientHandler implements Runnable {
                         String outgoingULPackageJson = gson.toJson(outgoingULPackage);
                         sendData(outgoingULPackageJson);
                         break;
+                    case DELETE_APPOINTMENT:
+                        DeleteAppointmentPackage incomingRemoveAppointmentPackageNumber = gson.fromJson(message, DeleteAppointmentPackage.class);
+                        String deleteAppointmentId = incomingRemoveAppointmentPackageNumber.getAppointmentId();
+
+                        appointmentModel.deleteAppointment(deleteAppointmentId);
+                        break;
                     case ERROR:
                     default:
                         sendData("ERROR");

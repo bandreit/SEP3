@@ -7,4 +7,5 @@ public interface AppointmentModel {
 
     List<Appointment> getAppointments(String serviceId);
     List<Appointment> getUserAppointments(String userId);
+    String deleteAppointment(String appointmentId);
 }

@@ -28,6 +28,17 @@ public class AppointmentController {
         return ResponseEntity.badRequest().build();
     }
 
+    @DeleteMapping("/appointment")
+    public ResponseEntity<String> deleteAppointment(@RequestParam String appointmentId) {
+        try {
+            appointmentService.deleteAppointment(appointmentId);
+            return ResponseEntity.ok(appointmentId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @GetMapping("/appointments")
     public ResponseEntity<List<Appointment>> getAppointments(@RequestParam String serviceId) {
         try {

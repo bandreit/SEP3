@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,5 +75,11 @@ public class AppointmentModelManager implements AppointmentModel {
         }
 
         return listOfAppointments;
+    }
+
+    @Override
+    public String deleteAppointment(String appointmentId) {
+        appointmentCollection.deleteOne(new Document("_id", new ObjectId(appointmentId)));
+        return appointmentId;
     }
 }
