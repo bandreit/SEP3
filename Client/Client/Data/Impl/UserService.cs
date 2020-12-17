@@ -16,7 +16,7 @@ namespace Client.Data.Impl
 
             HttpResponseMessage responseMessage =
                 await client.GetAsync(
-                    $"http://localhost:8083/SEP3/validate?username={userName}");
+                    $"https://localhost:8083/SEP3/validate?username={userName}");
 
             String reply = await responseMessage.Content.ReadAsStringAsync();
 
@@ -57,7 +57,7 @@ namespace Client.Data.Impl
                 Encoding.UTF8,
                 "application/json"
             );
-            var response = await client.PostAsync("http://localhost:8083/SEP3/newUser", content);
+            var response = await client.PostAsync("https://localhost:8083/SEP3/newUser", content);
             Console.WriteLine(response.StatusCode);
         }
     }

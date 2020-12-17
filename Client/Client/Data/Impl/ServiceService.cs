@@ -11,7 +11,7 @@ namespace Client.Data.Impl
 {
     public class ServiceService : IServiceService
     {
-        public const string _endpoint = "http://localhost:8083/SEP3";
+        public const string _endpoint = "https://localhost:8083/SEP3";
 
         public async Task addService(Service service)
         {

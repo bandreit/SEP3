@@ -31,13 +31,13 @@ namespace Client.Data.Impl
                 MediaTypeNames.Application.Json
             );
             HttpResponseMessage responseMessage =
-                await client.PostAsync("http://localhost:8083/SEP3/business", content);
+                await client.PostAsync("https://localhost:8083/SEP3/business", content);
             return responseMessage.StatusCode;
         }
 
         public async Task<IList<Business>> GetBusinessesAsync()
         {
-            string requestURI = "http://localhost:8083/SEP3/business";
+            string requestURI = "https://localhost:8083/SEP3/business";
 
             HttpClient client = new HttpClient();
             List<Business> businesses = new List<Business>();
@@ -53,7 +53,7 @@ namespace Client.Data.Impl
 
         public async Task<IList<Business>> GetOwnedBusinessesAsync(string userClaimValue)
         {
-            string requestURI = $"http://localhost:8083/SEP3/owned-business?businessOwnerID={userClaimValue}";
+            string requestURI = $"https://localhost:8083/SEP3/owned-business?businessOwnerID={userClaimValue}";
 
             HttpClient client = new HttpClient();
             List<Business> ownedBusinesses = new List<Business>();
@@ -70,7 +70,7 @@ namespace Client.Data.Impl
         public async Task<Business> GetBusiness(string id)
         {
             HttpClient client = new HttpClient();
-                string requestURI = $"http://localhost:8083/SEP3/this-business?businessId={id}";
+                string requestURI = $"https://localhost:8083/SEP3/this-business?businessId={id}";
                 string message = await client.GetStringAsync(requestURI);
                 Business result = JsonSerializer.Deserialize<Business>(message);
                 return result;
@@ -88,7 +88,7 @@ namespace Client.Data.Impl
                 MediaTypeNames.Application.Json
             );
 
-            HttpResponseMessage responseMessage = await client.PutAsync($"http://localhost:8083/SEP3/this-business", content);
+            HttpResponseMessage responseMessage = await client.PutAsync($"https://localhost:8083/SEP3/this-business", content);
         }
 
         public async Task<HttpStatusCode> AddEmployee(List<string> employeeIds, string businessId, string serviceId)
@@ -101,7 +101,7 @@ namespace Client.Data.Impl
                 MediaTypeNames.Application.Json
             );
             
-            string uri = "http://localhost:8083/SEP3/employee?";
+            string uri = "https://localhost:8083/SEP3/employee?";
             if (employeeIds != null && businessId != null)
             {
                 uri += $"businessId={businessId}&serviceId={serviceId}";
@@ -114,13 +114,13 @@ namespace Client.Data.Impl
         public async Task RemoveEmployee(string employeeId, string businessId)
         {
             await client.DeleteAsync(
-                $"http://localhost:8083/SEP3/employee?businessId={businessId}&employeeId={employeeId}");
+                $"https://localhost:8083/SEP3/employee?businessId={businessId}&employeeId={employeeId}");
         }
 
         public async Task<List<Employee>> GetAllEmployees()
         {
             List<Employee> employees = new List<Employee>();
-            HttpResponseMessage responseMessage = await client.GetAsync("http://localhost:8083/SEP3/employee");
+            HttpResponseMessage responseMessage = await client.GetAsync("https://localhost:8083/SEP3/employee");
             String reply = await responseMessage.Content.ReadAsStringAsync();
             employees = JsonSerializer.Deserialize<List<Employee>>(reply);
             return employees;

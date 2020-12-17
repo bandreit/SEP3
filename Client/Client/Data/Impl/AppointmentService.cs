@@ -10,7 +10,7 @@ namespace Client.Data.Impl
 {
     public class AppointmentService : IAppointmentService
     {
-        public const string _endpoint = "http://localhost:8083/SEP3";
+        public const string _endpoint = "https://localhost:8083/SEP3";
         public async Task addAppointment(Appointment appointment)
         {
             using (HttpClient client = new HttpClient())
