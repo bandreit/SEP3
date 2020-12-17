@@ -150,6 +150,7 @@ public class BusinessModelManager implements BusinessModel {
                 locations.add(newLocation);
             }
         }
+
         editedBusiness.append("locations", locations);
         Document update = new Document();
         update.append("$set", editedBusiness);
