@@ -1,0 +1,23 @@
+﻿@page "/MyAppointments"
+@using Client.Data
+@using Client.Models
+@inject IAppointmentService AppointmentService
+
+<h3>MyAppointments</h3>
+
+@code {
+    List<Appointment> _appointments = new List<Appointment>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _appointments = await AppointmentService.getOwnAppointments();
+        }
+        catch
+        {
+            
+        }
+    }
+
+}

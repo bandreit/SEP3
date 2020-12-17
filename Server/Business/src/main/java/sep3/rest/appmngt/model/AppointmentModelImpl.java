@@ -41,4 +41,17 @@ public class AppointmentModelImpl implements AppointmentModel {
 
         return appointmentListPackage.getAppointments();
     }
+
+    @Override
+    public List<Appointment> getUserAppointments(String userId) throws IOException {
+        List<Appointment> appointmentList = new ArrayList<>();
+        UserAppointmentListPackage appointmentListPackage = new UserAppointmentListPackage(NetworkType.USER_LIST_APPOINTMENTS, userId, appointmentList);
+        String data = gson.toJson(appointmentListPackage);
+        connectionManager.sendToServer(data);
+        String receivedData = connectionManager.readFromServer();
+        appointmentListPackage = gson.fromJson(receivedData, UserAppointmentListPackage.class);
+
+
+        return appointmentListPackage.getAppointments();
+    }
 }

@@ -38,4 +38,15 @@ public class AppointmentController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @GetMapping("/user-appointments")
+    public ResponseEntity<List<Appointment>> getUserAppointments(@RequestParam String userId) {
+        try {
+            List<Appointment> returnedAppointments = appointmentService.getUserAppointments(userId);
+            return ResponseEntity.ok(returnedAppointments);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }

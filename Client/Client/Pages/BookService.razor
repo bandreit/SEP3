@@ -50,9 +50,6 @@ else
                 case 2:
                     <ReserveEmployee Employees="@_employees" OnReserve="@HandleReserveEmployee"/>
                     break;
-                case 3:
-                    <ReserveClient OnSubmit="@HandleSubmit"/>
-                    break;
                 default:
                     <div></div>
                     break;
@@ -128,7 +125,7 @@ else
     public void HandleReserveEmployee(string EmployeeId)
     {
         _appointment.selectedEmployeeId = EmployeeId;
-        HandleNext();
+        HandleSubmit();
     }
     
     public void HandleReserveTime(DateTime date)
@@ -137,14 +134,11 @@ else
         HandleNext();
     }
 
-    public async void HandleSubmit(string firstName, string lasName, string email, string phoneNumber)
+    public async void HandleSubmit()
     {
         try
         {
-            _appointment.name = $"{firstName} {lasName}";
-            _appointment.email = email;
-            _appointment.phone = phoneNumber;
-            
+            _appointment.createdBy = "123";
             await AppointmentService.addAppointment(_appointment);
             NavigationManager.NavigateTo("/Services"); 
         }

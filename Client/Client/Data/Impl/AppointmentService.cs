@@ -33,5 +33,18 @@ namespace Client.Data.Impl
                 return appointments;
             }
         }
+        
+        public async Task<List<Appointment>> getOwnAppointments()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var userId = "123";
+                HttpResponseMessage response = await client.GetAsync($"{_endpoint}/user-appointments?userId={userId}");
+                string reply = await response.Content.ReadAsStringAsync();
+                
+                List<Appointment> appointments =  JsonSerializer.Deserialize<List<Appointment>>(reply);
+                return appointments;
+            }
+        }
     }
 }

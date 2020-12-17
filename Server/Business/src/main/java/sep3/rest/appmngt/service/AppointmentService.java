@@ -9,4 +9,5 @@ public interface AppointmentService  {
     Appointment addAppointment(Appointment appointment) throws IOException;
 
     List<Appointment> getAppointments(String serviceId) throws IOException;
+    List<Appointment> getUserAppointments(String userId) throws IOException;
 }

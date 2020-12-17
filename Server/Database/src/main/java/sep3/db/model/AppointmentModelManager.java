@@ -26,9 +26,7 @@ public class AppointmentModelManager implements AppointmentModel {
         Document newAppointment = new Document();
         newAppointment.append("serviceId", appointment.getServiceId());
         newAppointment.append("scheduledTime", appointment.getScheduledTime());
-        newAppointment.append("name", appointment.getName());
-        newAppointment.append("email", appointment.getEmail());
-        newAppointment.append("phone", appointment.getPhone());
+        newAppointment.append("createdBy", appointment.getCreatedBy());
         newAppointment.append("selectedEmployeeId", appointment.getSelectedEmployeeId());
 
         BasicDBObject locationDoc = new BasicDBObject();
@@ -49,6 +47,22 @@ public class AppointmentModelManager implements AppointmentModel {
     public List<Appointment> getAppointments(String serviceId) {
         List<Appointment> listOfAppointments = new ArrayList<>();
         MongoCursor<Document> cursor = appointmentCollection.find(eq("serviceId", serviceId)).iterator();
+
+        while(cursor.hasNext()) {
+            Document document = cursor.next();
+            Appointment fromDocumentToObject = gson.fromJson(document.toJson(), Appointment.class);
+            fromDocumentToObject.setId(document.get("_id").toString());
+
+            listOfAppointments.add(fromDocumentToObject);
+        }
+
+        return listOfAppointments;
+    }
+
+    @Override
+    public List<Appointment> getUserAppointments(String userId) {
+        List<Appointment> listOfAppointments = new ArrayList<>();
+        MongoCursor<Document> cursor = appointmentCollection.find(eq("createdBy", userId)).iterator();
 
         while(cursor.hasNext()) {
             Document document = cursor.next();
