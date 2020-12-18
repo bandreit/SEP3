@@ -17,7 +17,7 @@ public interface BusinessService {
      * @param business the business
      * @throws IOException the io exception
      */
-    void addBusiness(Business business) throws IOException;
+    Business addBusiness(Business business) throws IOException;
 
     /**
      * Add employee.

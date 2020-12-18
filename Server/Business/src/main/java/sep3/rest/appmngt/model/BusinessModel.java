@@ -12,8 +12,9 @@ public interface BusinessModel {
      *
      * @param business the business
      * @throws IOException the io exception
+     * @return
      */
-    void addBusiness(Business business) throws IOException;
+    Business addBusiness(Business business) throws IOException;
 
     /**
      * Add employee.

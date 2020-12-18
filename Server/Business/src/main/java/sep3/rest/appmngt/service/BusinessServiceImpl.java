@@ -28,8 +28,8 @@ public class BusinessServiceImpl implements BusinessService {
      * @param business Business
      */
     @Override
-    public void addBusiness(Business business) throws IOException {
-       businessModel.addBusiness(business);
+    public Business addBusiness(Business business) throws IOException {
+       return businessModel.addBusiness(business);
     }
 
     /**

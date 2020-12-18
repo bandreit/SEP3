@@ -32,14 +32,16 @@ public class BusinessModelImpl implements BusinessModel {
      * Adding services and  exchanging business data with database
      *
      * @param business Business
+     * @return
      */
     @Override
-    public void addBusiness(Business business) throws IOException {
+    public Business addBusiness(Business business) throws IOException {
         BusinessPackage businessPackage = new BusinessPackage(NetworkType.BUSINESS, business);
         String data = gson.toJson(businessPackage);
         connectionManager.sendToServer(data);
         String receivedData = connectionManager.readFromServer();
         businessPackage = gson.fromJson(receivedData, BusinessPackage.class);
+        return business;
     }
 
     /**
