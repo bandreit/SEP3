@@ -25,6 +25,9 @@ import java.util.List;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.in;
 
+/**
+ * The type Business model manager.
+ */
 public class BusinessModelManager implements BusinessModel {
 
 
@@ -32,12 +35,22 @@ public class BusinessModelManager implements BusinessModel {
     private final MongoCollection<Document> employeeCollection;
     private final Gson gson;
 
+    /**
+     * Instantiates a new Business model manager.
+     *
+     * @param database the database
+     */
     public BusinessModelManager(MongoDatabase database) {
         businessCollection = database.getCollection("business");
         employeeCollection = database.getCollection("users");
         gson = new Gson();
     }
-
+    /**
+     * Adds business to database
+     *
+     * @param business the business
+     * @return business
+     */
     @Override
     public Business addBusiness(Business business) {
         Document newBusiness = new Document();
@@ -70,10 +83,15 @@ public class BusinessModelManager implements BusinessModel {
         businessCollection.insertOne(newBusiness);
         String objectId = newBusiness.get("_id").toString();
         business.setId(objectId);
-
         return business;
     }
-
+    /**
+     * Adds employee to the business
+     *
+     * @param employeeIds List<String>
+     * @param businessId  String
+     * @param serviceId   String
+     */
     @Override
     public void addEmployee(List<String>  employeeIds, String businessId, String serviceId) {
         for (String employeeId : employeeIds) {
@@ -84,12 +102,22 @@ public class BusinessModelManager implements BusinessModel {
             employeeCollection.updateOne(eq("_id", new ObjectId(employeeId)), Updates.addToSet("serviceIdList", new ObjectId(serviceId)));
         }
     }
-
+    /**
+     * remove employee from the business by employeeId
+     *
+     * @param employeeId  String
+     * @param businessId  String
+     *
+     */
     @Override
     public void removeEmployee(String employeeId, String businessId) {
         businessCollection.updateOne(eq("_id", new ObjectId(businessId)), Updates.pull("employees", new ObjectId(employeeId)));
     }
 
+    /**
+     * Gets all businesses from database
+     * @return the businesses
+     */
     @Override
     public List<Business> getAllBusiness() throws IOException {
         List<Business> listOfBusiness = new ArrayList<>();
@@ -132,7 +160,11 @@ public class BusinessModelManager implements BusinessModel {
         }
         return listOfBusiness;
     }
-
+    /**
+     * Edit the specific business
+     *
+     * @param business Business
+     */
     @Override
     public void editBusiness(Business business) {
         Document query = new Document();

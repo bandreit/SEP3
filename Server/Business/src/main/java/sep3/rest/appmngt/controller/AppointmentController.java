@@ -11,12 +11,21 @@ import sep3.rest.appmngt.service.BusinessService;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type Appointment controller.
+ */
 @RestController
 @RequestMapping("/SEP3")
 public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
+    /**
+     * Add appointment response entity.
+     *
+     * @param appointment the appointment
+     * @return the response entity
+     */
     @PostMapping("/appointment")
     public ResponseEntity<Appointment> addAppointment(@RequestBody Appointment appointment) {
         try {
@@ -28,6 +37,12 @@ public class AppointmentController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Delete appointment response entity.
+     *
+     * @param appointmentId the appointment id
+     * @return the response entity
+     */
     @DeleteMapping("/appointment")
     public ResponseEntity<String> deleteAppointment(@RequestParam String appointmentId) {
         try {
@@ -39,6 +54,12 @@ public class AppointmentController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Gets appointments.
+     *
+     * @param serviceId the service id
+     * @return the appointments
+     */
     @GetMapping("/appointments")
     public ResponseEntity<List<Appointment>> getAppointments(@RequestParam String serviceId) {
         try {
@@ -50,6 +71,12 @@ public class AppointmentController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Gets user appointments.
+     *
+     * @param userId the user id
+     * @return the user appointments
+     */
     @GetMapping("/user-appointments")
     public ResponseEntity<List<Appointment>> getUserAppointments(@RequestParam String userId) {
         try {

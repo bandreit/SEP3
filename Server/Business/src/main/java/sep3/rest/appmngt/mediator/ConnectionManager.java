@@ -7,10 +7,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+/**
+ * The type Connection manager.
+ */
 public class ConnectionManager implements ConnectionHandler {
 
 
+    /**
+     * The constant HOST.
+     */
     public static final String HOST = "localhost";
+    /**
+     * The constant PORT.
+     */
     public static final int PORT = 9876;
     private Socket socket;
     private InputStream inputStream;
@@ -22,6 +31,12 @@ public class ConnectionManager implements ConnectionHandler {
         connect();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws IOException the io exception
+     */
     public static ConnectionManager getInstance() throws IOException {
         if(instance == null)
         {
@@ -47,7 +62,12 @@ public class ConnectionManager implements ConnectionHandler {
     public void disconnect() throws IOException {
         socket.close();
     }
-
+    /**
+     * Sends bytes via Socket connection
+     *
+     * @param message the message
+     * @throws IOException the io exception
+     */
     @Override
     public void sendToServer(String message) throws IOException {
         byte[] toSendBytes = message.getBytes();
@@ -60,7 +80,11 @@ public class ConnectionManager implements ConnectionHandler {
         outputStream.write(toSendLenBytes);
         outputStream.write(toSendBytes);
     }
-
+    /**
+     * Receives bytes via Socket connection
+     *
+     * @throws IOException the io exception
+     */
     @Override
     public String readFromServer() throws IOException {
         byte[] lenBytes = new byte[4];

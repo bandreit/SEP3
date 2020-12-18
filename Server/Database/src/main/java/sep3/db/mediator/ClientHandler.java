@@ -8,6 +8,9 @@ import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
+/**
+ * The type Client handler.
+ */
 public class ClientHandler implements Runnable {
     private Socket socket;
     private InputStream inputStream;
@@ -19,6 +22,16 @@ public class ClientHandler implements Runnable {
     private AppointmentModel appointmentModel;
 
 
+    /**
+     * Instantiates a new Client handler.
+     *
+     * @param socket           the socket
+     * @param modelManager     the model manager
+     * @param businessModel    the business model
+     * @param serviceModel     the service model
+     * @param appointmentModel the appointment model
+     * @throws IOException the io exception
+     */
     public ClientHandler(Socket socket, UserModel modelManager, BusinessModel businessModel, ServiceModel serviceModel, AppointmentModel appointmentModel) throws IOException {
         this.socket = socket;
         inputStream = socket.getInputStream();
@@ -30,7 +43,11 @@ public class ClientHandler implements Runnable {
         this.appointmentModel = appointmentModel;
     }
 
-
+    /** Responsible to send/get bytes via the Socket connection
+     *
+     * @param response string
+     * @throws IOException the io exception
+     */
     private void sendData(String response) throws IOException {
         byte[] toSendBytes = response.getBytes();
         int toSendLen = toSendBytes.length;
@@ -221,17 +238,18 @@ public class ClientHandler implements Runnable {
 
             } catch (Exception e) {
                 System.out.println("Client disconnected");
-//                try {
-//                    sendData("ERROR");
-//                } catch (IOException ioException) {
-//                    ioException.printStackTrace();
-//                }
                 e.printStackTrace();    
                 break;
             }
         }
     }
 
+
+    /** Handling the query packages
+     *
+     * @param message string
+     * @throws IOException the io exception
+     */
     private void handleQueryMethods(String message) throws IOException {
         QueryPackage incomingQueryPackage = gson.fromJson(message, QueryPackage.class);
         String query = incomingQueryPackage.getQuery();
