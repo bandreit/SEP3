@@ -12,7 +12,7 @@ public interface BusinessModel {
      *
      * @param business the business
      * @throws IOException the io exception
-     * @return
+     * @return business
      */
     Business addBusiness(Business business) throws IOException;
 

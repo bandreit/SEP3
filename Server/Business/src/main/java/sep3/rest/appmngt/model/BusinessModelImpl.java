@@ -32,7 +32,7 @@ public class BusinessModelImpl implements BusinessModel {
      * Adding services and  exchanging business data with database
      *
      * @param business Business
-     * @return
+     * @return business
      */
     @Override
     public Business addBusiness(Business business) throws IOException {

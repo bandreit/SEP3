@@ -16,6 +16,7 @@ public interface BusinessService {
      *
      * @param business the business
      * @throws IOException the io exception
+     * @return business
      */
     Business addBusiness(Business business) throws IOException;
 
