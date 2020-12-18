@@ -16,12 +16,21 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * The type Authenticate controller.
+ */
 @RestController
 @RequestMapping("/SEP3")
 public class AuthenticateController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Validate user response entity.
+     *
+     * @param username the username
+     * @return the response entity
+     */
     @GetMapping("/validate")
     public ResponseEntity<User> ValidateUser(@RequestParam String username) {
         try {
@@ -37,6 +46,13 @@ public class AuthenticateController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    /**
+     * Post user response entity.
+     *
+     * @param user the user
+     * @return the response entity
+     */
     @PostMapping("/newUser")
     public ResponseEntity<User> postUser(@RequestBody User user){
         try {

@@ -11,6 +11,9 @@ import sep3.rest.appmngt.service.UserService;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type Business controller.
+ */
 @RestController
 @RequestMapping("/SEP3")
 public class BusinessController {
@@ -19,6 +22,12 @@ public class BusinessController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Add business response entity.
+     *
+     * @param business the business
+     * @return the response entity
+     */
     @PostMapping("/business")
     public ResponseEntity<Business> addBusiness(@RequestBody Business business) {
         try {
@@ -30,6 +39,11 @@ public class BusinessController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Gets businesses.
+     *
+     * @return the businesses
+     */
     @GetMapping("/business")
     public ResponseEntity<List<Business>> getBusinesses() {
         try {
@@ -40,6 +54,13 @@ public class BusinessController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    /**
+     * Gets business.
+     *
+     * @param businessId the business id
+     * @return the business
+     */
     @GetMapping("/this-business")
     public ResponseEntity<Business> getBusiness(@RequestParam String businessId) {
         try {
@@ -50,6 +71,13 @@ public class BusinessController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    /**
+     * Edit business response entity.
+     *
+     * @param business the business
+     * @return the response entity
+     */
     @PutMapping("/this-business")
     public ResponseEntity<Business> editBusiness(@RequestBody Business business){
         try {
@@ -61,6 +89,12 @@ public class BusinessController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Gets owned businesses.
+     *
+     * @param businessOwnerID the business owner id
+     * @return the owned businesses
+     */
     @GetMapping("/owned-business")
     public ResponseEntity<List<Business>> getOwnedBusinesses(@RequestParam String businessOwnerID) {
         try {
@@ -72,6 +106,14 @@ public class BusinessController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Add employee response entity.
+     *
+     * @param businessId  the business id
+     * @param employeeIds the employee ids
+     * @param serviceId   the service id
+     * @return the response entity
+     */
     @PutMapping("/employee")
     public ResponseEntity addEmployee(@RequestParam String businessId, @RequestBody List<String> employeeIds, @RequestParam String serviceId) {
         try {
@@ -83,6 +125,13 @@ public class BusinessController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Remove employee response entity.
+     *
+     * @param businessId the business id
+     * @param employeeId the employee id
+     * @return the response entity
+     */
     @DeleteMapping("/employee")
     public ResponseEntity removeEmployee(@RequestParam String businessId, @RequestParam String employeeId) {
         try {
@@ -94,6 +143,11 @@ public class BusinessController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Gets employees.
+     *
+     * @return the employees
+     */
     @GetMapping("/employee")
     public ResponseEntity<List<Employee>> getEmployees() {
         try {

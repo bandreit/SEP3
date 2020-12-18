@@ -15,16 +15,29 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
+/**
+ * The type User model manager.
+ */
 public class UserModelManager implements UserModel {
 
     private final MongoCollection<Document> usersCollection;
     private final Gson gson;
 
+    /**
+     * Instantiates a new User model manager.
+     *
+     * @param database the database
+     */
     public UserModelManager(MongoDatabase database) {
         usersCollection = database.getCollection("users");
         gson = new Gson();
     }
-
+    /**
+     * Validating the user by username
+     *
+     * @param userName Usee
+     * @return valdiated user
+     */
     @Override
     public User ValidateUser(String userName) {
         {
@@ -40,6 +53,12 @@ public class UserModelManager implements UserModel {
         }
     }
 
+    /**
+     * Registers new user to database
+     *
+     * @param user User
+     * @return registered user
+     */
     @Override
     public User RegisterUser(User user) {
         Document newUser = new Document();
@@ -60,6 +79,10 @@ public class UserModelManager implements UserModel {
         return user;
     }
 
+    /**
+     * Gets all employees
+     * @return list of employees
+     */
     @Override
     public List<Employee> getAllEmployees() {
         List<Employee> listOfEmployees = new ArrayList<>();

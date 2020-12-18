@@ -11,7 +11,13 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Client connector.
+ */
 public class ClientConnector implements Runnable {
+    /**
+     * The Port.
+     */
     final int PORT = 9876;
     private ServerSocket welcomeSocket;
     private UserModel modelManager;
@@ -19,6 +25,12 @@ public class ClientConnector implements Runnable {
     private ServiceModel serviceModel;
     private AppointmentModel appointmentModel;
 
+    /**
+     * Instantiates a new Client connector
+     * Connecting to database
+     *
+     * @throws IOException the io exception
+     */
     public ClientConnector() throws IOException {
         Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
         this.welcomeSocket = new ServerSocket(PORT);

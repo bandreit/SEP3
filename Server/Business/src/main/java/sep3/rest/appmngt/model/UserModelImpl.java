@@ -12,15 +12,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type User model.
+ */
 public class UserModelImpl implements UserModel {
     private final ConnectionHandler connectionManager;
     private final Gson gson;
 
+    /**
+     * Instantiates a new User model.
+     *
+     * @throws IOException the io exception
+     */
     public UserModelImpl() throws IOException {
         this.gson = new Gson();
         this.connectionManager = ConnectionManager.getInstance();
     }
-
+    /**
+     * Validating the user by exchanging username with database
+     *
+     * @param userName String
+     * @return user with username
+     */
     @Override
     public User ValidateUser(String userName) throws IOException {
         UserPackage userPackage = new UserPackage(NetworkType.USER, new User(userName, ""));
@@ -30,6 +43,12 @@ public class UserModelImpl implements UserModel {
         userPackage = gson.fromJson(receivedData, UserPackage.class);
         return userPackage.getUser();
     }
+    /**
+     * Registering the user by exchanging User object with database
+     *
+     * @param user User
+     * @return registered user
+     */
 
     @Override
     public User RegisterUser(User user) throws IOException {
@@ -40,6 +59,12 @@ public class UserModelImpl implements UserModel {
         userPackage = gson.fromJson(receivedData, CreateUserPackage.class);
         return userPackage.getUser();
     }
+
+    /**
+     * Getting employees  by exchanging employeeList with database
+     *
+     * @return all employees
+     */
 
     @Override
     public List<Employee> getAllEmployees() throws IOException {

@@ -2,15 +2,29 @@ package sep3.rest.appmngt.network;
 
 import sep3.rest.appmngt.model.User;
 
+/**
+ * The type Create user package.
+ */
 public class CreateUserPackage extends NetworkPackage {
 
     private final User user;
 
+    /**
+     * Instantiates a new Create user package.
+     *
+     * @param type the type
+     * @param user the user
+     */
     public CreateUserPackage(NetworkType type, User user) {
         super(type);
         this.user = user;
     }
 
+    /**
+     * Gets user.
+     *
+     * @return the user
+     */
     public User getUser()
     {
         return user;

@@ -17,17 +17,30 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
+/**
+ * The type Service model manager.
+ */
 public class ServiceModelManager implements ServiceModel {
     private final MongoCollection<Document> serviceCollection;
     private final MongoCollection<Document> businessCollection;
     private final Gson gson;
 
+    /**
+     * Instantiates a new Service model manager.
+     *
+     * @param database the database
+     */
     public ServiceModelManager(MongoDatabase database) {
         serviceCollection = database.getCollection("services");
         businessCollection = database.getCollection("business");
         gson = new Gson();
     }
-
+    /**
+     * Adds services to database
+     *
+     * @param service Service
+     * @return added service
+     */
     @Override
     public Service addService(Service service) {
         Document newService = new Document();
@@ -45,7 +58,12 @@ public class ServiceModelManager implements ServiceModel {
         businessCollection.updateOne(eq("_id", new ObjectId(service.getBusinessId())), Updates.addToSet("services", generatedServiceObjectID));
         return service;
     }
-
+    /**
+     * Gets businesses from database by id
+     *
+     * @param businessId String
+     * @return the services
+     */
     @Override
     public List<Service> getServicesByBusinessId(String businessId) {
         List<Service> serviceList = new ArrayList<>();
@@ -61,7 +79,12 @@ public class ServiceModelManager implements ServiceModel {
         }
         return serviceList;
     }
-
+    /**
+     * Gets businesses from database by title
+     *
+     * @param title String
+     * @return the services
+     */
     @Override
     public List<Service> getServiceByTitle(String title) {
         List<Service> serviceList = new ArrayList<>();
@@ -77,7 +100,10 @@ public class ServiceModelManager implements ServiceModel {
         }
         return serviceList;
     }
-
+    /**
+     * Gets all businesses
+     * @return the services
+     */
     @Override
     public List<Service> getAllServices() {
         List<Service> serviceList = new ArrayList<>();
@@ -94,7 +120,10 @@ public class ServiceModelManager implements ServiceModel {
         }
         return serviceList;
     }
-
+    /**
+     * Deletes services by id
+     * @param serviceId String
+     */
     @Override
     public void deleteService(String serviceId) {
         serviceCollection.deleteOne(new Document("_id", new ObjectId(serviceId)));

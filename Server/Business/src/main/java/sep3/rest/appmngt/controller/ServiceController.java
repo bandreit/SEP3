@@ -11,12 +11,21 @@ import java.io.IOException;
 import java.util.List;
 
 
+/**
+ * The type Service controller.
+ */
 @RestController
 @RequestMapping("/SEP3")
 public class ServiceController {
     @Autowired
     private ServiceService serviceService;
 
+    /**
+     * Add service response entity.
+     *
+     * @param service the service
+     * @return the response entity
+     */
     @PostMapping("/service")
     public ResponseEntity<Service> addService(@RequestBody Service service) {
         try {
@@ -28,6 +37,12 @@ public class ServiceController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Gets services by business id.
+     *
+     * @param businessId the business id
+     * @return the services by business id
+     */
     @GetMapping("/service")
     public ResponseEntity<List<Service>> getServicesByBusinessId(@RequestParam String businessId) {
         try {
@@ -39,6 +54,12 @@ public class ServiceController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Gets services by title.
+     *
+     * @param title the title
+     * @return the services by title
+     */
     @GetMapping("/servicesByTitle")
     public ResponseEntity<List<Service>> getServicesByTitle(@RequestParam String title) {
         try {
@@ -50,6 +71,11 @@ public class ServiceController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Gets all services.
+     *
+     * @return the all services
+     */
     @GetMapping("/services")
     public ResponseEntity<List<Service>> getAllServices() {
         try {
@@ -61,6 +87,12 @@ public class ServiceController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Delete service response entity.
+     *
+     * @param serviceId the service id
+     * @return the response entity
+     */
     @DeleteMapping("/services")
     public ResponseEntity deleteService(@RequestParam String serviceId)
     {

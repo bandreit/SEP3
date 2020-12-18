@@ -9,15 +9,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Service.
+ */
 public class ServiceImpl implements ServiceModel {
     private ConnectionHandler connectionManager;
     private final Gson gson;
 
+    /**
+     * Instantiates a new Service.
+     *
+     * @throws IOException the io exception
+     */
     public ServiceImpl() throws IOException {
         this.gson = new Gson();
         this.connectionManager = ConnectionManager.getInstance();
     }
-
+    /**
+     * Adding services  by exchanging service with database
+     *
+     * @param service String
+     * @return added service
+     */
     @Override
     public Service addService(Service service) throws IOException {
         ServicePackage servicePackage = new ServicePackage(NetworkType.SERVICE, service);
@@ -27,7 +40,12 @@ public class ServiceImpl implements ServiceModel {
         servicePackage = gson.fromJson(receivedData, ServicePackage.class);
         return servicePackage.getService();
     }
-
+    /**
+     * Getting services by id exchanging service list with database
+     *
+     * @param businessId String
+     * @return service list
+     */
     @Override
     public List<Service> getServicesByBusinessId(String businessId) throws IOException {
         List<Service> serviceListById = new ArrayList<>();
@@ -38,7 +56,12 @@ public class ServiceImpl implements ServiceModel {
         serviceListByIdPackage = gson.fromJson(receivedData, ServiceListPackage.class);
         return serviceListByIdPackage.getServiceList();
     }
-
+    /**
+     * Getting services  by title exchanging service list with database
+     *
+     * @param title String
+     * @return service list
+     */
     @Override
     public List<Service> getServiceByTitle(String title) throws IOException {
         List<Service> serviceListByTitle = new ArrayList<>();
@@ -49,7 +72,11 @@ public class ServiceImpl implements ServiceModel {
         serviceListByTitlePackage = gson.fromJson(receivedData, ServiceListPackage.class);
         return serviceListByTitlePackage.getServiceList();
     }
-
+    /**
+     * Getting services  exchanging service list with database
+     *
+     * @return service list
+     */
     @Override
     public List<Service> getAllServices() throws IOException {
         List<Service> serviceList = new ArrayList<>();
@@ -60,7 +87,9 @@ public class ServiceImpl implements ServiceModel {
         serviceListPackage = gson.fromJson(receivedData, ServiceListPackage.class);
         return serviceListPackage.getServiceList();
     }
-
+    /**
+     * Deleting services by service id
+     */
     @Override
     public void deleteService(String serviceId) throws IOException {
         QueryPackage queryPackage = new QueryPackage(NetworkType.QUERY, "delete_service", serviceId);
