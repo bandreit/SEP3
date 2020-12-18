@@ -1,6 +1,4 @@
-sep3.rest.appmngt
-sep3.rest.appmngt.controller
-sep3.rest.appmngt.mediator
-sep3.rest.appmngt.model
-sep3.rest.appmngt.network
-sep3.rest.appmngt.service
+sep3.db
+sep3.db.mediator
+sep3.db.model
+sep3.db.network

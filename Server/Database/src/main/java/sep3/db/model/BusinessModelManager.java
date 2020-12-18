@@ -88,7 +88,7 @@ public class BusinessModelManager implements BusinessModel {
     /**
      * Adds employee to the business
      *
-     * @param employeeIds List<String>
+     * @param employeeIds list of Strings
      * @param businessId  String
      * @param serviceId   String
      */
